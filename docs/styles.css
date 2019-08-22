@@ -34,3 +34,10 @@ body {
     font-size: 90px;
     text-align: center;
 }
+
+.red {
+    color: red;
+}
+.black {
+    color: black;
+}
