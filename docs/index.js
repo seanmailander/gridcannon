@@ -1,6 +1,6 @@
 const setupGrid = () => {
     const grid = document.getElementById('grid');
-    [...Array(16)].forEach((element, i) => {
+    [...Array(25)].forEach((element, i) => {
         const cardSpot = document.createElement('div');
         cardSpot.id = `spot${i}`;
         cardSpot.className = 'cardSpot'
@@ -9,9 +9,14 @@ const setupGrid = () => {
     });
 }
 
-const showCard = (card) => {
+const showCard = ({ suit, card }) => {
     const currentCard = document.getElementById('currentCard');
-    currentCard.innerText = card;
+    currentCard.innerText = `${card}${suit}`;
+}
+
+const placeCardInGrid = ({ suit, card }, targetedSpot) => {
+    const spot = document.getElementById(`spot${targetedSpot}`);
+    spot.innerText = `${card}${suit}`;
 }
 
 const JOKER = 0;
@@ -59,14 +64,50 @@ const shuffleDeck = () => {
     return withJokers;
 }
 
+const isRoyalty = ({ card }) => card >= 11;
+
+const targetSpots = [6,7,8,11,12,13,16,17,18]
+
+const dealGrid = (shuffledDeck) => {
+    let placedCards = 0;
+    const skippedRoyalty = [];
+    // Place grid one-by-one
+    while (placedCards < 9) {
+        const currentCard = shuffledDeck.splice(0, 1)[0];
+        if (isRoyalty(currentCard)) {
+            // Place aside
+            skippedRoyalty.push(currentCard);
+        } else {
+            // Place in grid
+            //TODO: get legal move
+            const targetedSpot = targetSpots[placedCards];
+            placeCardInGrid(currentCard, targetedSpot);
+            placedCards++;
+        }
+    }
+
+    // Place royalty
+    while (skippedRoyalty.length > 0) {
+        const currentCard = skippedRoyalty.splice(0, 1)[0];
+        // Place in grid
+        //TODO: get legal move
+        const targetedSpot = skippedRoyalty.length;
+        placeCardInGrid(currentCard, targetedSpot);
+    }
+
+    return shuffledDeck;
+}
+
 
 const autorun = () => {
     setupGrid();
 
-    showCard('A');
-
     const shuffledDeck = shuffleDeck();
-    console.log(shuffledDeck);
+
+
+    const remainingDeck = dealGrid(shuffledDeck);
+
+    showCard(remainingDeck[0]);
 }
 
 (function(){
