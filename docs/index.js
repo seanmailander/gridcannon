@@ -98,9 +98,21 @@ const dealGrid = (shuffledDeck) => {
     return shuffledDeck;
 }
 
+const clearGameBoard = () => {
+    [...Array(25)].forEach((element, i) => {
+        placeCardInGrid({ suit: '', card: ''}, i);
+    });
+    showCard({ suit: '', card: ''});
+}
 
 const autorun = () => {
     setupGrid();
+
+    restartGame();
+}
+
+const restartGame = () => {
+    clearGameBoard();
 
     const shuffledDeck = shuffleDeck();
 
