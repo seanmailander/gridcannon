@@ -9,14 +9,25 @@ const setupGrid = () => {
     });
 }
 
-const showCard = ({ suit, card }) => {
+const showCard = ({ suit, card, display }) => {
     const currentCard = document.getElementById('currentCard');
-    currentCard.innerText = `${card}${suit}`;
+    const text = document.createTextNode(display);
+    [...currentCard.childNodes].forEach(node => currentCard.removeChild(node));
+    currentCard.appendChild(text);
 }
 
-const placeCardInGrid = ({ suit, card }, targetedSpot) => {
+const placeCardInGrid = ({ suit, card, display }, targetedSpot) => {
     const spot = document.getElementById(`spot${targetedSpot}`);
-    spot.innerText = `${card}${suit}`;
+    [...spot.childNodes].forEach(node => spot.removeChild(node));
+    const text = document.createTextNode(display);
+    spot.appendChild(text);
+}
+
+const showLegalMoves = (legalPositions) => {
+    legalPositions.forEach(i => {
+        const spot = document.getElementById(`spot${targetedSpot}`);
+        spot.className += 'highlighted';
+    });
 }
 
 const JOKER = 0;
@@ -44,13 +55,34 @@ const SUITS = {
     SPADES: 's',
 };
 
+const getCardAsUnicode = (suit, card) => {
+    if (card === JOKER) {
+        return '\u{1F0DF}';
+    }
+    const suitMap = {
+        [SUITS.HEARTS]: '1F0B0',
+        [SUITS.DIAMONDS]: '1F0C0',
+        [SUITS.CLUBS]: '1F0D0',
+        [SUITS.SPADES]: '1F0A0',
+    }
+    const sillyKnight = (card >= CARDS.QUEEN ? 1 : 0);
+    const unicodeValue = parseInt(suitMap[suit], 16) + parseInt(card, 10) + sillyKnight;
+    return String.fromCodePoint(unicodeValue);
+}
+
 const shuffleDeck = () => {
     const deck = Object.keys(SUITS).map(suit => Object.keys(CARDS).map(card => ({
         suit: SUITS[suit],
         card: CARDS[card],
+        display: getCardAsUnicode(SUITS[suit], CARDS[card])
     }))).flat();
 
-    const withJokers = [].concat(deck, { suit: '', card: JOKER }, { suit: '', card: JOKER });
+    const joker = { 
+        suit: '',
+        card: JOKER,
+        display: getCardAsUnicode(null, JOKER)
+    };
+    const withJokers = [].concat(deck, joker, joker);
     
     const ugglyShuffle = () => Math.random() > 0.5 ? -1 : 1;
 
@@ -79,7 +111,6 @@ const dealGrid = (shuffledDeck) => {
             skippedRoyalty.push(currentCard);
         } else {
             // Place in grid
-            //TODO: get legal move
             const targetedSpot = targetSpots[placedCards];
             placeCardInGrid(currentCard, targetedSpot);
             placedCards++;
@@ -100,15 +131,9 @@ const dealGrid = (shuffledDeck) => {
 
 const clearGameBoard = () => {
     [...Array(25)].forEach((element, i) => {
-        placeCardInGrid({ suit: '', card: ''}, i);
+        placeCardInGrid({ suit: '', card: '', display: ''}, i);
     });
-    showCard({ suit: '', card: ''});
-}
-
-const autorun = () => {
-    setupGrid();
-
-    restartGame();
+    showCard({ suit: '', card: '', display: ''});
 }
 
 const restartGame = () => {
@@ -122,6 +147,11 @@ const restartGame = () => {
     showCard(remainingDeck[0]);
 }
 
+const autorun = () => {
+    setupGrid();
+
+    restartGame();
+}
 (function(){
 if (document.addEventListener) {
   document.addEventListener("DOMContentLoaded", autorun, false);
