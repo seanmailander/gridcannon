@@ -2,8 +2,12 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    background-color: lightgray
 }
 #game {
+    display: flex;
+}
+.center-game {
     width: 680px;
     border: 1px solid black;
 }
@@ -36,8 +40,8 @@ body {
 }
 
 .red {
-    color: red;
+    color: rgb(126, 27, 175);
 }
 .black {
-    color: black;
+    color: #222;
 }

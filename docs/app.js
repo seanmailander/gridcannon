@@ -57,7 +57,8 @@ const restartGame = () => {
 
   if (skippedRoyalty.length > 0) {
     showCard(skippedRoyalty[0]);
-
+  } else {
+      showCard(remainingDeck[0]);
   }
 }
 
