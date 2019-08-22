@@ -1,21 +1,39 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <title>Gridcannon</title>
-    <link rel="stylesheet" href="styles.css" type="text/css">
-  </head>
-  <body>
-      <div id="game">
-          <p>Deck</p>
-          <div id="deck"></div>
-          <p>Current Card</p>
-          <div id="currentCard"></div>
-          <p>Grid</p>
-          <div id="grid"></div>
-          <button onclick="restartGame()">Restart game</button>
-      </div>
-  
-  </body>
-  <script src="index.js"></script>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Gridcannon</title>
+  <script src="bootstrap.js" type="module"></script>
+  <link rel="stylesheet" href="styles.css" type="text/css">
+</head>
+
+<body>
+
+  <section class="nosupport" hidden>
+    <h4>Apologies.. your browser doesn't support ES Modules. </h4>
+  </section>
+
+  <script nomodule>
+    // Script only runs in browsers that don't support modules (ideally)
+    document.querySelector('.nosupport').hidden = false;
+  </script>
+  <script type=module>
+    // requires modules to hide. (FOUC in non-[nomodule] supporting browsers right now)
+    import {qs} from './helpers.js'
+    qs('.nosupport').hidden = true;
+  </script>
+
+
+  <div id="game">
+    <p>Deck</p>
+    <div id="deck"></div>
+    <p>Current Card</p>
+    <div id="currentCard"></div>
+    <p>Grid</p>
+    <div id="grid"></div>
+    <button id="restartBtn">Restart game</button>
+  </div>
+
+</body>
 </html>
