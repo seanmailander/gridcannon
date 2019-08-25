@@ -24,6 +24,15 @@ export const SUITS = {
   SPADES: Symbol('s'),
 };
 
+
+export const colorMaps = {
+    [SUITS.HEARTS]: 'red',
+    [SUITS.DIAMONDS]: 'red',
+    [SUITS.CLUBS]: 'black',
+    [SUITS.SPADES]: 'black',
+}
+
+
 export const getCardAsUnicode = (suit, card) => {
   if (card === JOKER) {
     return '\u{1F0DF}';

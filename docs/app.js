@@ -1,65 +1,34 @@
 import {
-  placeCardInGrid,
-  showCard,
-  showLegalMoves,
+  drawCurrentCard,
+  drawGrid,
   setupGrid,
-  clearGrid,
-  clearCard,
 } from './view.js';
-import {
-  shuffleDeck,
-  isRoyalty,
-  SUITS,
-  CARDS,
-  JOKER
-} from './deck.js';
 
-const targetSpots = [6, 7, 8, 11, 12, 13, 16, 17, 18];
+import {
+  getInstance,
+} from './game.js';
+
+import {
+  resetGame,
+  playNextCard,
+} from './game.actions.js';
+
+import { howManyCardsPlaced } from './game.selectors.js';
+
+const dispatch = getInstance();
 
 const dealGrid = (shuffledDeck) => {
   let placedCards = 0;
-  const skippedRoyalty = [];
   // Place grid one-by-one
-  while (placedCards < 9) {
-    const currentCard = shuffledDeck.splice(0, 1)[0];
-    if (isRoyalty(currentCard)) {
-      // Place aside
-      skippedRoyalty.push(currentCard);
-    } else {
-      // Place in grid
-      const targetedSpot = targetSpots[placedCards];
-      placeCardInGrid(currentCard, targetedSpot);
-      placedCards++;
-    }
+  while (placedCards < 8) {
+    const state = dispatch(playNextCard);
+    placedCards = howManyCardsPlaced(state);
   }
-
-  return {
-    remainingDeck: shuffledDeck,
-    skippedRoyalty
-  };
-}
-
-const clearGameBoard = () => {
-  clearGrid();
-  clearCard();
 }
 
 const restartGame = () => {
-  clearGameBoard();
-
-  const shuffledDeck = shuffleDeck();
-
-
-  const {
-    remainingDeck,
-    skippedRoyalty
-  } = dealGrid(shuffledDeck);
-
-  if (skippedRoyalty.length > 0) {
-    showCard(skippedRoyalty[0]);
-  } else {
-      showCard(remainingDeck[0]);
-  }
+  dispatch(resetGame);
+  dealGrid();
 }
 
 export function onLoad() {

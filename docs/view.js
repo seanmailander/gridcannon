@@ -1,4 +1,11 @@
-import { getCardAsUnicode, getSuitAsClassname } from './deck.js';
+import {
+  getCardAsUnicode,
+  getSuitAsClassname
+} from './deck.js';
+
+import {
+    whatLegalMoves
+} from './game.selectors.js';
 
 export const setupGrid = () => {
   const grid = document.getElementById('grid');
@@ -11,44 +18,45 @@ export const setupGrid = () => {
   });
 }
 
-export const showCard = ({
-  suit,
-  card,
-}) => {
-  const currentCard = document.getElementById('currentCard');
-  const text = document.createTextNode(getCardAsUnicode(suit, card));
-  [...currentCard.childNodes].forEach(node => currentCard.removeChild(node));
-  currentCard.appendChild(text);
-  currentCard.className = `${getSuitAsClassname(suit)}`;
+export const drawCurrentCard = (state) => {
+  const cardElement = document.getElementById('currentCard');
+  [...cardElement.childNodes].forEach(node => cardElement.removeChild(node));
+
+  const {
+    currentCard
+  } = state;
+  if (currentCard) {
+    const {
+      suit,
+      card
+    } = currentCard;
+    const text = document.createTextNode(getCardAsUnicode(suit, card));
+    cardElement.appendChild(text);
+    cardElement.className = `${getSuitAsClassname(suit)}`;
+  }
 }
 
-export const clearCard = () => {
-  const currentCard = document.getElementById('currentCard');
-  [...currentCard.childNodes].forEach(node => currentCard.removeChild(node));
-}
-
-
-export const clearGrid = () => {
-  [...Array(25)].forEach((element, i) => {
-    const spot = document.getElementById(`spot${i}`);
+export const drawGrid = (state) => {
+  const {
+    grid
+  } = state;
+  const legalMoves = whatLegalMoves(state);
+  grid.forEach((element = {}, index) => {
+    const spot = document.getElementById(`spot${index}`);
     [...spot.childNodes].forEach(node => spot.removeChild(node));
-  });
-}
 
-export const placeCardInGrid = ({
-  suit,
-  card,
-}, targetedSpot) => {
-  const spot = document.getElementById(`spot${targetedSpot}`);
-  [...spot.childNodes].forEach(node => spot.removeChild(node));
-  const text = document.createTextNode(getCardAsUnicode(suit, card));
-  spot.appendChild(text);
-  spot.className = `cardSpot ${getSuitAsClassname(suit)}`;
-}
+    const isLegal = legalMoves.indexOf(index) != -1;
 
-export const showLegalMoves = (legalPositions) => {
-  legalPositions.forEach(i => {
-    const spot = document.getElementById(`spot${targetedSpot}`);
-    spot.className += 'highlighted';
+    if (element) {
+      const {
+        suit,
+        card,
+      } = element;
+      const text = document.createTextNode(getCardAsUnicode(suit, card));
+      spot.appendChild(text);
+      spot.className = `cardSpot ${getSuitAsClassname(suit)} ${isLegal ? 'legal' : ''}`;
+    } else {
+        spot.className = `cardSpot ${isLegal ? 'legal' : ''}`;
+    }
   });
 }

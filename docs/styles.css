@@ -7,6 +7,9 @@ body {
 #game {
     display: flex;
 }
+.left-bar {
+    margin-right: 20px;
+}
 .center-game {
     width: 680px;
     border: 1px solid black;
@@ -37,6 +40,10 @@ body {
     margin: 5px;
     font-size: 90px;
     text-align: center;
+}
+
+.cardSpot.legal {
+    background-color: lightblue;
 }
 
 .red {
