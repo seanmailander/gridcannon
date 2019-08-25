@@ -16,21 +16,19 @@ export const resetGame = (state) => ({
 });
 
 export const playNextCard = (state) => {
-    const { deckInHand } = state;
-    const placedCards = howManyCardsPlaced(state);
-    const card = deckInHand.pop();
-    if (isRoyalty(card)) {
+    const { currentCard } = state;
+    if (isRoyalty(currentCard)) {
         // Place aside
         return {
             type: actions.SET_ROYALTY_ASIDE,
-            card,
         };
       } else {
         // Place in grid
+        // TODO: make this a choice
+        const placedCards = howManyCardsPlaced(state);
         const position = dealSpots[placedCards];
         return {
             type: actions.PLACE_CARD,
-            card,
             position,
         }
       }

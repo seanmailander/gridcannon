@@ -17,7 +17,7 @@ import { howManyCardsPlaced } from './game.selectors.js';
 
 const dispatch = getInstance();
 
-const dealGrid = (shuffledDeck) => {
+const dealGrid = () => {
   let placedCards = 0;
   // Place grid one-by-one
   while (placedCards < 8) {

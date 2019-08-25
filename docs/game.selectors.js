@@ -4,7 +4,7 @@ import { colorMaps, isRoyalty } from './deck.js';
 
 export const howManyCardsPlaced = (state) => (
     // Selector: count the number of placed cards in the grid
-    dealSpots.reduce((prev, curr) => prev + (state.grid[curr] ? 1 : 0), 0)
+    dealSpots.reduce((prev, curr) => (prev + (state.grid[curr] ? 1 : 0)), 0)
 )
 
 const cardValue = (targetSuit) => (card) => {
@@ -51,6 +51,8 @@ export const whatLegalMoves = (state) => {
         return allowedSpots;
     } else {
         // place a value on the inside
-        throw new Error("Dont know how to handle non-royalty");
+        // throw new Error("Dont know how to handle non-royalty");
+        console.error("Dont know how to handle non-royalty");
+        return [];
     }
 }
