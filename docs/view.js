@@ -60,3 +60,8 @@ export const drawGrid = (state) => {
     }
   });
 }
+
+export const attachToInterface = (handlers) => {
+    const restartBtn = document.getElementById('restartBtn');
+    restartBtn.addEventListener('click', handlers.restart);
+}

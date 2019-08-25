@@ -2,6 +2,7 @@ import {
   drawCurrentCard,
   drawGrid,
   setupGrid,
+  attachToInterface,
 } from './view.js';
 
 import {
@@ -33,5 +34,8 @@ const restartGame = () => {
 
 export function onLoad() {
   setupGrid();
+  attachToInterface({
+    restart: restartGame,
+  });
   restartGame();
 }
