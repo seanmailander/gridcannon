@@ -4,7 +4,7 @@ import { colorMaps, isRoyalty, CARDS, JOKER } from './deck.js';
 
 export const howManyCardsPlaced = (state) => (
     // Selector: count the number of placed cards in the grid
-    dealSpots.reduce((prev, curr) => (prev + (state.grid[curr] ? 1 : 0)), 0)
+    dealSpots.reduce((prev, curr) => (prev + (state.grid[curr].length > 0 ? 1 : 0)), 0)
 )
 
 const cardValue = (targetSuit) => (card) => {
@@ -35,10 +35,10 @@ export const whatLegalMoves = (state) => {
             if (!prev) {
                 return curr;
             }
-            const previousCard = grid[prev];
-            const targetCard = grid[curr];
+            const previousCard = grid[prev][0];
+            const targetCard = grid[curr][0];
             const allowedSpots = outsideForGivenGridPosition[curr] || [];
-            const spotsAvailable = allowedSpots.some((allowedSpot) => !grid[allowedSpot]);
+            const spotsAvailable = allowedSpots.some((allowedSpot) => grid[allowedSpot].length === 0);
             if (!spotsAvailable) {
                 return prev;
             }
@@ -50,7 +50,7 @@ export const whatLegalMoves = (state) => {
         }, 0);
 
         const allowedSpots = outsideForGivenGridPosition[mostSimilarCardSpot] || [];
-        const emptySpots = allowedSpots.filter(spot => !grid[spot]);
+        const emptySpots = allowedSpots.filter(spot => grid[spot].length === 0);
         if (!emptySpots || emptySpots.length < 1) {
             throw new Error('oops, didnt get a good legal move for royalty');
         }
@@ -63,7 +63,7 @@ export const whatLegalMoves = (state) => {
         if (cardCanClear) {
             return targetSpots;
         }
-        const openSpots = targetSpots.filter(spot => (grid[spot] || { card: 0}).card <= card);
+        const openSpots = targetSpots.filter(spot => (grid[spot][0] || { card: 0}).card <= card);
 
         if (openSpots.length < 1) {
             console.debug('oops, didnt get a good legal move for facecard');

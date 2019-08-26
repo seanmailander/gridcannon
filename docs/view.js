@@ -41,12 +41,12 @@ export const drawGrid = (state) => {
     grid
   } = state;
   const legalMoves = whatLegalMoves(state);
-  grid.forEach((element = {}, index) => {
+  grid.forEach((stack, index) => {
     const spot = document.getElementById(`spot${index}`);
     [...spot.childNodes].forEach(node => spot.removeChild(node));
 
     const isLegal = legalMoves.indexOf(index) != -1;
-
+    const element = stack.length > 0 ? stack[0] : null;
     if (element) {
       const {
         suit,

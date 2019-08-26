@@ -13,7 +13,7 @@ const initialState = () => {
         deckInHand: newDeck,
         currentCard: topCard,
         skippedRoyalty: [],
-        grid: [...Array(25)].map(() => null),
+        grid: [...Array(25)].map(() => []),
     };
 };
 
@@ -46,8 +46,9 @@ const applyStateChange = (action = {}, state = initialState()) => {
             const { position } = action;
 
             // put card in grid
+            // stacks on!
             let newGrid = grid.slice();
-            newGrid.splice(position, 1, currentCard);
+            newGrid[position].unshift(currentCard);
 
             // was this the last grid fill?
             // that means there are currently 7 cards placed, and this is 8
@@ -96,8 +97,9 @@ const applyStateChange = (action = {}, state = initialState()) => {
             const { position } = action;
 
             // put card in grid
-            let newGrid = grid.slice();
-            newGrid.splice(position, 1, currentCard);
+            // stacks on!
+            const newGrid = grid.slice();
+            newGrid[position].unshift(currentCard);
 
             // is there more royalty?
             const isMoreRoyalty = skippedRoyalty.length > 0;
