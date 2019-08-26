@@ -11,7 +11,8 @@ import {
 
 import {
   resetGame,
-  playNextCard,
+  dealNextCard,
+  tryToPlayCard,
 } from './game.actions.js';
 
 import { howManyCardsPlaced } from './game.selectors.js';
@@ -22,9 +23,14 @@ const dealGrid = () => {
   let placedCards = 0;
   // Place grid one-by-one
   while (placedCards < 8) {
-    const state = dispatch(playNextCard);
+    const state = dispatch(dealNextCard(placedCards));
     placedCards = howManyCardsPlaced(state);
   }
+}
+
+const cardSpotClicked = (position) => {
+    console.debug(`clicked ${position}`);
+    dispatch(tryToPlayCard(position));
 }
 
 const restartGame = () => {
@@ -36,6 +42,7 @@ export function onLoad() {
   setupGrid();
   attachToInterface({
     restart: restartGame,
+    placeCard: cardSpotClicked,
   });
   restartGame();
 }

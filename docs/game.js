@@ -17,7 +17,7 @@ const initialState = () => {
     };
 };
 
-const applyStateChange = (action, state = initialState()) => {
+const applyStateChange = (action = {}, state = initialState()) => {
     switch (action.type) {
         case actions.RESET_GAME: {
             return initialState();
@@ -41,7 +41,7 @@ const applyStateChange = (action, state = initialState()) => {
 
             }
         }
-        case actions.PLACE_CARD: {
+        case actions.PLACE_CARD_DURING_DEAL: {
             const { grid, deckInHand, skippedRoyalty, currentCard } = state;
             const { position } = action;
 
@@ -91,10 +91,57 @@ const applyStateChange = (action, state = initialState()) => {
                 }
             }
         }
+        case actions.PLAY_CARD: {
+            const { grid, deckInHand, skippedRoyalty, currentCard } = state;
+            const { position } = action;
+
+            // put card in grid
+            let newGrid = grid.slice();
+            newGrid.splice(position, 1, currentCard);
+
+            // is there more royalty?
+            const isMoreRoyalty = skippedRoyalty.length > 0;
+            if (isMoreRoyalty) {
+                // next card is top of royalty
+                const copiedRoyalty = skippedRoyalty.slice();
+                // take next card out of royalty
+                const nextCard = copiedRoyalty.shift();
+
+                // return new state
+                return {
+                    ...state,
+                    // put current card in grid
+                    grid: newGrid,
+                    // no change to deck in hand
+                    deckInHand,
+                    // take next card out of royalty
+                    skippedRoyalty: copiedRoyalty,
+                    // show next card from top of royalty
+                    currentCard: nextCard,
+                }
+            } else {
+                // next card is top of deck
+                const copiedDeck = deckInHand.slice();
+                // take next card out of deck
+                const nextCard = copiedDeck.shift();
+
+                // return new state
+                return {
+                    ...state,
+                    // put current card in grid
+                    grid: newGrid,
+                    // take next card out of deck in hand
+                    deckInHand: copiedDeck,
+                    // no change to royalty
+                    skippedRoyalty,
+                    // show next card from top of deck
+                    currentCard: nextCard,
+                }
+            }
+        }
     };
     return state;
 }
-
 
 export const getInstance = () => {
     let state = initialState();

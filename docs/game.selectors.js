@@ -1,5 +1,5 @@
-import { dealSpots, outsideForGivenGridPosition } from './game.consts.js';
-import { colorMaps, isRoyalty } from './deck.js';
+import { dealSpots, outsideForGivenGridPosition, targetSpots } from './game.consts.js';
+import { colorMaps, isRoyalty, CARDS, JOKER } from './deck.js';
 
 
 export const howManyCardsPlaced = (state) => (
@@ -37,6 +37,11 @@ export const whatLegalMoves = (state) => {
             }
             const previousCard = grid[prev];
             const targetCard = grid[curr];
+            const allowedSpots = outsideForGivenGridPosition[curr] || [];
+            const spotsAvailable = allowedSpots.some((allowedSpot) => !grid[allowedSpot]);
+            if (!spotsAvailable) {
+                return prev;
+            }
             if (getCardValueAgainstThisRoyal(targetCard) > getCardValueAgainstThisRoyal(previousCard)) {
                 return curr;
             } else {
@@ -44,15 +49,25 @@ export const whatLegalMoves = (state) => {
             }
         }, 0);
 
-        const allowedSpots = outsideForGivenGridPosition[mostSimilarCardSpot];
-        if (!allowedSpots || allowedSpots.length < 1) {
+        const allowedSpots = outsideForGivenGridPosition[mostSimilarCardSpot] || [];
+        const emptySpots = allowedSpots.filter(spot => !grid[spot]);
+        if (!emptySpots || emptySpots.length < 1) {
             throw new Error('oops, didnt get a good legal move for royalty');
         }
-        return allowedSpots;
+        return emptySpots;
     } else {
         // place a value on the inside
-        // throw new Error("Dont know how to handle non-royalty");
-        console.error("Dont know how to handle non-royalty");
-        return [];
+        const { card } = currentCard;
+
+        const cardCanClear = card === CARDS.ACE || card === JOKER;
+        if (cardCanClear) {
+            return targetSpots;
+        }
+        const openSpots = targetSpots.filter(spot => (grid[spot] || { card: 0}).card <= card);
+
+        if (openSpots.length < 1) {
+            console.debug('oops, didnt get a good legal move for facecard');
+        }
+        return openSpots;
     }
 }

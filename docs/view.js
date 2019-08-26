@@ -64,4 +64,9 @@ export const drawGrid = (state) => {
 export const attachToInterface = (handlers) => {
     const restartBtn = document.getElementById('restartBtn');
     restartBtn.addEventListener('click', handlers.restart);
+
+    [...Array(25)].forEach((element, index) => {
+        const spot = document.getElementById(`spot${index}`);
+        spot.addEventListener('click', () => handlers.placeCard(index));
+    });
 }
