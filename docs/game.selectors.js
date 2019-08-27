@@ -1,4 +1,4 @@
-import { dealSpots, outsideForGivenGridPosition, targetSpots, outsideSpots } from './game.consts.js';
+import { dealSpots, outsideForGivenGridPosition, targetSpots, outsideSpots, triggerSpots } from './game.consts.js';
 import { colorMaps, isRoyalty, CARDS, JOKER } from './deck.js';
 
 
@@ -69,4 +69,22 @@ export const whatLegalMoves = (state) => {
         }
         return openSpots;
     }
+}
+
+const addPayloads = (grid, payload) => (
+    grid[payload[0]][0].card + grid[payload[1]][0].card
+);
+const targetWithArmor = (grid, target) => (
+    grid[target].reduce((acc, curr) => acc + curr.card, 0)
+);
+
+export const targetsFiredUpon = (position, grid) => {
+    const firingSolutions = triggerSpots[position];
+    if (!firingSolutions) {
+        return [];
+    }
+    return firingSolutions
+        .filter(({ target }) => grid[target].length > 0)
+        .filter(({ payload, target }) => addPayloads(grid, payload) >= targetWithArmor(grid, target))
+    .map(({ target }) => target);
 }

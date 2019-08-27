@@ -1,10 +1,10 @@
 import {
-    shuffleDeck,
+    shuffleDeck, isRoyalty,
   } from './deck.js';
 import { drawGrid, drawCurrentCard } from './view.js';
 
 import {actions } from './game.actions.js';
-import { howManyCardsPlaced } from './game.selectors.js';
+import { howManyCardsPlaced, targetsFiredUpon } from './game.selectors.js';
 
 const initialState = () => {
     const newDeck = shuffleDeck();
@@ -100,6 +100,12 @@ const applyStateChange = (action = {}, state = initialState()) => {
             // stacks on!
             const newGrid = grid.slice();
             newGrid[position].unshift(currentCard);
+
+            // check for trigger
+            if (!isRoyalty(currentCard)) {
+                const destroyedPositions = targetsFiredUpon(position, newGrid);
+                console.debug(destroyedPositions, 'destroyed positions');
+            }
 
             // is there more royalty?
             const isMoreRoyalty = skippedRoyalty.length > 0;
