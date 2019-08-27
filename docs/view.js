@@ -56,11 +56,18 @@ export const drawGrid = (state) => {
             const {
               suit,
               card,
+              destroyed = false,
             } = stack[stack.length - 1];
-            const text = document.createTextNode(getCardAsUnicode(suit, card));
-            spot.appendChild(text);
-            const armorValue = stack.reduce((acc, curr) => acc + curr.card, -card);
-            spot.className = `cardSpot ${getSuitAsClassname(suit)} ${isLegal ? 'legal' : ''} ${hasStack ? `armor${armorValue}` : ''}`;
+            if (destroyed) {
+                const text = document.createTextNode('\u1234');
+                spot.appendChild(text);
+                spot.className = 'cardSpot';
+            } else {
+                const text = document.createTextNode(getCardAsUnicode(suit, card));
+                spot.appendChild(text);
+                const armorValue = stack.reduce((acc, curr) => acc + curr.card, -card);
+                spot.className = `cardSpot ${getSuitAsClassname(suit)} ${isLegal ? 'legal' : ''} ${hasStack ? `armor${armorValue}` : ''}`;
+            }
         } else {
             const {
               suit,

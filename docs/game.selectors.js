@@ -71,9 +71,25 @@ export const whatLegalMoves = (state) => {
     }
 }
 
-const addPayloads = (grid, payload) => (
-    grid[payload[0]][0].card + grid[payload[1]][0].card
-);
+const addPayloads = (grid, payload, targetRoyal) => {
+    const firstPayload = grid[payload[0]][0];
+    const secondPayload = grid[payload[1]][0];
+    if (targetRoyal.card === CARDS.KING) {
+        // KING same suit
+        const firstValue = (firstPayload.suit === targetRoyal.suit) ? firstPayload.card : 0;
+        const secondValue = (secondPayload.suit === targetRoyal.suit) ? secondPayload.card : 0;
+        return firstValue + secondValue;
+    }
+    if (targetRoyal.card === CARDS.QUEEN) {
+        // QUEEN same color
+        const firstValue = (colorMaps[firstPayload.suit] === colorMaps[targetRoyal.suit]) ? firstPayload.card : 0;
+        const secondValue = (colorMaps[secondPayload.suit] === colorMaps[targetRoyal.suit]) ? secondPayload.card : 0;
+        return firstValue + secondValue;
+    }
+
+    // JACK straight value
+    return grid[payload[0]][0].card + grid[payload[1]][0].card;
+};
 const targetWithArmor = (grid, target) => (
     grid[target].reduce((acc, curr) => acc + curr.card, 0)
 );
@@ -83,8 +99,15 @@ export const targetsFiredUpon = (position, grid) => {
     if (!firingSolutions) {
         return [];
     }
+    const targetRoyal = grid[target].last();
     return firingSolutions
-        .filter(({ target }) => grid[target].length > 0)
-        .filter(({ payload, target }) => addPayloads(grid, payload) >= targetWithArmor(grid, target))
+        .filter(({ target }) => grid[target].length > 0) // royal in place
+        .filter(({ target }) => !grid[target].last().destroyed) // not already destroyed
+        .filter(({ payload, target }) => addPayloads(grid, payload, targetRoyal) >= targetWithArmor(grid, target))
     .map(({ target }) => target);
 }
+if (!Array.prototype.last){
+    Array.prototype.last = function(){
+        return this[this.length - 1];
+    };
+};
