@@ -29,7 +29,6 @@ const dealGrid = () => {
 }
 
 const cardSpotClicked = (position) => {
-    console.debug(`clicked ${position}`);
     dispatch(tryToPlayCard(position));
 }
 

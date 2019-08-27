@@ -37,17 +37,17 @@ export const tryToPlayCard = (targetPosition) => (state) => {
     const dealIsFinished = howManyCardsPlaced(state) === 8;
 
     if (!dealIsFinished) {
-        console.debug('deal not finished');
+        console.debug('deal not finished, cannot play card');
         return;
     }
     const legalPositions = whatLegalMoves(state);
 
     if (legalPositions.indexOf(targetPosition) !== -1) {
-        console.debug('place card in legal position');
+        console.debug(`place card in legal position ${targetPosition}`);
         return {
             type: actions.PLAY_CARD,
             position: targetPosition,
         }
     }
-    console.debug('not a legal move for current card');
+    console.debug(`position ${targetPosition} is not a legal move for current card`);
 }
