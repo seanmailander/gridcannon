@@ -59,7 +59,7 @@ export const drawGrid = (state) => {
               destroyed = false,
             } = stack[stack.length - 1];
             if (destroyed) {
-                const text = document.createTextNode('\u1234');
+                const text = document.createTextNode(getCardAsUnicode(suit, card, destroyed));
                 spot.appendChild(text);
                 spot.className = 'cardSpot';
             } else {

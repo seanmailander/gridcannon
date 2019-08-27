@@ -99,11 +99,10 @@ export const targetsFiredUpon = (position, grid) => {
     if (!firingSolutions) {
         return [];
     }
-    const targetRoyal = grid[target].last();
     return firingSolutions
         .filter(({ target }) => grid[target].length > 0) // royal in place
         .filter(({ target }) => !grid[target].last().destroyed) // not already destroyed
-        .filter(({ payload, target }) => addPayloads(grid, payload, targetRoyal) >= targetWithArmor(grid, target))
+        .filter(({ payload, target }) => addPayloads(grid, payload, grid[target].last()) >= targetWithArmor(grid, target))
     .map(({ target }) => target);
 }
 if (!Array.prototype.last){

@@ -33,19 +33,22 @@ export const colorMaps = {
 }
 
 
-export const getCardAsUnicode = (suit, card) => {
-  if (card === JOKER) {
-    return '\u{1F0DF}';
-  }
-  const suitMap = {
-    [SUITS.HEARTS]: '1F0B0',
-    [SUITS.DIAMONDS]: '1F0C0',
-    [SUITS.CLUBS]: '1F0D0',
-    [SUITS.SPADES]: '1F0A0',
-  }
-  const sillyKnight = (card >= CARDS.QUEEN ? 1 : 0);
-  const unicodeValue = parseInt(suitMap[suit], 16) + parseInt(card, 10) + sillyKnight;
-  return String.fromCodePoint(unicodeValue);
+export const getCardAsUnicode = (suit, card, destroyed = false) => {
+    if (destroyed) {
+        return '\u{1F0A0}';
+    }
+    if (card === JOKER) {
+        return '\u{1F0DF}';
+    }
+    const suitMap = {
+        [SUITS.HEARTS]: '1F0B0',
+        [SUITS.DIAMONDS]: '1F0C0',
+        [SUITS.CLUBS]: '1F0D0',
+        [SUITS.SPADES]: '1F0A0',
+    }
+    const sillyKnight = (card >= CARDS.QUEEN ? 1 : 0);
+    const unicodeValue = parseInt(suitMap[suit], 16) + parseInt(card, 10) + sillyKnight;
+    return String.fromCodePoint(unicodeValue);
 }
 
 export const getSuitAsClassname = (suit) => {
