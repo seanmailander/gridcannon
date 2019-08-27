@@ -1,4 +1,4 @@
-import { dealSpots, outsideForGivenGridPosition, targetSpots } from './game.consts.js';
+import { dealSpots, outsideForGivenGridPosition, targetSpots, outsideSpots } from './game.consts.js';
 import { colorMaps, isRoyalty, CARDS, JOKER } from './deck.js';
 
 
@@ -32,16 +32,13 @@ export const whatLegalMoves = (state) => {
         const { suit } = currentCard;
         const getCardValueAgainstThisRoyal = cardValue(suit);
         const mostSimilarCardSpot = dealSpots.reduce((prev, curr) => {
-            if (!prev) {
-                return curr;
+            const allowedSpots = outsideForGivenGridPosition[curr];
+            const spotsAvailable = allowedSpots.filter((allowedSpot) => grid[allowedSpot].length === 0);
+            if (spotsAvailable.length === 0) {
+                return prev;
             }
             const previousCard = grid[prev][0];
             const targetCard = grid[curr][0];
-            const allowedSpots = outsideForGivenGridPosition[curr] || [];
-            const spotsAvailable = allowedSpots.some((allowedSpot) => grid[allowedSpot].length === 0);
-            if (!spotsAvailable) {
-                return prev;
-            }
             if (getCardValueAgainstThisRoyal(targetCard) > getCardValueAgainstThisRoyal(previousCard)) {
                 return curr;
             } else {
@@ -67,6 +64,8 @@ export const whatLegalMoves = (state) => {
 
         if (openSpots.length < 1) {
             console.debug('oops, didnt get a good legal move for facecard');
+            // gotta go for the armor
+            return outsideSpots.filter(spot => grid[spot].length > 0);
         }
         return openSpots;
     }
