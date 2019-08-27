@@ -6,6 +6,7 @@ import {
 import {
     whatLegalMoves
 } from './game.selectors.js';
+import { targetSpots } from './game.consts.js';
 
 export const setupGrid = () => {
   const grid = document.getElementById('grid');
@@ -46,15 +47,29 @@ export const drawGrid = (state) => {
     [...spot.childNodes].forEach(node => spot.removeChild(node));
 
     const isLegal = legalMoves.indexOf(index) != -1;
-    const element = stack.length > 0 ? stack[0] : null;
-    if (element) {
-      const {
-        suit,
-        card,
-      } = element;
-      const text = document.createTextNode(getCardAsUnicode(suit, card));
-      spot.appendChild(text);
-      spot.className = `cardSpot ${getSuitAsClassname(suit)} ${isLegal ? 'legal' : ''}`;
+    const isRoyal = targetSpots.indexOf(index) === -1;
+    const hasCard = stack.length > 0;
+    const hasStack = (stack.length > 1);
+
+    if (hasCard) {
+        if (isRoyal) {
+            const {
+              suit,
+              card,
+            } = stack[stack.length - 1];
+            const text = document.createTextNode(getCardAsUnicode(suit, card));
+            spot.appendChild(text);
+            const armorValue = stack.reduce((acc, curr) => acc + curr.card, -card);
+            spot.className = `cardSpot ${getSuitAsClassname(suit)} ${isLegal ? 'legal' : ''} ${hasStack ? `armor${armorValue}` : ''}`;
+        } else {
+            const {
+              suit,
+              card,
+            } = stack[0];
+            const text = document.createTextNode(getCardAsUnicode(suit, card));
+            spot.appendChild(text);
+            spot.className = `cardSpot ${getSuitAsClassname(suit)} ${isLegal ? 'legal' : ''} ${hasStack ? 'stack' : ''}`;
+        }
     } else {
         spot.className = `cardSpot ${isLegal ? 'legal' : ''}`;
     }
