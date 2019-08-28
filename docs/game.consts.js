@@ -18,8 +18,8 @@ export const triggerSpots = {
             payload: [ 6, 7 ], // across
             target: 9
         }, {
-            payload: [ 11, 16 ], // down
-            target: 21
+            payload: [ 13, 18 ], // down
+            target: 23
         }],
     11: [{
         payload: [ 12, 13 ], // across
