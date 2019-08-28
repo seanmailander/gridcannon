@@ -25,15 +25,11 @@ body {
 }
 
 #deck {
-    /* height: 20px; */
-    /* width: 20px; */
-    border: 1px dashed lightblue;
     font-size: 5em;
     cursor: default;
 }
 
 #currentCard {
-    border: 1px dashed lightseagreen;
     font-size: 5em;
     cursor: default;
 }
@@ -93,4 +89,9 @@ body {
 }
 .black {
     color: #222;
+}
+
+#hint {
+    opacity: 0.6;
+    text-align: center;
 }
