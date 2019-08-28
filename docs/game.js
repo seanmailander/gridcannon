@@ -104,7 +104,6 @@ const applyStateChange = (action = {}, state = initialState()) => {
             // check for trigger
             if (!isRoyalty(currentCard)) {
                 const destroyedPositions = targetsFiredUpon(position, newGrid);
-                console.debug(destroyedPositions, 'destroyed positions');
                 destroyedPositions.forEach(destroyPos => newGrid[destroyPos].push({ destroyed: true }));
             }
 

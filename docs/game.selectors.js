@@ -63,7 +63,6 @@ export const whatLegalMoves = (state) => {
         const openSpots = targetSpots.filter(spot => (grid[spot][0] || { card: 0}).card <= card);
 
         if (openSpots.length < 1) {
-            console.debug('oops, didnt get a good legal move for facecard');
             // gotta go for the armor
             return outsideSpots.filter(spot => grid[spot].length > 0);
         }
