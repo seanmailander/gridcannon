@@ -11,12 +11,17 @@ body {
     justify-content: center;
     margin: 20px 80px;
 }
+
+#game p {
+    cursor: default;
+
+}
 .left-bar {
     flex-basis: 40px;
     margin-right: 20px;
 }
 .center-game {
-    border: 1px solid black;
+    /* border: 1px solid black; */
 }
 
 #deck {
@@ -24,11 +29,13 @@ body {
     /* width: 20px; */
     border: 1px dashed lightblue;
     font-size: 5em;
+    cursor: default;
 }
 
 #currentCard {
     border: 1px dashed lightseagreen;
     font-size: 5em;
+    cursor: default;
 }
 
 .grid {
@@ -43,12 +50,17 @@ body {
     display: flex;
 }
 .cardSpot {
-    margin: 5px;
+    margin: 2px;
     flex: 1 0 auto;
     position: relative;
-    border: 1px dashed grey;
+    /* border: 1px dashed grey; */
     font-size: 3rem;
     text-align: center;
+    cursor: not-allowed;
+}
+
+#spot0.cardSpot, #spot4.cardSpot, #spot20.cardSpot, #spot24.cardSpot {
+    opacity: 0;
 }
 .cardSpot:after {
     content: "";
@@ -68,7 +80,8 @@ body {
 }
 
 .cardSpot.legal {
-    background-color: lightblue;
+    background-color: rgba(147, 213, 235, 0.541);
+    cursor: pointer;
 }
 
 .cardSpot.faded {
