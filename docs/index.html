@@ -9,7 +9,6 @@
 </head>
 
 <body>
-
   <section class="nosupport" hidden>
     <h4>Apologies.. your browser doesn't support ES Modules. </h4>
   </section>
@@ -17,6 +16,7 @@
   <script nomodule>
     // Script only runs in browsers that don't support modules (ideally)
     document.querySelector('.nosupport').hidden = false;
+
   </script>
   <script type=module>
     // requires modules to hide. (FOUC in non-[nomodule] supporting browsers right now)
@@ -24,20 +24,23 @@
     qs('.nosupport').hidden = true;
   </script>
 
+  <section class="heading">
+    <h1>GridCannon</h1>
+  </section>
 
-  <div id="game">
+  <section id="game">
     <section class="left-bar">
-        <p>Deck</p>
-        <div id="deck"></div>
-        <p>Current Card</p>
-        <div id="currentCard"></div>
-        <button id="restartBtn">Restart game</button>
+      <p>Deck</p>
+      <div id="deck"></div>
+      <p>Current Card</p>
+      <div id="currentCard"></div>
+      <button id="restartBtn">Restart game</button>
     </section>
     <section class="center-game">
-        <p>Grid</p>
-        <div id="grid"></div>
+      <section id="grid" class="grid"></div>
     </section>
-  </div>
+  </section>
 
 </body>
+
 </html>

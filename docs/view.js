@@ -10,11 +10,18 @@ import { targetSpots } from './game.consts.js';
 
 export const setupGrid = () => {
     const grid = document.getElementById('grid');
-    [...Array(25)].forEach((element, i) => {
-        const cardSpot = document.createElement('div');
-        cardSpot.id = `spot${i}`;
-        cardSpot.className = 'cardSpot';
-        grid.appendChild(cardSpot);
+    [...Array(5)].forEach((element, i) => {
+        const row = document.createElement('section');
+        row.id = `row${i}`;
+        row.className = 'row';
+        grid.appendChild(row);
+
+        [...Array(5)].forEach((element2, j) => {
+            const cardSpot = document.createElement('section');
+            cardSpot.id = `spot${i * 5 + j}`;
+            cardSpot.className = 'cardSpot';
+            row.appendChild(cardSpot);
+        });
     });
 };
 
@@ -90,7 +97,9 @@ export const drawGrid = (state) => {
                 spot.className = `cardSpot ${getSuitAsClassname(suit)} ${isLegal ? 'legal' : ''} ${hasStack ? 'stack' : ''}`;
             }
         } else {
-            spot.className = `cardSpot ${isLegal ? 'legal' : ''}`;
+            const text = document.createTextNode(getCardAsUnicode(null, null, true));
+            spot.appendChild(text);
+            spot.className = `cardSpot ${isLegal ? 'legal' : ''} faded`;
         }
     });
 };
