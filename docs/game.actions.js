@@ -12,7 +12,7 @@ export const actions = {
   PLAY_CARD: 'PLAY_CARD',
 };
 
-export const resetGame = (state) => ({
+export const resetGame = (/* state */) => ({
   type: actions.RESET_GAME,
 });
 
@@ -36,17 +36,15 @@ export const tryToPlayCard = (targetPosition) => (state) => {
   const dealIsFinished = howManyCardsPlaced(state) === 8;
 
   if (!dealIsFinished) {
-    console.debug('deal not finished, cannot play card');
-    return;
+    return {};
   }
   const legalPositions = whatLegalMoves(state);
 
   if (legalPositions.indexOf(targetPosition) !== -1) {
-    console.debug(`place card in legal position ${targetPosition}`);
     return {
       type: actions.PLAY_CARD,
       position: targetPosition,
     };
   }
-  console.debug(`position ${targetPosition} is not a legal move for current card`);
+  return {};
 };

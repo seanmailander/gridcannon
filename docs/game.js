@@ -149,11 +149,12 @@ const applyStateChange = (action = {}, state = initialState()) => {
         currentCard: nextCard,
       };
     }
+    default:
+      return state;
   }
-  return state;
 };
 
-export const getInstance = () => {
+export default function getInstance() {
   let state = initialState();
 
   return (thunk) => {
@@ -163,4 +164,4 @@ export const getInstance = () => {
 
     return state;
   };
-};
+}

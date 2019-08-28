@@ -20,9 +20,9 @@ const cardValue = (targetSuit) => (card) => {
   // highest value of the same color (color +100)
   const colorValue = colorMaps[targetSuit] === colorMaps[card.suit] ? 100 : 0;
   // highest value (value+)
-  const cardValue = card.card;
+  const faceValue = card.card;
 
-  return suitValue + colorValue + cardValue;
+  return suitValue + colorValue + faceValue;
 };
 
 export const whatLegalMoves = (state) => {
@@ -106,8 +106,3 @@ export const targetsFiredUpon = (position, grid) => {
     .filter(({ payload, target }) => addPayloads(grid, payload, grid[target].last()) >= targetWithArmor(grid, target))
     .map(({ target }) => target);
 };
-if (!Array.prototype.last) {
-  Array.prototype.last = function () {
-    return this[this.length - 1];
-  };
-}

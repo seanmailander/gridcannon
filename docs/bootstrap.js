@@ -1,4 +1,4 @@
-import { onLoad } from './app.js';
+import onLoad from './app.js';
 import { $on } from './helpers.js';
 
 $on(window, 'load', onLoad);

@@ -1,13 +1,9 @@
 import {
-  drawCurrentCard,
-  drawGrid,
   setupGrid,
   attachToInterface,
 } from './view.js';
 
-import {
-  getInstance,
-} from './game.js';
+import getInstance from './game.js';
 
 import {
   resetGame,
@@ -37,7 +33,7 @@ const restartGame = () => {
   dealGrid();
 };
 
-export function onLoad() {
+export default function onLoad() {
   setupGrid();
   attachToInterface({
     restart: restartGame,

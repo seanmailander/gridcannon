@@ -1,6 +1,3 @@
-export {
-  qs, qsa, $on, $delegate, $parent, remove,
-};
 
 // Get element(s) by CSS selector:
 function qs(selector, scope) {
@@ -21,7 +18,6 @@ function $on(target, type, callback, useCapture) {
 function $delegate(target, selector, type, handler) {
   // https://developer.mozilla.org/en-US/docs/Web/Events/blur
   const useCapture = type === 'blur' || type === 'focus';
-  $on(target, type, dispatchEvent, useCapture);
 
   function dispatchEvent(event) {
     const targetElement = event.target;
@@ -32,6 +28,8 @@ function $delegate(target, selector, type, handler) {
       handler.call(targetElement, event);
     }
   }
+
+  $on(target, type, dispatchEvent, useCapture);
 }
 
 // Find the element's parent with the given tag name:
@@ -46,18 +44,18 @@ function $parent(element, tagName) {
   return $parent(element.parentNode, tagName);
 }
 
-// removes an element from an array
-// const x = [1,2,3]
-// remove(x, 2)
-// x ~== [1,3]
-function remove(array, thing) {
-  const index = array.indexOf(thing);
-  if (index === -1) {
-    return array;
-  }
-  array.splice(index, 1);
-}
-
 // Allow for looping on nodes by chaining:
 // qsa('.foo').forEach(function () {})
 NodeList.prototype.forEach = Array.prototype.forEach;
+
+
+if (!Array.prototype.last) {
+  // eslint-disable-next-line
+    Array.prototype.last = function () {
+    return this[this.length - 1];
+  };
+}
+
+export {
+  qs, qsa, $on, $delegate, $parent,
+};

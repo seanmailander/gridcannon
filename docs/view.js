@@ -45,7 +45,7 @@ export const drawGrid = (state) => {
     const spot = document.getElementById(`spot${index}`);
     [...spot.childNodes].forEach((node) => spot.removeChild(node));
 
-    const isLegal = legalMoves.indexOf(index) != -1;
+    const isLegal = legalMoves.indexOf(index) !== -1;
     const isRoyal = targetSpots.indexOf(index) === -1;
     const hasCard = stack.length > 0;
     const hasStack = (stack.length > 1);

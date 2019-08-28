@@ -1,5 +1,5 @@
 import { whatLegalMoves } from './game.selectors.js';
-import { SUITS, JOKER, CARDS } from './deck.js';
+import { SUITS, CARDS } from './deck.js';
 
 describe('finds legal moves', () => {
   test('should early-out before deal is complete', () => {
@@ -14,10 +14,6 @@ describe('finds legal moves', () => {
   });
   describe('for royalty after deal', () => {
     test('should return largest same suit', () => {
-      const joker = {
-        card: JOKER,
-        suit: null,
-      };
       const card5D = {
         card: CARDS.FIVE,
         suit: SUITS.DIAMONDS,
@@ -41,10 +37,6 @@ describe('finds legal moves', () => {
       expect(whatLegalMoves(state)).toEqual([15, 21]);
     });
     test('should skip top left if full', () => {
-      const joker = {
-        card: JOKER,
-        suit: null,
-      };
       const cardQH = {
         card: CARDS.QUEEN,
         suit: SUITS.HEARTS,
