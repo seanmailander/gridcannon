@@ -1,5 +1,5 @@
 import {
-    shuffleDeck, isRoyalty,
+    shuffleDeck, isRoyalty, CARDS, JOKER,
 } from './deck.js';
 import { drawGrid, drawDeck, drawCurrentCard } from './view.js';
 
@@ -99,10 +99,21 @@ const applyStateChange = (action = {}, state = initialState()) => {
         } = state;
         const { position } = action;
 
+        // Immutable state, so duplicate
+        const newGrid = grid.slice();
+        const newDeckInHand = deckInHand.slice();
+
         // put card in grid
         // stacks on!
-        const newGrid = grid.slice();
-        newGrid[position].unshift(currentCard);
+
+        // should this clear the stack?
+        if (currentCard.card === JOKER || currentCard.card === CARDS.ACE) {
+            // reset the stack, returning it to the deck in hand
+            newDeckInHand.push(...newGrid[position]);
+            newGrid[position] = [currentCard];
+        } else {
+            newGrid[position].unshift(currentCard);
+        }
 
         // check for trigger
         if (!isRoyalty(currentCard)) {
@@ -124,7 +135,7 @@ const applyStateChange = (action = {}, state = initialState()) => {
                 // put current card in grid
                 grid: newGrid,
                 // no change to deck in hand
-                deckInHand,
+                deckInHand: newDeckInHand,
                 // take next card out of royalty
                 skippedRoyalty: copiedRoyalty,
                 // show next card from top of royalty
@@ -132,9 +143,8 @@ const applyStateChange = (action = {}, state = initialState()) => {
             };
         }
         // next card is top of deck
-        const copiedDeck = deckInHand.slice();
         // take next card out of deck
-        const nextCard = copiedDeck.shift();
+        const nextCard = newDeckInHand.shift();
 
         // return new state
         return {
@@ -142,7 +152,7 @@ const applyStateChange = (action = {}, state = initialState()) => {
             // put current card in grid
             grid: newGrid,
             // take next card out of deck in hand
-            deckInHand: copiedDeck,
+            deckInHand: newDeckInHand,
             // no change to royalty
             skippedRoyalty,
             // show next card from top of deck
