@@ -26,30 +26,30 @@ export const SUITS = {
 
 
 export const colorMaps = {
-    [SUITS.HEARTS]: 'red',
-    [SUITS.DIAMONDS]: 'red',
-    [SUITS.CLUBS]: 'black',
-    [SUITS.SPADES]: 'black',
-}
+  [SUITS.HEARTS]: 'red',
+  [SUITS.DIAMONDS]: 'red',
+  [SUITS.CLUBS]: 'black',
+  [SUITS.SPADES]: 'black',
+};
 
 
 export const getCardAsUnicode = (suit, card, destroyed = false) => {
-    if (destroyed) {
-        return '\u{1F0A0}';
-    }
-    if (card === JOKER) {
-        return '\u{1F0DF}';
-    }
-    const suitMap = {
-        [SUITS.HEARTS]: '1F0B0',
-        [SUITS.DIAMONDS]: '1F0C0',
-        [SUITS.CLUBS]: '1F0D0',
-        [SUITS.SPADES]: '1F0A0',
-    }
-    const sillyKnight = (card >= CARDS.QUEEN ? 1 : 0);
-    const unicodeValue = parseInt(suitMap[suit], 16) + parseInt(card, 10) + sillyKnight;
-    return String.fromCodePoint(unicodeValue);
-}
+  if (destroyed) {
+    return '\u{1F0A0}';
+  }
+  if (card === JOKER) {
+    return '\u{1F0DF}';
+  }
+  const suitMap = {
+    [SUITS.HEARTS]: '1F0B0',
+    [SUITS.DIAMONDS]: '1F0C0',
+    [SUITS.CLUBS]: '1F0D0',
+    [SUITS.SPADES]: '1F0A0',
+  };
+  const sillyKnight = (card >= CARDS.QUEEN ? 1 : 0);
+  const unicodeValue = parseInt(suitMap[suit], 16) + parseInt(card, 10) + sillyKnight;
+  return String.fromCodePoint(unicodeValue);
+};
 
 export const getSuitAsClassname = (suit) => {
   const suitToClassMap = {
@@ -58,12 +58,12 @@ export const getSuitAsClassname = (suit) => {
     [SUITS.DIAMONDS]: 'red',
     [SUITS.CLUBS]: 'black',
     [SUITS.SPADES]: 'black',
-  }
+  };
   return suitToClassMap[suit];
-}
+};
 
 export const shuffleDeck = () => {
-  const deck = Object.keys(SUITS).map(suit => Object.keys(CARDS).map(card => ({
+  const deck = Object.keys(SUITS).map((suit) => Object.keys(CARDS).map((card) => ({
     suit: SUITS[suit],
     card: CARDS[card],
   }))).flat();
@@ -71,11 +71,11 @@ export const shuffleDeck = () => {
   const joker = {
     suit: '',
     card: JOKER,
-    display: getCardAsUnicode(null, JOKER)
+    display: getCardAsUnicode(null, JOKER),
   };
   const withJokers = [].concat(deck, joker, joker);
 
-  const ugglyShuffle = () => Math.random() > 0.5 ? -1 : 1;
+  const ugglyShuffle = () => (Math.random() > 0.5 ? -1 : 1);
 
   withJokers.sort(ugglyShuffle);
   withJokers.sort(ugglyShuffle);
@@ -85,8 +85,8 @@ export const shuffleDeck = () => {
   withJokers.sort(ugglyShuffle);
 
   return withJokers;
-}
+};
 
 export const isRoyalty = ({
-  card
+  card,
 }) => card >= 11;

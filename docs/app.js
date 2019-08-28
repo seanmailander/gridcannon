@@ -26,16 +26,16 @@ const dealGrid = () => {
     const state = dispatch(dealNextCard(placedCards));
     placedCards = howManyCardsPlaced(state);
   }
-}
+};
 
 const cardSpotClicked = (position) => {
-    dispatch(tryToPlayCard(position));
-}
+  dispatch(tryToPlayCard(position));
+};
 
 const restartGame = () => {
   dispatch(resetGame);
   dealGrid();
-}
+};
 
 export function onLoad() {
   setupGrid();
