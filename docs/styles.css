@@ -20,32 +20,25 @@ body {
     flex-basis: 40px;
     margin-right: 20px;
 }
-.center-game {
-    /* border: 1px solid black; */
-}
 
 #deck {
     cursor: default;
-}
-#deck img {
-    width: 50px;
 }
 
 #currentCard {
     cursor: default;
 }
 
+#deck img {
+    width: 5vw;
+}
 #currentCard img {
-    width: 50px;
+    width: 5vw;
+}
+.cardSpot img {
+    width: 5vw;
 }
 
-.grid {
-    margin: 0 auto;
-    width: 80vw;
-    max-width: 60vh;
-    height: 80vw;
-    max-height: 60vh;
-}
 .row {
     display: flex;
 }
@@ -77,14 +70,22 @@ body {
     align-items: center;
     justify-content: center;
 }
-
-.cardSpot img {
-    width: 50px;
+.cardSpot.legal {
+    cursor: pointer;
 }
 
-.cardSpot.legal {
-    background-color: rgba(147, 213, 235, 0.541);
-    cursor: pointer;
+
+.cardSpot.legal:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    transition: all 0.8s;
+    /* opacity: 0; */
+    background-color: rgba(147, 213, 235, 0.341);
+    background-size: 100% 100%;
 }
 
 .cardSpot.faded img{
@@ -102,3 +103,21 @@ body {
     opacity: 0.6;
     text-align: center;
 }
+
+.badge {
+    background: #cccccc;
+    border-radius: 0.8em;
+    -moz-border-radius: 0.8em;
+    -webkit-border-radius: 0.8em;
+    color: #ffffff;
+    display: inline-block;
+    font-weight: bold;
+    line-height: 1.6em;
+    margin-right: 2px;
+    margin-top: 2px;
+    right: 0px;
+    top: 0px;
+    position: absolute;
+    text-align: center;
+    width: 1.6em; 
+  }

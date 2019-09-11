@@ -96,6 +96,14 @@ export const drawGrid = (state) => {
                     spot.appendChild(cardImage);
                     const armorValue = stack.reduce((acc, curr) => acc + curr.card, -card);
                     spot.className = `cardSpot ${getSuitAsClassname(suit)} ${isLegal ? 'legal' : ''} ${hasStack ? `armor${armorValue}` : ''}`;
+
+                    if (hasStack) {
+                        const badge = document.createElement('span');
+                        badge.className = 'badge';
+                        const armorText = document.createTextNode(armorValue);
+                        badge.appendChild(armorText);
+                        spot.appendChild(badge);
+                    }
                 }
             } else {
                 const {
