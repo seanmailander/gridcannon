@@ -1,7 +1,7 @@
 import {
     shuffleDeck, isRoyalty, CARDS, JOKER,
 } from './deck.js';
-import { drawGrid, drawDeck, drawCurrentCard } from './view.js';
+import { drawGrid, drawDeck, drawCurrentCard, changeHint } from './view.js';
 
 import { actions } from './game.actions.js';
 import { howManyCardsPlaced, targetsFiredUpon } from './game.selectors.js';
@@ -38,7 +38,6 @@ const applyStateChange = (action = {}, state = initialState()) => {
             deckInHand: copiedDeck,
             // show next card from top of deck
             currentCard: nextCard,
-
         };
     }
     case actions.PLACE_CARD_DURING_DEAL: {
@@ -172,6 +171,7 @@ export default function getInstance() {
         drawGrid(state);
         drawDeck(state);
         drawCurrentCard(state);
+        changeHint(state);
 
         return state;
     };

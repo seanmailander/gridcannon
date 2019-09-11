@@ -25,6 +25,8 @@ const cardValue = (targetSuit) => (card) => {
     return suitValue + colorValue + faceValue;
 };
 
+const openSpotsForNonRoyal = ({ grid, currentCard: { card } }) => targetSpots.filter((spot) => (grid[spot][0] || { card: 0 }).card <= card);
+
 export const whatLegalMoves = (state) => {
     // Selector: find any legal positions for the current card
     const { currentCard, grid } = state;
@@ -63,7 +65,7 @@ export const whatLegalMoves = (state) => {
     if (cardCanClear) {
         return targetSpots;
     }
-    const openSpots = targetSpots.filter((spot) => (grid[spot][0] || { card: 0 }).card <= card);
+    const openSpots = openSpotsForNonRoyal(state);
 
     if (openSpots.length < 1) {
     // gotta go for the armor
@@ -71,6 +73,7 @@ export const whatLegalMoves = (state) => {
     }
     return openSpots;
 };
+
 
 const addPayloads = (grid, payload, targetRoyal) => {
     const firstPayload = grid[payload[0]][0];
@@ -105,4 +108,25 @@ export const targetsFiredUpon = (position, grid) => {
         .filter(({ target }) => !grid[target].last().destroyed) // not already destroyed
         .filter(({ payload, target }) => addPayloads(grid, payload, grid[target].last()) >= targetWithArmor(grid, target))
         .map(({ target }) => target);
+};
+
+
+export const getHintForCardInHand = (state) => {
+    const { currentCard } = state;
+    if (currentCard) {
+        if (isRoyalty(currentCard)) {
+            return 'Hint: Royalty must be played on the highest-value spot, by suit and by color';
+        }
+        if (currentCard.card === JOKER) {
+            return 'Hint: Joker resets a stack and returns them to your hand';
+        }
+        if (currentCard.card === CARDS.ACE) {
+            return 'Hint: Ace resets a stack and returns them to your hand';
+        }
+        if (openSpotsForNonRoyal(state).length === 0) {
+            return 'Hint: No legal moves, add card value to Royals as Armor';
+        }
+        return 'Hint: Play on any card of the same or lower value';
+    }
+    return 'Hint: Restart the game';
 };

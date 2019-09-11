@@ -6,6 +6,7 @@ import { getURIToCardImage } from './images/playing_cards.js';
 
 import {
     whatLegalMoves,
+    getHintForCardInHand,
 } from './game.selectors.js';
 import { targetSpots } from './game.consts.js';
 
@@ -122,6 +123,14 @@ export const drawGrid = (state) => {
             spot.className = `cardSpot ${isLegal ? 'legal' : ''} faded`;
         }
     });
+};
+
+export const changeHint = (state) => {
+    const hint = getHintForCardInHand(state);
+    const hintNode = document.getElementById('hint');
+    [...hintNode.childNodes].forEach((node) => hintNode.removeChild(node));
+    const hintText = document.createTextNode(hint);
+    hintNode.appendChild(hintText);
 };
 
 export const attachToInterface = (handlers) => {
