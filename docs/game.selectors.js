@@ -1,5 +1,5 @@
 import {
-    dealSpots, outsideForGivenGridPosition, targetSpots, outsideSpots, triggerSpots,
+    dealSpots, outsideForGivenGridPosition, playSpots, royalSpots, triggerSpots,
 } from './game.consts.js';
 import {
     colorMaps, isRoyalty, CARDS, JOKER,
@@ -25,7 +25,14 @@ const cardValue = (targetSuit) => (card) => {
     return suitValue + colorValue + faceValue;
 };
 
-const openSpotsForNonRoyal = ({ grid, currentCard: { card } }) => targetSpots.filter((spot) => (grid[spot][0] || { card: 0 }).card <= card);
+export const openSpotsForNonRoyal = ({ grid, currentCard: { card } }) => {
+    const cardCanClear = card === CARDS.ACE || card === JOKER;
+    if (cardCanClear) {
+        return playSpots;
+    }
+
+    return playSpots.filter((spot) => (grid[spot][0] || { card: 0 }).card <= card);
+};
 
 export const whatLegalMoves = (state) => {
     // Selector: find any legal positions for the current card
@@ -58,29 +65,19 @@ export const whatLegalMoves = (state) => {
         }
         return emptySpots;
     }
-    // place a value on the inside
-    const { card } = currentCard;
-
-    const cardCanClear = card === CARDS.ACE || card === JOKER;
-    if (cardCanClear) {
-        return targetSpots;
-    }
+    // Look for open spots for a non-royal card
     const openSpots = openSpotsForNonRoyal(state);
 
     if (openSpots.length < 1) {
-    // gotta go for the armor
-        return outsideSpots.filter((spot) => grid[spot].length > 0);
+        // gotta go for the armor
+        return royalSpots.filter((spot) => grid[spot].length > 0);
     }
     return openSpots;
 };
 
-export const whatOpenTargets = (state) => {
-    return [1];
-};
-
 const addPayloads = (grid, payload, targetRoyal) => {
-    const firstPayload = grid[payload[0]][0];
-    const secondPayload = grid[payload[1]][0];
+    const firstPayload = grid[payload[0]][0] || { };
+    const secondPayload = grid[payload[1]][0] || { };
     if (targetRoyal.card === CARDS.KING) {
     // KING same suit
         const firstValue = (firstPayload.suit === targetRoyal.suit) ? firstPayload.card : 0;
@@ -95,7 +92,7 @@ const addPayloads = (grid, payload, targetRoyal) => {
     }
 
     // JACK straight value
-    return grid[payload[0]][0].card + grid[payload[1]][0].card;
+    return firstPayload.card + secondPayload.card;
 };
 const targetWithArmor = (grid, target) => (
     grid[target].reduce((acc, curr) => acc + curr.card, 0)
@@ -113,6 +110,13 @@ export const targetsFiredUpon = (position, grid) => {
         .map(({ target }) => target);
 };
 
+export const whatOpenTargets = (state) => {
+    const { grid } = state;
+    if (howManyCardsPlaced(state) < 8) {
+        return [];
+    }
+    return Object.keys(triggerSpots).reduce((prevTargets, newPosition) => [...prevTargets, ...targetsFiredUpon(newPosition, grid)], []);
+};
 
 export const getHintForCardInHand = (state) => {
     const { currentCard } = state;

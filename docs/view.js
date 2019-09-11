@@ -1,5 +1,5 @@
 import {
-    getSuitAsClassname,
+    getSuitAsClassname, isRoyalty,
 } from './deck.js';
 
 import { getURIToCardImage } from './images/playing_cards.js';
@@ -8,8 +8,9 @@ import {
     whatLegalMoves,
     whatOpenTargets,
     getHintForCardInHand,
+    openSpotsForNonRoyal,
 } from './game.selectors.js';
-import { targetSpots } from './game.consts.js';
+import { playSpots } from './game.consts.js';
 
 export const setupGrid = () => {
     const grid = document.getElementById('grid');
@@ -69,15 +70,17 @@ export const drawCurrentCard = (state) => {
 export const drawGrid = (state) => {
     const {
         grid,
+        currentCard,
     } = state;
     const legalMoves = whatLegalMoves(state);
     const openTargets = whatOpenTargets(state);
+    const showTargets = !isRoyalty(currentCard) && openSpotsForNonRoyal(state).length > 0;
     grid.forEach((stack, index) => {
         const spot = document.getElementById(`spot${index}`);
         [...spot.childNodes].forEach((node) => spot.removeChild(node));
 
         const isLegal = legalMoves.indexOf(index) !== -1;
-        const isRoyal = targetSpots.indexOf(index) === -1;
+        const isRoyal = playSpots.indexOf(index) === -1;
         const isOpenTarget = openTargets.indexOf(index) !== -1;
         const hasCard = stack.length > 0;
         const hasStack = (stack.length > 1);
@@ -99,7 +102,7 @@ export const drawGrid = (state) => {
                     cardImage.src = getURIToCardImage({ suit, card });
                     spot.appendChild(cardImage);
                     const armorValue = stack.reduce((acc, curr) => acc + curr.card, -card);
-                    spot.className = `cardSpot ${getSuitAsClassname(suit)} ${isLegal ? 'legal' : ''} ${isOpenTarget ? 'targetted' : ''}`;
+                    spot.className = `cardSpot ${getSuitAsClassname(suit)} ${isLegal ? 'legal' : ''} ${showTargets && isOpenTarget ? 'targetted' : ''}`;
 
                     if (hasStack) {
                         const badge = document.createElement('span');
