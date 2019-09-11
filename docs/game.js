@@ -18,6 +18,7 @@ const initialState = () => {
 };
 
 const applyStateChange = (action = {}, state = initialState()) => {
+    console.debug(`${action.type}: ${JSON.stringify(action)}`);
     switch (action.type) {
     case actions.RESET_GAME: {
         return initialState();
@@ -54,9 +55,9 @@ const applyStateChange = (action = {}, state = initialState()) => {
 
         // was this the last grid fill?
         // that means there are currently 7 cards placed, and this is 8
-        const gridIsAboutToFill = howManyCardsPlaced(state) === 7;
+        const gridWasFilled = howManyCardsPlaced(state) === 8;
         const thereIsSkippedRoyalty = skippedRoyalty.length > 0;
-        if (gridIsAboutToFill && thereIsSkippedRoyalty) {
+        if (gridWasFilled && thereIsSkippedRoyalty) {
         // next card is top of royalty
             const copiedRoyalty = skippedRoyalty.slice();
             // take next card out of royalty
