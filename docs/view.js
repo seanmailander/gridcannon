@@ -33,8 +33,10 @@ export const drawDeck = (state) => {
         deckInHand,
     } = state;
     if (deckInHand && deckInHand.length > 0) {
-        const text = document.createTextNode(getCardAsUnicode(null, null, true));
-        cardElement.appendChild(text);
+        const deckNode = document.createTextNode(getCardAsUnicode(null, null, true));
+        cardElement.appendChild(deckNode);
+        const deckLengthNode = document.createTextNode(deckInHand.length);
+        cardElement.appendChild(deckLengthNode);
     }
 };
 
@@ -44,6 +46,7 @@ export const drawCurrentCard = (state) => {
 
     const {
         currentCard,
+        skippedRoyalty,
     } = state;
     if (currentCard) {
         const {
@@ -53,6 +56,8 @@ export const drawCurrentCard = (state) => {
         const text = document.createTextNode(getCardAsUnicode(suit, card));
         cardElement.appendChild(text);
         cardElement.className = `${getSuitAsClassname(suit)}`;
+        const deckLengthNode = document.createTextNode(skippedRoyalty.length);
+        cardElement.appendChild(deckLengthNode);
     }
 };
 
