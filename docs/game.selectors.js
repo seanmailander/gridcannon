@@ -74,6 +74,9 @@ export const whatLegalMoves = (state) => {
     return openSpots;
 };
 
+export const whatOpenTargets = (state) => {
+    return [1];
+};
 
 const addPayloads = (grid, payload, targetRoyal) => {
     const firstPayload = grid[payload[0]][0];
@@ -116,6 +119,9 @@ export const getHintForCardInHand = (state) => {
     if (currentCard) {
         if (isRoyalty(currentCard)) {
             return 'Hint: Royalty must be played on the highest-value spot, by suit and by color';
+        }
+        if (whatOpenTargets(state).length > 0) {
+            return 'Hint: Play on a trigger with sufficient payload to kill a Royal';
         }
         if (currentCard.card === JOKER) {
             return 'Hint: Joker resets a stack and returns them to your hand';

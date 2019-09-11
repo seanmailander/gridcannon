@@ -82,9 +82,18 @@ body {
     left: 0;
     height: 100%;
     width: 100%;
-    transition: all 0.8s;
-    /* opacity: 0; */
     background-color: rgba(147, 213, 235, 0.341);
+    background-size: 100% 100%;
+}
+
+.cardSpot.targetted:before {
+    content: "";
+    position: absolute;
+    top: 10%;
+    left: 10%;
+    height: 80%;
+    width: 80%;
+    background-color: rgba(151, 44, 124, 0.341);
     background-size: 100% 100%;
 }
 
@@ -120,4 +129,4 @@ body {
     position: absolute;
     text-align: center;
     width: 1.6em; 
-  }
+}

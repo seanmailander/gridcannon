@@ -6,6 +6,7 @@ import { getURIToCardImage } from './images/playing_cards.js';
 
 import {
     whatLegalMoves,
+    whatOpenTargets,
     getHintForCardInHand,
 } from './game.selectors.js';
 import { targetSpots } from './game.consts.js';
@@ -70,12 +71,14 @@ export const drawGrid = (state) => {
         grid,
     } = state;
     const legalMoves = whatLegalMoves(state);
+    const openTargets = whatOpenTargets(state);
     grid.forEach((stack, index) => {
         const spot = document.getElementById(`spot${index}`);
         [...spot.childNodes].forEach((node) => spot.removeChild(node));
 
         const isLegal = legalMoves.indexOf(index) !== -1;
         const isRoyal = targetSpots.indexOf(index) === -1;
+        const isOpenTarget = openTargets.indexOf(index) !== -1;
         const hasCard = stack.length > 0;
         const hasStack = (stack.length > 1);
 
@@ -96,7 +99,7 @@ export const drawGrid = (state) => {
                     cardImage.src = getURIToCardImage({ suit, card });
                     spot.appendChild(cardImage);
                     const armorValue = stack.reduce((acc, curr) => acc + curr.card, -card);
-                    spot.className = `cardSpot ${getSuitAsClassname(suit)} ${isLegal ? 'legal' : ''} ${hasStack ? `armor${armorValue}` : ''}`;
+                    spot.className = `cardSpot ${getSuitAsClassname(suit)} ${isLegal ? 'legal' : ''} ${isOpenTarget ? 'targetted' : ''}`;
 
                     if (hasStack) {
                         const badge = document.createElement('span');
