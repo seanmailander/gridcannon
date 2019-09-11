@@ -1,7 +1,8 @@
 import {
-    getCardAsUnicode,
     getSuitAsClassname,
 } from './deck.js';
+
+import { getURIToCardImage } from './images/playing_cards.js';
 
 import {
     whatLegalMoves,
@@ -33,8 +34,9 @@ export const drawDeck = (state) => {
         deckInHand,
     } = state;
     if (deckInHand && deckInHand.length > 0) {
-        const deckNode = document.createTextNode(getCardAsUnicode(null, null, true));
-        cardElement.appendChild(deckNode);
+        const cardImage = document.createElement('img');
+        cardImage.src = getURIToCardImage({ destroyed: true });
+        cardElement.appendChild(cardImage);
         const deckLengthNode = document.createTextNode(deckInHand.length);
         cardElement.appendChild(deckLengthNode);
     }
@@ -53,8 +55,9 @@ export const drawCurrentCard = (state) => {
             suit,
             card,
         } = currentCard;
-        const text = document.createTextNode(getCardAsUnicode(suit, card));
-        cardElement.appendChild(text);
+        const cardImage = document.createElement('img');
+        cardImage.src = getURIToCardImage({ suit, card });
+        cardElement.appendChild(cardImage);
         cardElement.className = `${getSuitAsClassname(suit)}`;
         const deckLengthNode = document.createTextNode(skippedRoyalty.length);
         cardElement.appendChild(deckLengthNode);
@@ -83,12 +86,14 @@ export const drawGrid = (state) => {
                     destroyed = false,
                 } = stack[stack.length - 1];
                 if (destroyed) {
-                    const text = document.createTextNode(getCardAsUnicode(suit, card, destroyed));
-                    spot.appendChild(text);
+                    const cardImage = document.createElement('img');
+                    cardImage.src = getURIToCardImage({ destroyed });
+                    spot.appendChild(cardImage);
                     spot.className = 'cardSpot';
                 } else {
-                    const text = document.createTextNode(getCardAsUnicode(suit, card));
-                    spot.appendChild(text);
+                    const cardImage = document.createElement('img');
+                    cardImage.src = getURIToCardImage({ suit, card });
+                    spot.appendChild(cardImage);
                     const armorValue = stack.reduce((acc, curr) => acc + curr.card, -card);
                     spot.className = `cardSpot ${getSuitAsClassname(suit)} ${isLegal ? 'legal' : ''} ${hasStack ? `armor${armorValue}` : ''}`;
                 }
@@ -97,13 +102,15 @@ export const drawGrid = (state) => {
                     suit,
                     card,
                 } = stack[0];
-                const text = document.createTextNode(getCardAsUnicode(suit, card));
-                spot.appendChild(text);
+                const cardImage = document.createElement('img');
+                cardImage.src = getURIToCardImage({ suit, card });
+                spot.appendChild(cardImage);
                 spot.className = `cardSpot ${getSuitAsClassname(suit)} ${isLegal ? 'legal' : ''} ${hasStack ? 'stack' : ''}`;
             }
         } else {
-            const text = document.createTextNode(getCardAsUnicode(null, null, true));
-            spot.appendChild(text);
+            const cardImage = document.createElement('img');
+            cardImage.src = getURIToCardImage({ destroyed: true });
+            spot.appendChild(cardImage);
             spot.className = `cardSpot ${isLegal ? 'legal' : ''} faded`;
         }
     });

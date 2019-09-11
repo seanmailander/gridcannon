@@ -25,13 +25,18 @@ body {
 }
 
 #deck {
-    font-size: 5em;
     cursor: default;
+}
+#deck img {
+    width: 50px;
 }
 
 #currentCard {
-    font-size: 5em;
     cursor: default;
+}
+
+#currentCard img {
+    width: 50px;
 }
 
 .grid {
@@ -40,7 +45,6 @@ body {
     max-width: 60vh;
     height: 80vw;
     max-height: 60vh;
-    font-size: 1rem;
 }
 .row {
     display: flex;
@@ -50,7 +54,6 @@ body {
     flex: 1 0 auto;
     position: relative;
     /* border: 1px dashed grey; */
-    font-size: 3rem;
     text-align: center;
     cursor: not-allowed;
 }
@@ -75,13 +78,17 @@ body {
     justify-content: center;
 }
 
+.cardSpot img {
+    width: 50px;
+}
+
 .cardSpot.legal {
     background-color: rgba(147, 213, 235, 0.541);
     cursor: pointer;
 }
 
-.cardSpot.faded {
-    color: rgba(0, 0, 0, 0.1);
+.cardSpot.faded img{
+    opacity: 0.1;
 }
 
 .red {
