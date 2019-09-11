@@ -18,7 +18,6 @@ const initialState = () => {
 };
 
 const applyStateChange = (action = {}, state = initialState()) => {
-    console.debug(`${action.type}: ${JSON.stringify(action)}`);
     switch (action.type) {
     case actions.RESET_GAME: {
         return initialState();
