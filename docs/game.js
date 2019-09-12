@@ -23,7 +23,7 @@ const applyStateChange = (action = {}, state = initialState()) => {
         return initialState();
     }
     case actions.LOAD_TEST_STATE: {
-        return action.testState;
+        return JSON.parse(JSON.stringify(action.testState));
     }
     case actions.SET_ROYALTY_ASIDE: {
         const { skippedRoyalty, deckInHand, currentCard } = state;
