@@ -144,6 +144,8 @@ export const attachToInterface = (handlers) => {
     restartBtn.addEventListener('click', handlers.restart);
     const saveStateBtn = document.getElementById('saveStateBtn');
     saveStateBtn.addEventListener('click', handlers.saveState);
+    const loadTestStateBtn = document.getElementById('loadStateBtn');
+    loadTestStateBtn.addEventListener('click', handlers.loadState);
 
     [...Array(25)].forEach((element, index) => {
         const spot = document.getElementById(`spot${index}`);

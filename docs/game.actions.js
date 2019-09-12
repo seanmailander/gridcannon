@@ -10,6 +10,7 @@ export const actions = {
     PLACE_CARD_DURING_DEAL: 'PLACE_CARD_DURING_DEAL',
     SET_ROYALTY_ASIDE: 'SET_ROYALTY_ASIDE',
     PLAY_CARD: 'PLAY_CARD',
+    LOAD_TEST_STATE: 'LOAD_TEST_STATE',
 };
 
 export const resetGame = (/* state */) => ({
@@ -48,3 +49,8 @@ export const tryToPlayCard = (targetPosition) => (state) => {
     }
     return {};
 };
+
+export const loadTestState = (testState) => () => ({
+    type: actions.LOAD_TEST_STATE,
+    testState,
+});

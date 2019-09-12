@@ -9,9 +9,11 @@ import {
     resetGame,
     dealNextCard,
     tryToPlayCard,
+    loadTestState,
 } from './game.actions.js';
 
 import { howManyCardsPlaced } from './game.selectors.js';
+import { lastMoveGameOver, noRoyalsOnDeal } from './game.test-states.js';
 
 const dispatch = getInstance();
 
@@ -38,12 +40,17 @@ const logStateToConsole = () => {
     console.debug(JSON.stringify(dispatch(() => {})));
 };
 
+const loadState = () => {
+    dispatch(loadTestState(noRoyalsOnDeal));
+};
+
 export default function onLoad() {
     setupGrid();
     attachToInterface({
         restart: restartGame,
         placeCard: cardSpotClicked,
         saveState: logStateToConsole,
+        loadState,
     });
     restartGame();
 }

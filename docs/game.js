@@ -22,6 +22,9 @@ const applyStateChange = (action = {}, state = initialState()) => {
     case actions.RESET_GAME: {
         return initialState();
     }
+    case actions.LOAD_TEST_STATE: {
+        return action.testState;
+    }
     case actions.SET_ROYALTY_ASIDE: {
         const { skippedRoyalty, deckInHand, currentCard } = state;
 
