@@ -37,11 +37,12 @@ const restartGame = () => {
 
 const logStateToConsole = () => {
     // eslint-disable-next-line no-console
+    // console.debug(LZString.compressToBase64(JSON.stringify(dispatch(() => {}))));
     console.debug(JSON.stringify(dispatch(() => {})));
 };
 
 const loadState = () => {
-    dispatch(loadTestState(noCardsLeft));
+    dispatch(loadTestState(midGameArmor));
 };
 
 export default function onLoad() {
