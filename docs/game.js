@@ -167,11 +167,18 @@ export default function getInstance() {
     let state = initialState();
 
     return (thunk) => {
-        state = applyStateChange(thunk(state), state);
-        drawGrid(state);
-        drawDeck(state);
-        drawCurrentCard(state);
-        changeHint(state);
+        const priorState = state;
+        try {
+            state = applyStateChange(thunk(state), state);
+            drawGrid(state);
+            drawDeck(state);
+            drawCurrentCard(state);
+            changeHint(state);
+        } catch (e) {
+            // Reset state back on any exception
+            state = priorState;
+            throw e;
+        }
 
         return state;
     };
