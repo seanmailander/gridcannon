@@ -70,3 +70,9 @@ export const shuffleDeck = () => {
 export const isRoyalty = ({
     card,
 } = {}) => card >= 11;
+
+export const isDestroyed = ({
+    destroyed,
+} = {}) => destroyed;
+
+export const isNotFaceCard = (card) => !isRoyalty(card) && !isDestroyed(card);
