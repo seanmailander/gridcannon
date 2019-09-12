@@ -18,10 +18,10 @@ export const CARDS = {
 };
 
 export const SUITS = {
-    HEARTS: Symbol('h'),
-    DIAMONDS: Symbol('d'),
-    CLUBS: Symbol('c'),
-    SPADES: Symbol('s'),
+    HEARTS: 'h',
+    DIAMONDS: 'd',
+    CLUBS: 'c',
+    SPADES: 's',
 };
 
 
