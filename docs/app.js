@@ -13,7 +13,7 @@ import {
 } from './game.actions.js';
 
 import { howManyCardsPlaced } from './game.selectors.js';
-import { lastMoveGameOver, noRoyalsOnDeal, alreadyWon } from './game.test-states.js';
+import { lastMoveGameOver, noRoyalsOnDeal, alreadyWon, closeToAWin, midGameArmor, noCardsLeft } from './game.test-states.js';
 
 const dispatch = getInstance();
 
@@ -41,7 +41,7 @@ const logStateToConsole = () => {
 };
 
 const loadState = () => {
-    dispatch(loadTestState(alreadyWon));
+    dispatch(loadTestState(noCardsLeft));
 };
 
 export default function onLoad() {
