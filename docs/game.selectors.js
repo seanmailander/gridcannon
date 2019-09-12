@@ -145,3 +145,22 @@ export const gameIsWon = (state) => (
     // Selector: count the number of destroyed royals
     royalSpots.reduce((prev, curr) => (prev + (state.grid[curr].length > 0 && state.grid[curr][state.grid[curr].length - 1].destroyed ? 1 : 0)), 0) === 12
 );
+
+export const scoreGame = (state) => {
+    // Selector:
+    //  plusses:
+    //      1 point for each destroyed royals
+    //      1 point for each destroyed armor
+    //  minuses:
+    //      -1 point for each remaining royal
+    //      -1 point for each remaining armor
+    const { grid } = state;
+    const destroyedRoyals = royalSpots.reduce((prev, curr) => (prev + (grid[curr].length > 0 && grid[curr][grid[curr].length - 1].destroyed ? 1 : 0)), 0);
+
+    const remainingRoyals = royalSpots.reduce((prev, curr) => (prev + (grid[curr].length > 0 && !grid[curr][grid[curr].length - 1].destroyed ? 1 : 0)), 0);
+
+    return {
+        plusses: destroyedRoyals,
+        minuses: remainingRoyals,
+    };
+};

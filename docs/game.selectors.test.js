@@ -1,6 +1,6 @@
-import { whatLegalMoves, gameIsWon } from './game.selectors.js';
+import { whatLegalMoves, gameIsWon, scoreGame } from './game.selectors.js';
 import { SUITS, CARDS } from './deck.js';
-import { alreadyWon, closeToAWin } from './game.test-states.js';
+import { alreadyWon, closeToAWin, noRoyalsOnDeal } from './game.test-states.js';
 
 describe('finds legal moves', () => {
     test('should early-out before deal is complete', () => {
@@ -72,10 +72,25 @@ describe('finds legal moves', () => {
 });
 
 describe('ends the game', () => {
-    test('should see a game over', () => {
-        expect(gameIsWon(alreadyWon)).toEqual(true);
+    test('should see a game just dealt', () => {
+        expect(gameIsWon(noRoyalsOnDeal)).toEqual(false);
     });
     test('should see a game still going', () => {
         expect(gameIsWon(closeToAWin)).toEqual(false);
+    });
+    test('should see a game over', () => {
+        expect(gameIsWon(alreadyWon)).toEqual(true);
+    });
+});
+
+describe('calculates a score', () => {
+    test('should have no score when just dealt', () => {
+        expect(scoreGame(noRoyalsOnDeal)).toEqual({ plusses: 0, minuses: 0 });
+    });
+    test('should have a small score during a game', () => {
+        expect(scoreGame(closeToAWin)).toEqual({ plusses: 10, minuses: 2 });
+    });
+    test('should have an accurate score at end of game', () => {
+        expect(scoreGame(alreadyWon)).toEqual({ plusses: 12, minuses: 0 });
     });
 });
