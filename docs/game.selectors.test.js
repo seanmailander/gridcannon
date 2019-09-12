@@ -1,5 +1,6 @@
-import { whatLegalMoves } from './game.selectors.js';
+import { whatLegalMoves, gameIsWon } from './game.selectors.js';
 import { SUITS, CARDS } from './deck.js';
+import { alreadyWon, closeToAWin } from './game.test-states.js';
 
 describe('finds legal moves', () => {
     test('should early-out before deal is complete', () => {
@@ -67,5 +68,14 @@ describe('finds legal moves', () => {
             };
             expect(whatLegalMoves(state)).toEqual([22]);
         });
+    });
+});
+
+describe('ends the game', () => {
+    test('should see a game over', () => {
+        expect(gameIsWon(alreadyWon)).toEqual(true);
+    });
+    test('should see a game still going', () => {
+        expect(gameIsWon(closeToAWin)).toEqual(false);
     });
 });

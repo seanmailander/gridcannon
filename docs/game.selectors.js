@@ -140,3 +140,8 @@ export const getHintForCardInHand = (state) => {
     }
     return 'Hint: Restart the game';
 };
+
+export const gameIsWon = (state) => (
+    // Selector: count the number of destroyed royals
+    royalSpots.reduce((prev, curr) => (prev + (state.grid[curr].length > 0 && state.grid[curr][state.grid[curr].length - 1].destroyed ? 1 : 0)), 0) === 12
+);
