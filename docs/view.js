@@ -41,7 +41,8 @@ export const drawDeck = (state) => {
         const cardImage = document.createElement('img');
         cardImage.src = getURIToCardImage({ destroyed: true });
         cardElement.appendChild(cardImage);
-        const deckLengthNode = document.createTextNode(deckInHand.length);
+        const deckLengthNode = document.createElement('p');
+        deckLengthNode.textContent = `${deckInHand.length} cards remaining`;
         cardElement.appendChild(deckLengthNode);
     }
 };

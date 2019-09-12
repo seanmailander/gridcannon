@@ -17,12 +17,13 @@ body {
 
 }
 .left-bar {
-    flex-basis: 40px;
+    flex-basis: 120px;
     margin-right: 20px;
 }
 
 #deck {
     cursor: default;
+    font-size: .8em;
 }
 
 #currentCard {
