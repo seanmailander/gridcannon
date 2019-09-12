@@ -52,7 +52,6 @@ export const drawCurrentCard = (state) => {
 
     const {
         currentCard,
-        skippedRoyalty,
     } = state;
     if (currentCard) {
         const {
@@ -63,8 +62,6 @@ export const drawCurrentCard = (state) => {
         cardImage.src = getURIToCardImage({ suit, card });
         cardElement.appendChild(cardImage);
         cardElement.className = `${getSuitAsClassname(suit)}`;
-        const deckLengthNode = document.createTextNode(skippedRoyalty.length);
-        cardElement.appendChild(deckLengthNode);
     }
 };
 
