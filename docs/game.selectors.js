@@ -116,7 +116,8 @@ export const whatOpenTargets = (state) => {
     if (howManyCardsPlaced(state) < 8) {
         return [];
     }
-    return Object.keys(triggerSpots).reduce((prevTargets, newPosition) => [...prevTargets, ...targetsFiredUpon(newPosition, grid)], []);
+    const openSpots = openSpotsForNonRoyal(state);
+    return openSpots.reduce((prevTargets, newPosition) => [...prevTargets, ...targetsFiredUpon(newPosition, grid)], []);
 };
 
 export const getHintForCardInHand = (state) => {
