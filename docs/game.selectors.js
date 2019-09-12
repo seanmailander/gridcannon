@@ -142,11 +142,11 @@ export const getHintForCardInHand = (state) => {
     return 'Hint: Restart the game';
 };
 
-const getRoyalStacks = (grid) => royalSpots.filter((spot) => grid[spot].length > 0);
+const getRoyalStacks = (grid) => royalSpots.filter((spot) => grid[spot].length > 0).map((spot) => grid[spot]);
 
-export const gameIsWon = ({ grid }) => (
+export const gameIsWon = (state) => (
     // Selector: count the number of destroyed royals
-    getRoyalStacks(grid).reduce((prev, curr) => (prev + (isDestroyed(grid[curr].last()) ? 1 : 0)), 0) === 12
+    getRoyalStacks(state.grid).reduce((prev, curr) => (prev + (isDestroyed(curr.last()) ? 1 : 0)), 0) === 12
 );
 
 export const countTotalArmor = (stack) => stack.reduce((acc, curr) => acc + (isNotFaceCard(curr) ? curr.card : 0), 0);
@@ -161,14 +161,14 @@ export const scoreGame = (state) => {
     //      -1 point for each remaining armor
     const { grid } = state;
     const royalStacks = getRoyalStacks(grid);
-    const spotsWithDestroyedRoyal = royalStacks.filter((stack) => isDestroyed(stack.last()));
-    const spotsWithRemainingRoyal = royalStacks.filter((stack) => !isDestroyed(stack.last()));
+    const stacksWithDestroyedRoyal = royalStacks.filter((stack) => isDestroyed(stack.last()));
+    const stacksWithRemainingRoyal = royalStacks.filter((stack) => !isDestroyed(stack.last()));
 
-    const destroyedRoyals = spotsWithDestroyedRoyal.length;
-    const destroyedArmor = spotsWithDestroyedRoyal.reduce((prev, curr) => (prev + countTotalArmor(grid[curr])), 0);
+    const destroyedRoyals = stacksWithDestroyedRoyal.length;
+    const destroyedArmor = stacksWithDestroyedRoyal.reduce((prev, curr) => (prev + countTotalArmor(curr)), 0);
 
-    const remainingRoyals = spotsWithRemainingRoyal.length;
-    const remainingArmor = spotsWithRemainingRoyal.reduce((prev, curr) => (prev + countTotalArmor(grid[curr])), 0);
+    const remainingRoyals = stacksWithRemainingRoyal.length;
+    const remainingArmor = stacksWithRemainingRoyal.reduce((prev, curr) => (prev + countTotalArmor(curr)), 0);
 
     return {
         plusses: destroyedRoyals + destroyedArmor,
