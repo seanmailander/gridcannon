@@ -160,7 +160,7 @@ export const scoreGame = (state) => {
     //  minuses:
     //      -1 point for each remaining royal
     //      -1 point for each remaining armor
-    const { grid } = state;
+    const { grid, bonuses } = state;
     const royalStacks = getRoyalStacks(grid);
     const stacksWithDestroyedRoyal = royalStacks.filter((stack) => isDestroyed(stack.last()));
     const stacksWithRemainingRoyal = royalStacks.filter((stack) => !isDestroyed(stack.last()));
@@ -171,8 +171,12 @@ export const scoreGame = (state) => {
     const remainingRoyals = stacksWithRemainingRoyal.length;
     const remainingArmor = stacksWithRemainingRoyal.reduce((prev, curr) => (prev + countTotalArmor(curr)), 0);
 
+    const bonusRoyals = bonuses.length;
+    const bonusArmor = bonuses.reduce((prev, curr) => (prev + countTotalArmor(curr)), 0);
+
     return {
         plusses: destroyedRoyals + destroyedArmor,
         minuses: remainingRoyals + remainingArmor,
+        bonuses: bonusRoyals + bonusArmor,
     };
 };

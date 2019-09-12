@@ -14,6 +14,7 @@ const initialState = () => {
         currentCard: topCard,
         skippedRoyalty: [],
         grid: [...Array(25)].map(() => []),
+        bonus: [],
     };
 };
 
@@ -97,13 +98,14 @@ const applyStateChange = (action = {}, state = initialState()) => {
     }
     case actions.PLAY_CARD: {
         const {
-            grid, deckInHand, skippedRoyalty, currentCard,
+            grid, deckInHand, skippedRoyalty, currentCard, bonus,
         } = state;
         const { position } = action;
 
         // Immutable state, so duplicate
         const newGrid = grid.slice();
         const newDeckInHand = deckInHand.slice();
+        const newBonus = bonus.slice();
 
         // put card in grid
         // stacks on!
@@ -121,6 +123,10 @@ const applyStateChange = (action = {}, state = initialState()) => {
         if (!isRoyalty(currentCard)) {
             const destroyedPositions = targetsFiredUpon(position, newGrid);
             destroyedPositions.forEach((destroyPos) => newGrid[destroyPos].push({ destroyed: true }));
+            if (destroyedPositions.length > 1) {
+                // Double points for double trigger
+                newBonus.push(destroyedPositions.map((pos) => newGrid[pos]));
+            }
         }
 
         // is there more royalty?
@@ -159,6 +165,8 @@ const applyStateChange = (action = {}, state = initialState()) => {
             skippedRoyalty,
             // show next card from top of deck
             currentCard: nextCard,
+            // accumulate a bonus for any triggers
+            bonus: newBonus,
         };
     }
     default:

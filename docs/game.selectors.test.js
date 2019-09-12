@@ -2,7 +2,7 @@ import './helpers.js';
 
 import { whatLegalMoves, gameIsWon, scoreGame } from './game.selectors.js';
 import { SUITS, CARDS } from './deck.js';
-import { alreadyWon, closeToAWin, noRoyalsOnDeal, closeToAWinNoArmor, alreadyWonNoArmor, midGameArmor, noCardsLeft } from './game.test-states.js';
+import { alreadyWon, closeToAWin, noRoyalsOnDeal, closeToAWinNoArmor, alreadyWonNoArmor, midGameArmor, noCardsLeft, closeToAWinNoArmorWithBonus } from './game.test-states.js';
 
 describe('finds legal moves', () => {
     test('should early-out before deal is complete', () => {
@@ -88,26 +88,29 @@ describe('ends the game', () => {
 describe('calculates a score', () => {
     describe('after deal', () => {
         test('should have no score', () => {
-            expect(scoreGame(noRoyalsOnDeal)).toEqual({ plusses: 0, minuses: 0 });
+            expect(scoreGame(noRoyalsOnDeal)).toEqual({ plusses: 0, minuses: 0, bonuses: 0 });
         });
     });
     describe('during game', () => {
         test('should score for each destroyed royal', () => {
-            expect(scoreGame(closeToAWinNoArmor)).toEqual({ plusses: 10, minuses: 2 });
+            expect(scoreGame(closeToAWinNoArmor)).toEqual({ plusses: 10, minuses: 2, bonuses: 0 });
         });
         test('should take points for remaining armor and remaining royals', () => {
-            expect(scoreGame(midGameArmor)).toEqual({ plusses: 0, minuses: 13 });
+            expect(scoreGame(midGameArmor)).toEqual({ plusses: 0, minuses: 13, bonuses: 0 });
+        });
+        test('should add bonuses for double triggers', () => {
+            expect(scoreGame(closeToAWinNoArmorWithBonus)).toEqual({ plusses: 10, minuses: 2, bonuses: 2 });
         });
     });
     describe('end of game', () => {
         test('should score for each destroyed royal', () => {
-            expect(scoreGame(alreadyWonNoArmor)).toEqual({ plusses: 12, minuses: 0 });
+            expect(scoreGame(alreadyWonNoArmor)).toEqual({ plusses: 12, minuses: 0, bonuses: 0 });
         });
         test('should add points for destroyed armor', () => {
-            expect(scoreGame(alreadyWon)).toEqual({ plusses: 17, minuses: 0 });
+            expect(scoreGame(alreadyWon)).toEqual({ plusses: 17, minuses: 0, bonuses: 0 });
         });
         test('should take points for remaining armor', () => {
-            expect(scoreGame(noCardsLeft)).toEqual({ plusses: 4, minuses: 66 });
+            expect(scoreGame(noCardsLeft)).toEqual({ plusses: 4, minuses: 66, bonuses: 0 });
         });
     });
 });
