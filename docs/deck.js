@@ -69,4 +69,4 @@ export const shuffleDeck = () => {
 
 export const isRoyalty = ({
     card,
-}) => card >= 11;
+} = {}) => card >= 11;
