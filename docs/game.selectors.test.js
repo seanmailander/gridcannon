@@ -1,6 +1,8 @@
+import './helpers.js';
+
 import { whatLegalMoves, gameIsWon, scoreGame } from './game.selectors.js';
 import { SUITS, CARDS } from './deck.js';
-import { alreadyWon, closeToAWin, noRoyalsOnDeal } from './game.test-states.js';
+import { alreadyWon, closeToAWin, noRoyalsOnDeal, closeToAWinNoArmor, alreadyWonNoArmor, midGameArmor, noCardsLeft } from './game.test-states.js';
 
 describe('finds legal moves', () => {
     test('should early-out before deal is complete', () => {
@@ -84,13 +86,28 @@ describe('ends the game', () => {
 });
 
 describe('calculates a score', () => {
-    test('should have no score when just dealt', () => {
-        expect(scoreGame(noRoyalsOnDeal)).toEqual({ plusses: 0, minuses: 0 });
+    describe('after deal', () => {
+        test('should have no score', () => {
+            expect(scoreGame(noRoyalsOnDeal)).toEqual({ plusses: 0, minuses: 0 });
+        });
     });
-    test('should have a small score during a game', () => {
-        expect(scoreGame(closeToAWin)).toEqual({ plusses: 10, minuses: 2 });
+    describe('during game', () => {
+        test('should score for each destroyed royal', () => {
+            expect(scoreGame(closeToAWinNoArmor)).toEqual({ plusses: 10, minuses: 2 });
+        });
+        test('should take points for remaining armor and remaining royals', () => {
+            expect(scoreGame(midGameArmor)).toEqual({ plusses: 0, minuses: 13 });
+        });
     });
-    test('should have an accurate score at end of game', () => {
-        expect(scoreGame(alreadyWon)).toEqual({ plusses: 12, minuses: 0 });
+    describe('end of game', () => {
+        test('should score for each destroyed royal', () => {
+            expect(scoreGame(alreadyWonNoArmor)).toEqual({ plusses: 12, minuses: 0 });
+        });
+        test('should add points for destroyed armor', () => {
+            expect(scoreGame(alreadyWon)).toEqual({ plusses: 17, minuses: 0 });
+        });
+        test('should take points for remaining armor', () => {
+            expect(scoreGame(noCardsLeft)).toEqual({ plusses: 4, minuses: 66 });
+        });
     });
 });

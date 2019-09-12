@@ -2,7 +2,7 @@ import {
     dealSpots, outsideForGivenGridPosition, playSpots, royalSpots, triggerSpots,
 } from './game.consts.js';
 import {
-    colorMaps, isRoyalty, CARDS, JOKER,
+    colorMaps, isRoyalty, isDestroyed, CARDS, JOKER, isNotFaceCard,
 } from './deck.js';
 
 
@@ -25,7 +25,8 @@ const cardValue = (targetSuit) => (card) => {
     return suitValue + colorValue + faceValue;
 };
 
-export const openSpotsForNonRoyal = ({ grid, currentCard: { card } }) => {
+export const openSpotsForNonRoyal = ({ grid, currentCard }) => {
+    const { card } = currentCard || {};
     const cardCanClear = card === CARDS.ACE || card === JOKER;
     if (cardCanClear) {
         return playSpots;
@@ -146,6 +147,8 @@ export const gameIsWon = (state) => (
     royalSpots.reduce((prev, curr) => (prev + (state.grid[curr].length > 0 && state.grid[curr][state.grid[curr].length - 1].destroyed ? 1 : 0)), 0) === 12
 );
 
+export const countTotalArmor = (stack) => stack.reduce((acc, curr) => acc + (isNotFaceCard(curr) ? curr.card : 0), 0);
+
 export const scoreGame = (state) => {
     // Selector:
     //  plusses:
@@ -155,12 +158,17 @@ export const scoreGame = (state) => {
     //      -1 point for each remaining royal
     //      -1 point for each remaining armor
     const { grid } = state;
-    const destroyedRoyals = royalSpots.reduce((prev, curr) => (prev + (grid[curr].length > 0 && grid[curr][grid[curr].length - 1].destroyed ? 1 : 0)), 0);
+    const spotsWithDestroyedRoyal = royalSpots.filter((spot) => grid[spot].length > 0 && grid[spot].last().destroyed);
+    const spotsWithRemainingRoyal = royalSpots.filter((spot) => grid[spot].length > 0 && !isDestroyed(grid[spot].last()));
 
-    const remainingRoyals = royalSpots.reduce((prev, curr) => (prev + (grid[curr].length > 0 && !grid[curr][grid[curr].length - 1].destroyed ? 1 : 0)), 0);
+    const destroyedRoyals = spotsWithDestroyedRoyal.length;
+    const destroyedArmor = spotsWithDestroyedRoyal.reduce((prev, curr) => (prev + countTotalArmor(grid[curr])), 0);
+
+    const remainingRoyals = spotsWithRemainingRoyal.length;
+    const remainingArmor = spotsWithRemainingRoyal.reduce((prev, curr) => (prev + countTotalArmor(grid[curr])), 0);
 
     return {
-        plusses: destroyedRoyals,
-        minuses: remainingRoyals,
+        plusses: destroyedRoyals + destroyedArmor,
+        minuses: remainingRoyals + remainingArmor,
     };
 };
