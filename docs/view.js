@@ -9,6 +9,7 @@ import {
     whatOpenTargets,
     getHintForCardInHand,
     openSpotsForNonRoyal,
+    countTotalArmor,
 } from './game.selectors.js';
 import { playSpots } from './game.consts.js';
 
@@ -91,7 +92,7 @@ export const drawGrid = (state) => {
                     suit,
                     card,
                     destroyed = false,
-                } = stack[stack.length - 1];
+                } = stack.last();
                 if (destroyed) {
                     const cardImage = document.createElement('img');
                     cardImage.src = getURIToCardImage({ destroyed });
@@ -101,7 +102,7 @@ export const drawGrid = (state) => {
                     const cardImage = document.createElement('img');
                     cardImage.src = getURIToCardImage({ suit, card });
                     spot.appendChild(cardImage);
-                    const armorValue = stack.reduce((acc, curr) => acc + curr.card, -card);
+                    const armorValue = countTotalArmor(stack);
                     spot.className = `cardSpot ${getSuitAsClassname(suit)} ${isLegal ? 'legal' : ''} ${showTargets && isOpenTarget ? 'targetted' : ''}`;
 
                     if (hasStack) {

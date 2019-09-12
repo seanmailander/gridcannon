@@ -142,9 +142,11 @@ export const getHintForCardInHand = (state) => {
     return 'Hint: Restart the game';
 };
 
-export const gameIsWon = (state) => (
+const getRoyalStacks = (grid) => royalSpots.filter((spot) => grid[spot].length > 0);
+
+export const gameIsWon = ({ grid }) => (
     // Selector: count the number of destroyed royals
-    royalSpots.reduce((prev, curr) => (prev + (state.grid[curr].length > 0 && state.grid[curr][state.grid[curr].length - 1].destroyed ? 1 : 0)), 0) === 12
+    getRoyalStacks(grid).reduce((prev, curr) => (prev + (isDestroyed(grid[curr].last()) ? 1 : 0)), 0) === 12
 );
 
 export const countTotalArmor = (stack) => stack.reduce((acc, curr) => acc + (isNotFaceCard(curr) ? curr.card : 0), 0);
@@ -158,8 +160,9 @@ export const scoreGame = (state) => {
     //      -1 point for each remaining royal
     //      -1 point for each remaining armor
     const { grid } = state;
-    const spotsWithDestroyedRoyal = royalSpots.filter((spot) => grid[spot].length > 0 && grid[spot].last().destroyed);
-    const spotsWithRemainingRoyal = royalSpots.filter((spot) => grid[spot].length > 0 && !isDestroyed(grid[spot].last()));
+    const royalStacks = getRoyalStacks(grid);
+    const spotsWithDestroyedRoyal = royalStacks.filter((stack) => isDestroyed(stack.last()));
+    const spotsWithRemainingRoyal = royalStacks.filter((stack) => !isDestroyed(stack.last()));
 
     const destroyedRoyals = spotsWithDestroyedRoyal.length;
     const destroyedArmor = spotsWithDestroyedRoyal.reduce((prev, curr) => (prev + countTotalArmor(grid[curr])), 0);
