@@ -142,6 +142,8 @@ export const changeHint = (state) => {
 export const attachToInterface = (handlers) => {
     const restartBtn = document.getElementById('restartBtn');
     restartBtn.addEventListener('click', handlers.restart);
+    const saveStateBtn = document.getElementById('saveStateBtn');
+    saveStateBtn.addEventListener('click', handlers.saveState);
 
     [...Array(25)].forEach((element, index) => {
         const spot = document.getElementById(`spot${index}`);

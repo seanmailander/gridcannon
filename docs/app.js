@@ -33,11 +33,17 @@ const restartGame = () => {
     dealGrid();
 };
 
+const logStateToConsole = () => {
+    // eslint-disable-next-line no-console
+    console.debug(JSON.stringify(dispatch(() => {})));
+};
+
 export default function onLoad() {
     setupGrid();
     attachToInterface({
         restart: restartGame,
         placeCard: cardSpotClicked,
+        saveState: logStateToConsole,
     });
     restartGame();
 }
