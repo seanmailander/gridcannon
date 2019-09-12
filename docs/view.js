@@ -36,13 +36,14 @@ export const drawDeck = (state) => {
 
     const {
         deckInHand,
+        skippedRoyalty,
     } = state;
     if (deckInHand && deckInHand.length > 0) {
         const cardImage = document.createElement('img');
         cardImage.src = getURIToCardImage({ destroyed: true });
         cardElement.appendChild(cardImage);
         const deckLengthNode = document.createElement('p');
-        deckLengthNode.textContent = `${deckInHand.length} cards remaining`;
+        deckLengthNode.textContent = `${deckInHand.length + skippedRoyalty.length} cards remaining`;
         cardElement.appendChild(deckLengthNode);
     }
 };
