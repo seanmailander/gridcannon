@@ -1,1 +1,5 @@
+# Ignore these
+
 node_modules
+
+node_modules/
