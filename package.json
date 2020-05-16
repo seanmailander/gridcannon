@@ -17,6 +17,7 @@
     "jest": "^24.9.0"
   },
   "scripts": {
+      "start": "npx serve -d docs",
       "lint": "eslint docs/**/*.js",
     "test": "jest"
   },
