@@ -5,6 +5,7 @@ jobs:
   test:
     executor:
       name: node/default
+      tag: '12.9.1'
     steps:
       - checkout
       - node/install-packages
