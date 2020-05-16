@@ -10,11 +10,11 @@
   "devDependencies": {
     "@babel/core": "^7.9.6",
     "@babel/preset-env": "^7.9.6",
-    "babel-jest": "^24.9.0",
-    "eslint": "^6.8.0",
+    "babel-jest": "^26.0.1",
+    "eslint": "^7.0.0",
     "eslint-config-airbnb-base": "^14.1.0",
     "eslint-plugin-import": "^2.20.2",
-    "jest": "^24.9.0"
+    "jest": "^26.0.1"
   },
   "scripts": {
     "lint": "eslint docs/**/*.js",
