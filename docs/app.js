@@ -36,9 +36,11 @@ const restartGame = () => {
 };
 
 const logStateToConsole = () => {
+    const noopAction = () => {};
+    const currentState = dispatch(noopAction);
     // eslint-disable-next-line no-console
+    console.debug(JSON.stringify(currentState));
     // console.debug(LZString.compressToBase64(JSON.stringify(dispatch(() => {}))));
-    console.debug(JSON.stringify(dispatch(() => {})));
 };
 
 const loadState = () => {
