@@ -6,7 +6,7 @@ import { drawGrid, drawDeck, drawCurrentCard, changeHint } from './view.js';
 import { actions } from './game.actions.js';
 import { howManyCardsPlaced, targetsFiredUpon } from './game.selectors.js';
 
-const initialState = () => {
+export const initialState = () => {
     const newDeck = shuffleDeck();
     const topCard = newDeck.shift();
     return {
@@ -18,7 +18,7 @@ const initialState = () => {
     };
 };
 
-const applyStateChange = (action = {}, state = initialState()) => {
+export const applyStateChange = (action = {}, state = initialState()) => {
     switch (action.type) {
     case actions.RESET_GAME: {
         return initialState();
