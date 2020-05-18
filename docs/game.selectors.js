@@ -120,9 +120,19 @@ export const whatOpenTargets = (state) => {
     return openSpots.reduce((prevTargets, newPosition) => [...prevTargets, ...targetsFiredUpon(newPosition, grid)], []);
 };
 
+const getRoyalStacks = (grid) => royalSpots.filter((spot) => grid[spot].length > 0).map((spot) => grid[spot]);
+
+export const gameIsWon = (state) => (
+    // Selector: count the number of destroyed royals
+    getRoyalStacks(state.grid).reduce((prev, curr) => (prev + (isDestroyed(curr.last()) ? 1 : 0)), 0) === 12
+);
+
 export const getHintForCardInHand = (state) => {
     const { currentCard } = state;
     if (currentCard) {
+        if (gameIsWon(state)) {
+            return 'Game won!';
+        }
         if (isRoyalty(currentCard)) {
             return 'Hint: Royalty must be played on the highest-value spot, by suit and by color';
         }
@@ -143,12 +153,6 @@ export const getHintForCardInHand = (state) => {
     return 'Hint: Restart the game';
 };
 
-const getRoyalStacks = (grid) => royalSpots.filter((spot) => grid[spot].length > 0).map((spot) => grid[spot]);
-
-export const gameIsWon = (state) => (
-    // Selector: count the number of destroyed royals
-    getRoyalStacks(state.grid).reduce((prev, curr) => (prev + (isDestroyed(curr.last()) ? 1 : 0)), 0) === 12
-);
 
 export const countTotalArmor = (stack) => stack.reduce((acc, curr) => acc + (isNotFaceCard(curr) ? curr.card : 0), 0);
 
