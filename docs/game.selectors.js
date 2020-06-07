@@ -1,5 +1,5 @@
 import {
-    dealSpots, outsideForGivenGridPosition, playSpots, royalSpots, triggerSpots,
+    dealSpots, outsideForGivenGridPosition, playSpots, royalSpots, triggerSpots, instructionIdentifiers,
 } from './game.consts.js';
 import {
     colorMaps, isRoyalty, isDestroyed, CARDS, JOKER, isNotFaceCard,
@@ -127,25 +127,44 @@ export const gameIsWon = (state) => (
     getRoyalStacks(state.grid).reduce((prev, curr) => (prev + (isDestroyed(curr.last()) ? 1 : 0)), 0) === 12
 );
 
+
+export const getGamePhase = (state) => {
+    const { currentCard } = state;
+
+    const gamePhase = {
+        playingRoyalty: isRoyalty(currentCard),
+        playingAce: (currentCard.card === CARDS.ACE),
+        playingJoker: (currentCard.card === JOKER),
+        addingArmor: (openSpotsForNonRoyal(state).length === 0),
+        playingPips: !isRoyalty(currentCard) && !(currentCard.card === CARDS.ACE),
+        canTrigger: (whatOpenTargets(state).length > 0),
+        isWon: gameIsWon(state),
+    };
+
+    return gamePhase;
+};
+
+
 export const getHintForCardInHand = (state) => {
     const { currentCard } = state;
+    const gamePhase = getGamePhase(state);
     if (currentCard) {
-        if (gameIsWon(state)) {
+        if (gamePhase.isWon) {
             return 'Game won!';
         }
-        if (isRoyalty(currentCard)) {
+        if (gamePhase.playingRoyalty) {
             return 'Hint: Royalty must be played on the highest-value spot, by suit and by color';
         }
-        if (whatOpenTargets(state).length > 0) {
+        if (gamePhase.canTrigger) {
             return 'Hint: Play on a trigger with sufficient payload to kill a Royal';
         }
-        if (currentCard.card === JOKER) {
+        if (gamePhase.playingJoker) {
             return 'Hint: Joker resets a stack and returns them to your hand';
         }
-        if (currentCard.card === CARDS.ACE) {
+        if (gamePhase.playingAce) {
             return 'Hint: Ace resets a stack and returns them to your hand';
         }
-        if (openSpotsForNonRoyal(state).length === 0) {
+        if (gamePhase.addingArmor) {
             return 'Hint: No legal moves, add card value to Royals as Armor';
         }
         return 'Hint: Play on any card of the same or lower value';

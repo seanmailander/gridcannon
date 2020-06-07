@@ -5,6 +5,7 @@ import { drawGrid, drawDeck, drawCurrentCard, changeHint } from './view.js';
 
 import { actions } from './game.actions.js';
 import { howManyCardsPlaced, targetsFiredUpon } from './game.selectors.js';
+import setInstructions from './instructions.js';
 
 export const initialState = () => {
     const newDeck = shuffleDeck();
@@ -185,6 +186,7 @@ export default function getInstance() {
             drawDeck(state);
             drawCurrentCard(state);
             changeHint(state);
+            setInstructions(state);
         } catch (e) {
             // Reset state back on any exception
             state = priorState;
