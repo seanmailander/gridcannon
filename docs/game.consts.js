@@ -58,3 +58,22 @@ export const outsideForGivenGridPosition = {
     17: [22],
     18: [23, 19],
 };
+
+
+export const instructionIdentifiers = {
+    SETUP: 'i-setup',
+    SHUFFLE: 'i-shuffle',
+    DEAL: 'i-deal',
+    ASIDE: 'i-aside',
+    CONSTRAINT: 'i-constraint',
+    ROYAL: 'i-royal',
+    ARMOR: 'i-armor',
+    PLAY: 'i-play',
+    PIP: 'i-pip',
+    ACE: 'i-ace',
+    JOKER: 'i-joker',
+    END: 'i-end',
+    WIN: 'i-win',
+    LOSE: 'i-lose',
+    BORKED: 'i-borked',
+};
