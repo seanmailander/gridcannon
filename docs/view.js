@@ -34,6 +34,10 @@ export const drawDeck = (state) => {
     const cardElement = document.getElementById('deck');
     [...cardElement.childNodes].forEach((node) => cardElement.removeChild(node));
 
+    const remainingElement = document.getElementById('cardsRemaining');
+    [...remainingElement.childNodes].forEach((node) => remainingElement.removeChild(node));
+
+
     const {
         deckInHand,
         skippedRoyalty,
@@ -42,9 +46,8 @@ export const drawDeck = (state) => {
         const cardImage = document.createElement('img');
         cardImage.src = getURIToCardImage({ destroyed: true });
         cardElement.appendChild(cardImage);
-        const deckLengthNode = document.createElement('p');
-        deckLengthNode.textContent = `${deckInHand.length + skippedRoyalty.length} cards remaining`;
-        cardElement.appendChild(deckLengthNode);
+        const deckLengthNode = document.createTextNode(`${deckInHand.length + skippedRoyalty.length} cards remaining`);
+        remainingElement.appendChild(deckLengthNode);
     }
 };
 
