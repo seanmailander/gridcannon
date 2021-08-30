@@ -6,7 +6,7 @@ name: Publish to GitHub Pages
 on:
   workflow_run:
     workflows: ["Add some confidence"]
-    branches: [main]
+    branches: [master, chore/publish-on-merge]
     types: 
       - completed
 
