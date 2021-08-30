@@ -1,8 +1,6 @@
-import {
-    getSuitAsClassname, isRoyalty,
-} from './deck.js';
+import { getSuitAsClassname, isRoyalty } from '../app/deck.ts';
 
-import { getURIToCardImage } from './images/playing_cards.js';
+import { getURIToCardImage } from './playing_cards.ts';
 
 import {
     whatLegalMoves,
@@ -10,8 +8,8 @@ import {
     getHintForCardInHand,
     openSpotsForNonRoyal,
     countTotalArmor,
-} from './game.selectors.js';
-import { playSpots } from './game.consts.js';
+} from '../app/game.selectors.ts';
+import { playSpots } from '../app/game.consts.ts';
 
 export const setupGrid = () => {
     const grid = document.getElementById('grid');
@@ -37,16 +35,14 @@ export const drawDeck = (state) => {
     const remainingElement = document.getElementById('cardsRemaining');
     [...remainingElement.childNodes].forEach((node) => remainingElement.removeChild(node));
 
-
-    const {
-        deckInHand,
-        skippedRoyalty,
-    } = state;
+    const { deckInHand, skippedRoyalty } = state;
     if (deckInHand && deckInHand.length > 0) {
         const cardImage = document.createElement('img');
         cardImage.src = getURIToCardImage({ destroyed: true });
         cardElement.appendChild(cardImage);
-        const deckLengthNode = document.createTextNode(`${deckInHand.length + skippedRoyalty.length} cards remaining`);
+        const deckLengthNode = document.createTextNode(
+            `${deckInHand.length + skippedRoyalty.length} cards remaining`,
+        );
         remainingElement.appendChild(deckLengthNode);
     }
 };
@@ -55,14 +51,9 @@ export const drawCurrentCard = (state) => {
     const cardElement = document.getElementById('currentCard');
     [...cardElement.childNodes].forEach((node) => cardElement.removeChild(node));
 
-    const {
-        currentCard,
-    } = state;
+    const { currentCard } = state;
     if (currentCard) {
-        const {
-            suit,
-            card,
-        } = currentCard;
+        const { suit, card } = currentCard;
         const cardImage = document.createElement('img');
         cardImage.src = getURIToCardImage({ suit, card });
         cardElement.appendChild(cardImage);
@@ -71,10 +62,7 @@ export const drawCurrentCard = (state) => {
 };
 
 export const drawGrid = (state) => {
-    const {
-        grid,
-        currentCard,
-    } = state;
+    const { grid, currentCard } = state;
     const legalMoves = whatLegalMoves(state);
     const openTargets = whatOpenTargets(state);
     const showTargets = !isRoyalty(currentCard) && openSpotsForNonRoyal(state).length > 0;
@@ -86,15 +74,11 @@ export const drawGrid = (state) => {
         const isRoyal = playSpots.indexOf(index) === -1;
         const isOpenTarget = openTargets.indexOf(index) !== -1;
         const hasCard = stack.length > 0;
-        const hasStack = (stack.length > 1);
+        const hasStack = stack.length > 1;
 
         if (hasCard) {
             if (isRoyal) {
-                const {
-                    suit,
-                    card,
-                    destroyed = false,
-                } = stack.last();
+                const { suit, card, destroyed = false } = stack.last();
                 if (destroyed) {
                     const cardImage = document.createElement('img');
                     cardImage.src = getURIToCardImage({ destroyed });
@@ -105,7 +89,9 @@ export const drawGrid = (state) => {
                     cardImage.src = getURIToCardImage({ suit, card });
                     spot.appendChild(cardImage);
                     const armorValue = countTotalArmor(stack);
-                    spot.className = `cardSpot ${getSuitAsClassname(suit)} ${isLegal ? 'legal' : ''} ${showTargets && isOpenTarget ? 'targetted' : ''}`;
+                    spot.className = `cardSpot ${getSuitAsClassname(suit)} ${
+                        isLegal ? 'legal' : ''
+                    } ${showTargets && isOpenTarget ? 'targetted' : ''}`;
 
                     if (hasStack) {
                         const badge = document.createElement('span');
@@ -116,14 +102,13 @@ export const drawGrid = (state) => {
                     }
                 }
             } else {
-                const {
-                    suit,
-                    card,
-                } = stack[0];
+                const { suit, card } = stack[0];
                 const cardImage = document.createElement('img');
                 cardImage.src = getURIToCardImage({ suit, card });
                 spot.appendChild(cardImage);
-                spot.className = `cardSpot ${getSuitAsClassname(suit)} ${isLegal ? 'legal' : ''} ${hasStack ? 'stack' : ''}`;
+                spot.className = `cardSpot ${getSuitAsClassname(suit)} ${
+                    isLegal ? 'legal' : ''
+                } ${hasStack ? 'stack' : ''}`;
             }
         } else {
             const cardImage = document.createElement('img');

@@ -1,5 +1,5 @@
-import { getGamePhase } from './game.selectors.js';
-import { instructionIdentifiers } from './game.consts.js';
+import { getGamePhase } from '../app/game.selectors.ts';
+import { instructionIdentifiers } from '../app/game.consts.ts';
 
 const setInstructionActive = (identifier, active = false, complete = false) => {
     const instructionNode = document.getElementById(identifier);
@@ -24,21 +24,35 @@ export default function setInstructions(state) {
     setInstructionActive(instructionIdentifiers.ASIDE, false, true);
 
     // Constraints (Royals or Armor)
-    setInstructionActive(instructionIdentifiers.CONSTRAINT, gamePhase.playingRoyalty || gamePhase.addingArmor);
+    setInstructionActive(
+        instructionIdentifiers.CONSTRAINT,
+        gamePhase.playingRoyalty || gamePhase.addingArmor,
+    );
     setInstructionActive(instructionIdentifiers.ROYAL, gamePhase.playingRoyalty);
     setInstructionActive(instructionIdentifiers.ARMOR, gamePhase.addingArmor);
 
     // Play
-    setInstructionActive(instructionIdentifiers.PLAY, !gamePhase.isWon && (gamePhase.playingPips || gamePhase.playingAce || gamePhase.playingJoker));
-    setInstructionActive(instructionIdentifiers.PIP, !gamePhase.isWon && gamePhase.playingPips);
-    setInstructionActive(instructionIdentifiers.ACE, !gamePhase.isWon && gamePhase.playingAce);
-    setInstructionActive(instructionIdentifiers.JOKER, !gamePhase.isWon && gamePhase.playingJoker);
+    setInstructionActive(
+        instructionIdentifiers.PLAY,
+        !gamePhase.isWon
+      && (gamePhase.playingPips || gamePhase.playingAce || gamePhase.playingJoker),
+    );
+    setInstructionActive(
+        instructionIdentifiers.PIP,
+        !gamePhase.isWon && gamePhase.playingPips,
+    );
+    setInstructionActive(
+        instructionIdentifiers.ACE,
+        !gamePhase.isWon && gamePhase.playingAce,
+    );
+    setInstructionActive(
+        instructionIdentifiers.JOKER,
+        !gamePhase.isWon && gamePhase.playingJoker,
+    );
 
     // End
     setInstructionActive(instructionIdentifiers.END, gamePhase.isWon);
     setInstructionActive(instructionIdentifiers.WIN, gamePhase.isWon);
     setInstructionActive(instructionIdentifiers.LOSE, false);
     setInstructionActive(instructionIdentifiers.BORKED, false);
-
-
 }

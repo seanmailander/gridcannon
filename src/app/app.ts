@@ -1,19 +1,26 @@
-import {
-    setupGrid,
-    attachToInterface,
-} from './view.js';
+import { setupGrid, attachToInterface } from '../ui/view.ts';
 
-import getInstance from './game.reducer.js';
+import getInstance from './game.reducer.ts';
 
 import {
     resetGame,
     dealNextCard,
     tryToPlayCard,
     loadTestState,
-} from './game.actions.js';
+} from './game.actions.ts';
 
-import { howManyCardsPlaced } from './game.selectors.js';
-import { lastMoveGameOver, noRoyalsOnDeal, alreadyWon, closeToAWin, midGameArmor, noCardsLeft, doubleTrigger, aboutToWin } from './game.test-states.js';
+import { howManyCardsPlaced } from './game.selectors.ts';
+import {
+    lastMoveGameOver,
+    noRoyalsOnDeal,
+    alreadyWon,
+    closeToAWin,
+    midGameArmor,
+    noCardsLeft,
+    doubleTrigger,
+    aboutToWin,
+    canWeDoIt,
+} from './game.test-states.ts';
 
 const dispatch = getInstance();
 
@@ -36,7 +43,8 @@ const restartGame = () => {
 };
 
 const logStateToConsole = () => {
-    const noopAction = () => {};
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    const noopAction = () => { };
     const currentState = dispatch(noopAction);
     // eslint-disable-next-line no-console
     console.debug(JSON.stringify(currentState));
@@ -44,7 +52,7 @@ const logStateToConsole = () => {
 };
 
 const loadState = () => {
-    dispatch(loadTestState(aboutToWin));
+    dispatch(loadTestState(canWeDoIt));
 };
 
 export default function onLoad() {

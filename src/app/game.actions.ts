@@ -1,8 +1,6 @@
-import {
-    isRoyalty,
-} from './deck.js';
-import { howManyCardsPlaced, whatLegalMoves } from './game.selectors.js';
-import { dealSpots } from './game.consts.js';
+import { isRoyalty } from './deck.ts';
+import { howManyCardsPlaced, whatLegalMoves } from './game.selectors.ts';
+import { dealSpots } from './game.consts.ts';
 
 export const actions = {
     RESET_GAME: 'RESET_GAME',

@@ -1,11 +1,13 @@
 import {
     shuffleDeck, isRoyalty, CARDS, JOKER,
-} from './deck.js';
-import { drawGrid, drawDeck, drawCurrentCard, changeHint } from './view.js';
+} from './deck.ts';
+import {
+    drawGrid, drawDeck, drawCurrentCard, changeHint,
+} from '../ui/view.ts';
 
-import { actions } from './game.actions.js';
-import { howManyCardsPlaced, targetsFiredUpon } from './game.selectors.js';
-import setInstructions from './instructions.js';
+import { actions } from './game.actions.ts';
+import { howManyCardsPlaced, targetsFiredUpon } from './game.selectors.ts';
+import setInstructions from '../ui/instructions.ts';
 
 export const initialState = () => {
     const newDeck = shuffleDeck();
@@ -113,7 +115,7 @@ export const applyStateChange = (action = {}, state = initialState()) => {
 
         // should this clear the stack?
         if (currentCard.card === JOKER || currentCard.card === CARDS.ACE) {
-            // reset the stack, returning it to the deck in hand
+        // reset the stack, returning it to the deck in hand
             newDeckInHand.push(...newGrid[position]);
             newGrid[position] = [currentCard];
         } else {

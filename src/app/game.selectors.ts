@@ -1,14 +1,24 @@
 import {
-    dealSpots, outsideForGivenGridPosition, playSpots, royalSpots, triggerSpots, instructionIdentifiers,
-} from './game.consts.js';
+    dealSpots,
+    outsideForGivenGridPosition,
+    playSpots,
+    royalSpots,
+    triggerSpots,
+    instructionIdentifiers,
+} from './game.consts.ts';
 import {
-    colorMaps, isRoyalty, isDestroyed, CARDS, JOKER, isNotFaceCard,
-} from './deck.js';
+    colorMaps,
+    isRoyalty,
+    isDestroyed,
+    CARDS,
+    JOKER,
+    isNotFaceCard,
+} from './deck.ts';
 
-
-export const howManyCardsPlaced = (state) => (
-    // Selector: count the number of placed cards in the grid
-    dealSpots.reduce((prev, curr) => (prev + (state.grid[curr].length > 0 ? 1 : 0)), 0)
+// Selector: count the number of placed cards in the grid
+export const howManyCardsPlaced = (state) => dealSpots.reduce(
+    (prev, curr) => prev + (state.grid[curr].length > 0 ? 1 : 0),
+    0,
 );
 
 const cardValue = (targetSuit) => (card) => {
@@ -32,7 +42,9 @@ export const openSpotsForNonRoyal = ({ grid, currentCard }) => {
         return playSpots;
     }
 
-    return playSpots.filter((spot) => (grid[spot][0] || { card: 0 }).card <= card);
+    return playSpots.filter(
+        (spot) => (grid[spot][0] || { card: 0 }).card <= card,
+    );
 };
 
 export const whatLegalMoves = (state) => {
@@ -42,18 +54,23 @@ export const whatLegalMoves = (state) => {
         return [];
     }
     if (isRoyalty(currentCard)) {
-    // placing royalty around the outside
+        // placing royalty around the outside
         const { suit } = currentCard;
         const getCardValueAgainstThisRoyal = cardValue(suit);
         const mostSimilarCardSpot = dealSpots.reduce((prev, curr) => {
             const allowedSpots = outsideForGivenGridPosition[curr];
-            const spotsAvailable = allowedSpots.filter((allowedSpot) => grid[allowedSpot].length === 0);
+            const spotsAvailable = allowedSpots.filter(
+                (allowedSpot) => grid[allowedSpot].length === 0,
+            );
             if (spotsAvailable.length === 0) {
                 return prev;
             }
             const previousCard = grid[prev][0];
             const targetCard = grid[curr][0];
-            if (getCardValueAgainstThisRoyal(targetCard) > getCardValueAgainstThisRoyal(previousCard)) {
+            if (
+                getCardValueAgainstThisRoyal(targetCard)
+                > getCardValueAgainstThisRoyal(previousCard)
+            ) {
                 return curr;
             }
             return prev;
@@ -77,27 +94,29 @@ export const whatLegalMoves = (state) => {
 };
 
 const addPayloads = (grid, payload, targetRoyal) => {
-    const firstPayload = grid[payload[0]][0] || { };
-    const secondPayload = grid[payload[1]][0] || { };
+    const firstPayload = grid[payload[0]][0] || {};
+    const secondPayload = grid[payload[1]][0] || {};
     if (targetRoyal.card === CARDS.KING) {
-    // KING same suit
-        const firstValue = (firstPayload.suit === targetRoyal.suit) ? firstPayload.card : 0;
-        const secondValue = (secondPayload.suit === targetRoyal.suit) ? secondPayload.card : 0;
+        // KING same suit
+        const firstValue = firstPayload.suit === targetRoyal.suit ? firstPayload.card : 0;
+        const secondValue = secondPayload.suit === targetRoyal.suit ? secondPayload.card : 0;
         return firstValue + secondValue;
     }
     if (targetRoyal.card === CARDS.QUEEN) {
-    // QUEEN same color
-        const firstValue = (colorMaps[firstPayload.suit] === colorMaps[targetRoyal.suit]) ? firstPayload.card : 0;
-        const secondValue = (colorMaps[secondPayload.suit] === colorMaps[targetRoyal.suit]) ? secondPayload.card : 0;
+        // QUEEN same color
+        const firstValue = colorMaps[firstPayload.suit] === colorMaps[targetRoyal.suit]
+            ? firstPayload.card
+            : 0;
+        const secondValue = colorMaps[secondPayload.suit] === colorMaps[targetRoyal.suit]
+            ? secondPayload.card
+            : 0;
         return firstValue + secondValue;
     }
 
     // JACK straight value
     return firstPayload.card + secondPayload.card;
 };
-const targetWithArmor = (grid, target) => (
-    grid[target].reduce((acc, curr) => acc + curr.card, 0)
-);
+const targetWithArmor = (grid, target) => grid[target].reduce((acc, curr) => acc + curr.card, 0);
 
 export const targetsFiredUpon = (position, grid) => {
     const firingSolutions = triggerSpots[position];
@@ -107,7 +126,10 @@ export const targetsFiredUpon = (position, grid) => {
     return firingSolutions
         .filter(({ target }) => grid[target].length > 0) // royal in place
         .filter(({ target }) => !grid[target].last().destroyed) // not already destroyed
-        .filter(({ payload, target }) => addPayloads(grid, payload, grid[target].last()) >= targetWithArmor(grid, target))
+        .filter(
+            ({ payload, target }) => addPayloads(grid, payload, grid[target].last())
+                >= targetWithArmor(grid, target),
+        )
         .map(({ target }) => target);
 };
 
@@ -117,33 +139,38 @@ export const whatOpenTargets = (state) => {
         return [];
     }
     const openSpots = openSpotsForNonRoyal(state);
-    return openSpots.reduce((prevTargets, newPosition) => [...prevTargets, ...targetsFiredUpon(newPosition, grid)], []);
+    return openSpots.reduce(
+        (prevTargets, newPosition) => [
+            ...prevTargets,
+            ...targetsFiredUpon(newPosition, grid),
+        ],
+        [],
+    );
 };
 
 const getRoyalStacks = (grid) => royalSpots.filter((spot) => grid[spot].length > 0).map((spot) => grid[spot]);
 
-export const gameIsWon = (state) => (
-    // Selector: count the number of destroyed royals
-    getRoyalStacks(state.grid).reduce((prev, curr) => (prev + (isDestroyed(curr.last()) ? 1 : 0)), 0) === 12
-);
-
+// Selector: count the number of destroyed royals
+export const gameIsWon = (state) => getRoyalStacks(state.grid).reduce(
+    (prev, curr) => prev + (isDestroyed(curr.last()) ? 1 : 0),
+    0,
+) === 12;
 
 export const getGamePhase = (state) => {
     const { currentCard } = state;
 
     const gamePhase = {
         playingRoyalty: isRoyalty(currentCard),
-        playingAce: (currentCard.card === CARDS.ACE),
-        playingJoker: (currentCard.card === JOKER),
-        addingArmor: (openSpotsForNonRoyal(state).length === 0),
+        playingAce: currentCard.card === CARDS.ACE,
+        playingJoker: currentCard.card === JOKER,
+        addingArmor: openSpotsForNonRoyal(state).length === 0,
         playingPips: !isRoyalty(currentCard) && !(currentCard.card === CARDS.ACE),
-        canTrigger: (whatOpenTargets(state).length > 0),
+        canTrigger: whatOpenTargets(state).length > 0,
         isWon: gameIsWon(state),
     };
 
     return gamePhase;
 };
-
 
 export const getHintForCardInHand = (state) => {
     const { currentCard } = state;
@@ -172,7 +199,6 @@ export const getHintForCardInHand = (state) => {
     return 'Hint: Restart the game';
 };
 
-
 export const countTotalArmor = (stack) => stack.reduce((acc, curr) => acc + (isNotFaceCard(curr) ? curr.card : 0), 0);
 
 export const scoreGame = (state) => {
@@ -186,16 +212,27 @@ export const scoreGame = (state) => {
     const { grid, bonuses } = state;
     const royalStacks = getRoyalStacks(grid);
     const stacksWithDestroyedRoyal = royalStacks.filter((stack) => isDestroyed(stack.last()));
-    const stacksWithRemainingRoyal = royalStacks.filter((stack) => !isDestroyed(stack.last()));
+    const stacksWithRemainingRoyal = royalStacks.filter(
+        (stack) => !isDestroyed(stack.last()),
+    );
 
     const destroyedRoyals = stacksWithDestroyedRoyal.length;
-    const destroyedArmor = stacksWithDestroyedRoyal.reduce((prev, curr) => (prev + countTotalArmor(curr)), 0);
+    const destroyedArmor = stacksWithDestroyedRoyal.reduce(
+        (prev, curr) => prev + countTotalArmor(curr),
+        0,
+    );
 
     const remainingRoyals = stacksWithRemainingRoyal.length;
-    const remainingArmor = stacksWithRemainingRoyal.reduce((prev, curr) => (prev + countTotalArmor(curr)), 0);
+    const remainingArmor = stacksWithRemainingRoyal.reduce(
+        (prev, curr) => prev + countTotalArmor(curr),
+        0,
+    );
 
     const bonusRoyals = bonuses.length;
-    const bonusArmor = bonuses.reduce((prev, curr) => (prev + countTotalArmor(curr)), 0);
+    const bonusArmor = bonuses.reduce(
+        (prev, curr) => prev + countTotalArmor(curr),
+        0,
+    );
 
     return {
         plusses: destroyedRoyals + destroyedArmor,
