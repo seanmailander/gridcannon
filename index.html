@@ -1,14 +1,12 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Gridcannon</title>
   <script language="javascript" src="./libs/lz-string.min.js"></script>
-  <script src="bootstrap.js" type="module"></script>
   <link rel="stylesheet" href="styles.css" type="text/css">
 </head>
-
 <body>
   <section class="nosupport" hidden>
     <h4>Apologies.. your browser doesn't support ES Modules. </h4>
@@ -17,7 +15,6 @@
   <script nomodule>
     // Script only runs in browsers that don't support modules (ideally)
     document.querySelector('.nosupport').hidden = false;
-
   </script>
   <script type=module>
     // requires modules to hide. (FOUC in non-[nomodule] supporting browsers right now)
@@ -96,7 +93,6 @@
   <footer>
     <p id="hint">Hint: Place a card</p>
   </footer>
-
+  <script type="module" src="/src/bootstrap.ts"></script>
 </body>
-
 </html>

@@ -1,13 +1,19 @@
 {
   "name": "gridcannon",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "A grid-based solitaire card game by @Pentadact",
-  "main": "index.js",
-  "directories": {
-    "doc": "docs"
+  "homepage": "https://github.com/seanmailander/gridcannon#readme",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "serve": "vite preview",
+    "lint": "eslint src/**/*.js",
+    "test": "jest"
   },
   "dependencies": {},
   "devDependencies": {
+    "typescript": "^4.3.2",
+    "vite": "^2.5.1",
     "@babel/core": "^7.9.6",
     "@babel/preset-env": "^7.9.6",
     "babel-jest": "^26.0.1",
@@ -15,20 +21,5 @@
     "eslint-config-airbnb-base": "^14.1.0",
     "eslint-plugin-import": "^2.20.2",
     "jest": "^26.0.1"
-  },
-  "scripts": {
-    "lint": "eslint docs/**/*.js",
-    "test": "jest"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/seanmailander/gridcannon.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/seanmailander/gridcannon/issues"
-  },
-  "homepage": "https://github.com/seanmailander/gridcannon#readme",
-  "type": "module"
+  }
 }
