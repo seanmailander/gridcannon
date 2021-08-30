@@ -1,4 +1,4 @@
-import { setupGrid, attachToInterface } from "./view.js";
+import { setupGrid, attachToInterface } from "../ui/view.js";
 
 import getInstance from "./game.reducer.js";
 

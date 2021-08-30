@@ -1,5 +1,5 @@
 /* eslint-disable import/prefer-default-export */
-import { SUITS, JOKER } from "../deck.js";
+import { SUITS, JOKER } from "../app/deck.js";
 
 // Grab relative loaded path to image assets
 import imgBaseUrl from "./playing_cards/card_back.svg?url";

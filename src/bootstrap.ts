@@ -1,7 +1,7 @@
-import onLoad from "./app.ts";
-import { $on } from "./helpers.ts";
+import onLoad from "./app/app.ts";
+import { $on } from "./ui/helpers.ts";
 
-import "./styles.css";
+import "./ui/styles.css";
 
 $on(window, "load", onLoad);
 $on(window, "hashchange", onLoad);
