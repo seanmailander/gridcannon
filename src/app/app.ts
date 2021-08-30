@@ -1,15 +1,15 @@
-import { setupGrid, attachToInterface } from "../ui/view.js";
+import { setupGrid, attachToInterface } from "../ui/view.ts";
 
-import getInstance from "./game.reducer.js";
+import getInstance from "./game.reducer.ts";
 
 import {
   resetGame,
   dealNextCard,
   tryToPlayCard,
   loadTestState,
-} from "./game.actions.js";
+} from "./game.actions.ts";
 
-import { howManyCardsPlaced } from "./game.selectors.js";
+import { howManyCardsPlaced } from "./game.selectors.ts";
 import {
   lastMoveGameOver,
   noRoyalsOnDeal,
@@ -20,7 +20,7 @@ import {
   doubleTrigger,
   aboutToWin,
   canWeDoIt,
-} from "./game.test-states.js";
+} from "./game.test-states.ts";
 
 const dispatch = getInstance();
 

@@ -1,9 +1,9 @@
-import { shuffleDeck, isRoyalty, CARDS, JOKER } from "./deck.js";
-import { drawGrid, drawDeck, drawCurrentCard, changeHint } from "../ui/view.js";
+import { shuffleDeck, isRoyalty, CARDS, JOKER } from "./deck.ts";
+import { drawGrid, drawDeck, drawCurrentCard, changeHint } from "../ui/view.ts";
 
-import { actions } from "./game.actions.js";
-import { howManyCardsPlaced, targetsFiredUpon } from "./game.selectors.js";
-import setInstructions from "../ui/instructions.js";
+import { actions } from "./game.actions.ts";
+import { howManyCardsPlaced, targetsFiredUpon } from "./game.selectors.ts";
+import setInstructions from "../ui/instructions.ts";
 
 export const initialState = () => {
   const newDeck = shuffleDeck();

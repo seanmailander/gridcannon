@@ -1,8 +1,6 @@
+import { getSuitAsClassname, isRoyalty } from "../app/deck.ts";
 
-
-import { getSuitAsClassname, isRoyalty } from "../app/deck.js";
-
-import { getURIToCardImage } from "../images/playing_cards.js";
+import { getURIToCardImage } from "../images/playing_cards.ts";
 
 import {
   whatLegalMoves,
@@ -10,8 +8,8 @@ import {
   getHintForCardInHand,
   openSpotsForNonRoyal,
   countTotalArmor,
-} from "../app/game.selectors.js";
-import { playSpots } from "../app/game.consts.js";
+} from "../app/game.selectors.ts";
+import { playSpots } from "../app/game.consts.ts";
 
 export const setupGrid = () => {
   const grid = document.getElementById("grid");
