@@ -1,6 +1,6 @@
 import { getSuitAsClassname, isRoyalty } from "../app/deck.ts";
 
-import { getURIToCardImage } from "../images/playing_cards.ts";
+import { getURIToCardImage } from "./playing_cards.ts";
 
 import {
   whatLegalMoves,
