@@ -2,8 +2,7 @@
 import { SUITS, JOKER } from "../app/deck.ts";
 
 // Grab relative loaded path to image assets
-import imgBaseUrl from "./playing_cards/card_back.svg?url";
-const rootPath = imgBaseUrl.split("card_back.svg")[0];
+const rootPath = `./images/playing_cards/`;
 
 export const getURIToCardImage = ({ suit, card, destroyed }) => {
   if (destroyed) {
