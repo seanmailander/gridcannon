@@ -5,7 +5,7 @@
   "homepage": "https://github.com/seanmailander/gridcannon#readme",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "vite build",
     "serve": "vite preview",
     "lint": "eslint src/**/*.{js,ts}",
     "test": "jest"

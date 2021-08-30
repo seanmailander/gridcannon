@@ -1,3 +1,5 @@
+import './libs/polyfills.ts';
+
 import onLoad from "./app/app.ts";
 import { $on } from "./ui/helpers.ts";
 
