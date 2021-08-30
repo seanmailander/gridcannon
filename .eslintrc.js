@@ -4,21 +4,20 @@ module.exports = {
     es6: true,
     jest: true,
   },
-  extends: [
-    'airbnb-base',
-  ],
+  extends: ["airbnb-base"],
+  ignorePatterns: ["lz-string.min.js"],
   globals: {
-    Atomics: 'readonly',
-    SharedArrayBuffer: 'readonly',
-    LZString: 'readonly',
+    Atomics: "readonly",
+    SharedArrayBuffer: "readonly",
+    LZString: "readonly",
   },
   parserOptions: {
     ecmaVersion: 2018,
-    sourceType: 'module',
+    sourceType: "module",
   },
   rules: {
-      "indent": ["error", 4],
-      "import/extensions": "off",
-      "max-len": "off"
+    indent: ["error", 4],
+    "import/extensions": "off",
+    "max-len": "off",
   },
 };
