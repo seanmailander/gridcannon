@@ -206,7 +206,7 @@ export const getGamePhase = (state) => {
     const playingPips = !noCardsRemaining && !unwinnableArmor && !addingArmor && !playingRoyalty && !playingAce && !playingJoker;
 
     const noLegalMoves = !noCardsRemaining && !playingRoyalty && !canPlayOnField && !addingArmor;
-    const isLost = noCardsRemaining || noLegalMoves || unwinnableArmor;
+    const isLost = !isWon && (noCardsRemaining || noLegalMoves || unwinnableArmor);
 
     const canTrigger = !noCardsRemaining && whatOpenTargets(state).length > 0;
 
