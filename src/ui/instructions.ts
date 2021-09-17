@@ -35,7 +35,7 @@ export default function setInstructions(state) {
     setInstructionActive(
         instructionIdentifiers.PLAY,
         !gamePhase.isWon
-      && (gamePhase.playingPips || gamePhase.playingAce || gamePhase.playingJoker),
+        && (gamePhase.playingPips || gamePhase.playingAce || gamePhase.playingJoker),
     );
     setInstructionActive(
         instructionIdentifiers.PIP,
@@ -51,8 +51,9 @@ export default function setInstructions(state) {
     );
 
     // End
-    setInstructionActive(instructionIdentifiers.END, gamePhase.isWon);
+    setInstructionActive(instructionIdentifiers.END, gamePhase.isWon || gamePhase.isLost);
     setInstructionActive(instructionIdentifiers.WIN, gamePhase.isWon);
-    setInstructionActive(instructionIdentifiers.LOSE, false);
-    setInstructionActive(instructionIdentifiers.BORKED, false);
+    setInstructionActive(instructionIdentifiers.LOSENOCARD, gamePhase.noCardsRemaining);
+    setInstructionActive(instructionIdentifiers.LOSENOROYAL, gamePhase.noLegalMoves);
+    setInstructionActive(instructionIdentifiers.LOSEOVERARMORED, gamePhase.unwinnableArmor);
 }

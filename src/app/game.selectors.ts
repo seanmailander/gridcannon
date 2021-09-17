@@ -36,7 +36,11 @@ const cardValue = (targetSuit) => (card) => {
 };
 
 export const openSpotsForNonRoyal = ({ grid, currentCard }) => {
-    const { card } = currentCard || {};
+    if (!currentCard) {
+        return [];
+    }
+    const { card } = currentCard;
+
     const cardCanClear = card === CARDS.ACE || card === JOKER;
     if (cardCanClear) {
         return playSpots;
@@ -46,6 +50,10 @@ export const openSpotsForNonRoyal = ({ grid, currentCard }) => {
         (spot) => (grid[spot][0] || { card: 0 }).card <= card,
     );
 };
+export const getOpenRoyaltyStacks = ({ grid }) =>
+    getRoyalStacks(grid)
+        .filter((spot) => !isDestroyed(spot.last()))
+        .map((spot) => spot.reduce((acc, curr) => acc + curr.card, 0));
 
 export const whatLegalMoves = (state) => {
     // Selector: find any legal positions for the current card
@@ -134,8 +142,11 @@ export const targetsFiredUpon = (position, grid) => {
 };
 
 export const whatOpenTargets = (state) => {
-    const { grid } = state;
+    const { grid, currentCard } = state;
     if (howManyCardsPlaced(state) < 8) {
+        return [];
+    }
+    if (!currentCard) {
         return [];
     }
     const openSpots = openSpotsForNonRoyal(state);
@@ -156,17 +167,60 @@ export const gameIsWon = (state) => getRoyalStacks(state.grid).reduce(
     0,
 ) === 12;
 
+// Selector: count the number of remaining cards
+export const hasNoLegalMoves = (state) => currentCard && state.deckInHand.length === 0;
+// Selector: count the number of remaining cards
+export const hasNoCardsRemaining = (state) => state.deckInHand.length === 0;
+
 export const getGamePhase = (state) => {
     const { currentCard } = state;
 
+    // Check if this is a clean win, regardless of which card is to be played
+    const isWon = gameIsWon(state);
+
+    // Check if we have no cards left to play
+    const noCardsRemaining = !currentCard && hasNoCardsRemaining(state);
+
+    // Okay, we have some cards
+    // Now what?
+
+    // Is this royalty as part of the initial setup?
+    const playingRoyalty = !noCardsRemaining && isRoyalty(currentCard);
+
+    // Must be a regular card with non-zero value
+    // How many open spots on the field?
+    const numberOfOpenSpotsOnField = openSpotsForNonRoyal(state).length;
+
+    // Can we play on the field?
+    const canPlayOnField = !noCardsRemaining && numberOfOpenSpotsOnField > 0;
+    // Can we play on armor?
+    const openRoyaltyStacks = getOpenRoyaltyStacks(state);
+    const unwinnableArmor = openRoyaltyStacks.filter(stack => stack > 20);
+    const addingArmor = !noCardsRemaining && numberOfOpenSpotsOnField === 0 && !unwinnableArmor && openRoyaltyStacks.length > 0;
+
+    // So break out the three kinds of cards to play
+
+    const playingAce = currentCard?.card === CARDS.ACE;
+    const playingJoker = currentCard?.card === JOKER;
+    const playingPips = !noCardsRemaining && !unwinnableArmor && !addingArmor && !playingRoyalty && !playingAce && !playingJoker;
+
+    const noLegalMoves = !noCardsRemaining && !playingRoyalty && !canPlayOnField && !unwinnableArmor && !addingArmor;
+    const isLost = noCardsRemaining || noLegalMoves;
+
+    const canTrigger = !noCardsRemaining && whatOpenTargets(state).length > 0;
+
     const gamePhase = {
-        playingRoyalty: isRoyalty(currentCard),
-        playingAce: currentCard.card === CARDS.ACE,
-        playingJoker: currentCard.card === JOKER,
-        addingArmor: openSpotsForNonRoyal(state).length === 0,
-        playingPips: !isRoyalty(currentCard) && !(currentCard.card === CARDS.ACE),
-        canTrigger: whatOpenTargets(state).length > 0,
-        isWon: gameIsWon(state),
+        isWon,
+        isLost,
+        noCardsRemaining,
+        noLegalMoves,
+        unwinnableArmor,
+        playingRoyalty,
+        playingPips,
+        playingAce,
+        playingJoker,
+        addingArmor,
+        canTrigger,
     };
 
     return gamePhase;
