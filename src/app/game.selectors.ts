@@ -196,7 +196,7 @@ export const getGamePhase = (state) => {
     const canPlayOnField = !noCardsRemaining && numberOfOpenSpotsOnField > 0;
     // Can we play on armor?
     const openRoyaltyStacks = getOpenRoyaltyStacks(state);
-    const unwinnableArmor = openRoyaltyStacks.filter((stack) => stack > 20);
+    const unwinnableArmor = openRoyaltyStacks.filter((stack) => stack > 20).length > 0;
     const addingArmor = !noCardsRemaining && numberOfOpenSpotsOnField === 0 && !unwinnableArmor && openRoyaltyStacks.length > 0;
 
     // So break out the three kinds of cards to play
