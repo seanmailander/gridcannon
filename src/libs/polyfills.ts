@@ -1,8 +1,6 @@
-
 // Allow for looping on nodes by chaining:
 // qsa('.foo').forEach(function () {})
 NodeList.prototype.forEach = Array.prototype.forEach;
-
 
 if (!Array.prototype.last) {
     // eslint-disable-next-line
