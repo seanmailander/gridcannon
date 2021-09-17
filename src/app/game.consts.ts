@@ -1,4 +1,3 @@
-
 export const dealSpots = [6, 7, 8, 11, 13, 16, 17, 18];
 export const playSpots = [6, 7, 8, 11, 12, 13, 16, 17, 18];
 export const royalSpots = [1, 2, 3, 5, 9, 10, 14, 15, 19, 21, 22, 23];
@@ -58,7 +57,6 @@ export const outsideForGivenGridPosition = {
     17: [22],
     18: [23, 19],
 };
-
 
 export const instructionIdentifiers = {
     SETUP: 'i-setup',

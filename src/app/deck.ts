@@ -1,4 +1,3 @@
-
 export const JOKER = 0;
 
 export const CARDS = {
@@ -23,7 +22,6 @@ export const SUITS = {
     CLUBS: 'c',
     SPADES: 's',
 };
-
 
 export const colorMaps = {
     [SUITS.HEARTS]: 'red',

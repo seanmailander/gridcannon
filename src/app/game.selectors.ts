@@ -167,7 +167,6 @@ export const whatOpenTargets = (state) => {
     );
 };
 
-
 // Selector: count the number of remaining cards
 export const hasNoLegalMoves = (state) => currentCard && state.deckInHand.length === 0;
 // Selector: count the number of remaining cards
