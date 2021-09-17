@@ -59,7 +59,7 @@ export default function setInstructions(state) {
     // End
     setInstructionActive(instructionIdentifiers.END, gamePhase.isWon || gamePhase.isLost);
     setInstructionActive(instructionIdentifiers.WIN, gamePhase.isWon);
-    setInstructionActive(instructionIdentifiers.LOSENOCARD, gamePhase.noCardsRemaining);
-    setInstructionActive(instructionIdentifiers.LOSENOROYAL, gamePhase.noRoyal);
-    setInstructionActive(instructionIdentifiers.LOSEOVERARMORED, gamePhase.unwinnableArmor);
+    setInstructionActive(instructionIdentifiers.LOSENOCARD, !gamePhase.isWon && gamePhase.noCardsRemaining);
+    setInstructionActive(instructionIdentifiers.LOSENOROYAL, !gamePhase.isWon && gamePhase.noRoyal);
+    setInstructionActive(instructionIdentifiers.LOSEOVERARMORED, !gamePhase.isWon && gamePhase.unwinnableArmor);
 }
