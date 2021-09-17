@@ -89,8 +89,7 @@ export const drawGrid = (state) => {
                     cardImage.src = getURIToCardImage({ suit, card });
                     spot.appendChild(cardImage);
                     const armorValue = countTotalArmor(stack);
-                    spot.className = `cardSpot ${getSuitAsClassname(suit)} ${
-                        isLegal ? 'legal' : ''
+                    spot.className = `cardSpot ${getSuitAsClassname(suit)} ${isLegal ? 'legal' : ''
                     } ${showTargets && isOpenTarget ? 'targetted' : ''}`;
 
                     if (hasStack) {
@@ -106,15 +105,14 @@ export const drawGrid = (state) => {
                 const cardImage = document.createElement('img');
                 cardImage.src = getURIToCardImage({ suit, card });
                 spot.appendChild(cardImage);
-                spot.className = `cardSpot ${getSuitAsClassname(suit)} ${
-                    isLegal ? 'legal' : ''
+                spot.className = `cardSpot ${getSuitAsClassname(suit)} ${isLegal ? 'legal' : ''
                 } ${hasStack ? 'stack' : ''}`;
             }
         } else {
             const cardImage = document.createElement('img');
-            cardImage.src = getURIToCardImage({ destroyed: true });
+            cardImage.src = getURIToCardImage({ empty: true });
             spot.appendChild(cardImage);
-            spot.className = `cardSpot ${isLegal ? 'legal' : ''} faded`;
+            spot.className = `cardSpot ${isLegal ? 'legal' : 'unplayed'}`;
         }
     });
 };

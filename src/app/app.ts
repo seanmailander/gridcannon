@@ -11,7 +11,6 @@ import {
 
 import { howManyCardsPlaced } from './game.selectors.ts';
 import {
-    lastMoveGameOver,
     noRoyalsOnDeal,
     alreadyWon,
     closeToAWin,
@@ -20,6 +19,8 @@ import {
     doubleTrigger,
     aboutToWin,
     canWeDoIt,
+    addingArmor,
+    unwinnableArmor,
 } from './game.test-states.ts';
 
 const dispatch = getInstance();
@@ -52,7 +53,7 @@ const logStateToConsole = () => {
 };
 
 const loadState = () => {
-    dispatch(loadTestState(canWeDoIt));
+    dispatch(loadTestState(unwinnableArmor));
 };
 
 export default function onLoad() {

@@ -74,6 +74,7 @@ export const instructionIdentifiers = {
     JOKER: 'i-joker',
     END: 'i-end',
     WIN: 'i-win',
-    LOSE: 'i-lose',
-    BORKED: 'i-borked',
+    LOSENOCARD: 'i-lose-nocard',
+    LOSENOROYAL: 'i-lose-noroyal',
+    LOSEOVERARMORED: 'i-lose-overarmored',
 };
