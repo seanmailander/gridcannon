@@ -50,10 +50,18 @@ export const openSpotsForNonRoyal = ({ grid, currentCard }) => {
         (spot) => (grid[spot][0] || { card: 0 }).card <= card,
     );
 };
-export const getOpenRoyaltyStacks = ({ grid }) =>
-    getRoyalStacks(grid)
-        .filter((spot) => !isDestroyed(spot.last()))
-        .map((spot) => spot.reduce((acc, curr) => acc + curr.card, 0));
+
+const getRoyalStacks = (grid) => royalSpots.filter((spot) => grid[spot].length > 0).map((spot) => grid[spot]);
+
+// Selector: count the number of destroyed royals
+export const gameIsWon = (state) => getRoyalStacks(state.grid).reduce(
+    (prev, curr) => prev + (isDestroyed(curr.last()) ? 1 : 0),
+    0,
+) === 12;
+
+export const getOpenRoyaltyStacks = ({ grid }) => getRoyalStacks(grid)
+    .filter((spot) => !isDestroyed(spot.last()))
+    .map((spot) => spot.reduce((acc, curr) => acc + curr.card, 0));
 
 export const whatLegalMoves = (state) => {
     // Selector: find any legal positions for the current card
@@ -159,13 +167,6 @@ export const whatOpenTargets = (state) => {
     );
 };
 
-const getRoyalStacks = (grid) => royalSpots.filter((spot) => grid[spot].length > 0).map((spot) => grid[spot]);
-
-// Selector: count the number of destroyed royals
-export const gameIsWon = (state) => getRoyalStacks(state.grid).reduce(
-    (prev, curr) => prev + (isDestroyed(curr.last()) ? 1 : 0),
-    0,
-) === 12;
 
 // Selector: count the number of remaining cards
 export const hasNoLegalMoves = (state) => currentCard && state.deckInHand.length === 0;
@@ -195,7 +196,7 @@ export const getGamePhase = (state) => {
     const canPlayOnField = !noCardsRemaining && numberOfOpenSpotsOnField > 0;
     // Can we play on armor?
     const openRoyaltyStacks = getOpenRoyaltyStacks(state);
-    const unwinnableArmor = openRoyaltyStacks.filter(stack => stack > 20);
+    const unwinnableArmor = openRoyaltyStacks.filter((stack) => stack > 20);
     const addingArmor = !noCardsRemaining && numberOfOpenSpotsOnField === 0 && !unwinnableArmor && openRoyaltyStacks.length > 0;
 
     // So break out the three kinds of cards to play

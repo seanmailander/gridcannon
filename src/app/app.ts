@@ -21,7 +21,7 @@ import {
     canWeDoIt,
     addingArmor,
     unwinnableArmor,
-} from './game.test-states';
+} from './game.test-states.ts';
 
 const dispatch = getInstance();
 

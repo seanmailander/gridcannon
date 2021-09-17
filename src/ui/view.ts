@@ -90,7 +90,7 @@ export const drawGrid = (state) => {
                     spot.appendChild(cardImage);
                     const armorValue = countTotalArmor(stack);
                     spot.className = `cardSpot ${getSuitAsClassname(suit)} ${isLegal ? 'legal' : ''
-                        } ${showTargets && isOpenTarget ? 'targetted' : ''}`;
+                    } ${showTargets && isOpenTarget ? 'targetted' : ''}`;
 
                     if (hasStack) {
                         const badge = document.createElement('span');
@@ -106,7 +106,7 @@ export const drawGrid = (state) => {
                 cardImage.src = getURIToCardImage({ suit, card });
                 spot.appendChild(cardImage);
                 spot.className = `cardSpot ${getSuitAsClassname(suit)} ${isLegal ? 'legal' : ''
-                    } ${hasStack ? 'stack' : ''}`;
+                } ${hasStack ? 'stack' : ''}`;
             }
         } else {
             const cardImage = document.createElement('img');
