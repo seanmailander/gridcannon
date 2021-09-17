@@ -205,8 +205,8 @@ export const getGamePhase = (state) => {
     const playingJoker = currentCard?.card === JOKER;
     const playingPips = !noCardsRemaining && !unwinnableArmor && !addingArmor && !playingRoyalty && !playingAce && !playingJoker;
 
-    const noLegalMoves = !noCardsRemaining && !playingRoyalty && !canPlayOnField && !unwinnableArmor && !addingArmor;
-    const isLost = noCardsRemaining || noLegalMoves;
+    const noLegalMoves = !noCardsRemaining && !playingRoyalty && !canPlayOnField && !addingArmor;
+    const isLost = noCardsRemaining || noLegalMoves || unwinnableArmor;
 
     const canTrigger = !noCardsRemaining && whatOpenTargets(state).length > 0;
 
@@ -224,6 +224,7 @@ export const getGamePhase = (state) => {
         canTrigger,
     };
 
+    console.log(gamePhase);
     return gamePhase;
 };
 
@@ -233,6 +234,9 @@ export const getHintForCardInHand = (state) => {
     if (currentCard) {
         if (gamePhase.isWon) {
             return 'Game won!';
+        }
+        if (gamePhase.isLost) {
+            return 'Game lost!';
         }
         if (gamePhase.playingRoyalty) {
             return 'Hint: Royalty must be played on the highest-value spot, by suit and by color';

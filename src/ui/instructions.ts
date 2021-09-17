@@ -23,37 +23,43 @@ export default function setInstructions(state) {
     setInstructionActive(instructionIdentifiers.DEAL, false, true);
     setInstructionActive(instructionIdentifiers.ASIDE, false, true);
 
+    const gameOver = gamePhase.isWon || gamePhase.isLost;
     // Constraints (Royals or Armor)
     setInstructionActive(
         instructionIdentifiers.CONSTRAINT,
         gamePhase.playingRoyalty || gamePhase.addingArmor,
+        gameOver,
     );
-    setInstructionActive(instructionIdentifiers.ROYAL, gamePhase.playingRoyalty);
-    setInstructionActive(instructionIdentifiers.ARMOR, gamePhase.addingArmor);
+    setInstructionActive(instructionIdentifiers.ROYAL, gamePhase.playingRoyalty, gameOver);
+    setInstructionActive(instructionIdentifiers.ARMOR, gamePhase.addingArmor, gameOver);
 
     // Play
     setInstructionActive(
         instructionIdentifiers.PLAY,
         !gamePhase.isWon
         && (gamePhase.playingPips || gamePhase.playingAce || gamePhase.playingJoker),
+        gameOver,
     );
     setInstructionActive(
         instructionIdentifiers.PIP,
         !gamePhase.isWon && gamePhase.playingPips,
+        gameOver,
     );
     setInstructionActive(
         instructionIdentifiers.ACE,
         !gamePhase.isWon && gamePhase.playingAce,
+        gameOver,
     );
     setInstructionActive(
         instructionIdentifiers.JOKER,
         !gamePhase.isWon && gamePhase.playingJoker,
+        gameOver,
     );
 
     // End
     setInstructionActive(instructionIdentifiers.END, gamePhase.isWon || gamePhase.isLost);
     setInstructionActive(instructionIdentifiers.WIN, gamePhase.isWon);
     setInstructionActive(instructionIdentifiers.LOSENOCARD, gamePhase.noCardsRemaining);
-    setInstructionActive(instructionIdentifiers.LOSENOROYAL, gamePhase.noLegalMoves);
+    setInstructionActive(instructionIdentifiers.LOSENOROYAL, gamePhase.noRoyal);
     setInstructionActive(instructionIdentifiers.LOSEOVERARMORED, gamePhase.unwinnableArmor);
 }
