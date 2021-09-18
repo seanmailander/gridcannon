@@ -1,17 +1,17 @@
-import { createAction, createReducer } from '@reduxjs/toolkit'
+import { createAction, createReducer } from '@reduxjs/toolkit';
 
 import {
     shuffleDeck, isRoyalty, CARDS, JOKER, ICard,
-} from './deck';
+} from './deck.js';
 
-import { howManyCardsPlaced, targetsFiredUpon } from './game.selectors';
+import { howManyCardsPlaced, targetsFiredUpon } from './game.selectors.js';
 
-export const RESET_GAME = createAction<number>('game/reset')
-export const DEAL_GRID = createAction<number>('game/deal')
-export const PLACE_CARD_DURING_DEAL = createAction<number>('game/placecard')
-export const SET_ROYALTY_ASIDE = createAction<number>('game/setroyaltyaside')
-export const PLAY_CARD = createAction<number>('game/playcard')
-export const LOAD_TEST_STATE = createAction<any>('game/loadteststate')
+export const RESET_GAME = createAction<number>('game/reset');
+export const DEAL_GRID = createAction<number>('game/deal');
+export const PLACE_CARD_DURING_DEAL = createAction<number>('game/placecard');
+export const SET_ROYALTY_ASIDE = createAction<number>('game/setroyaltyaside');
+export const PLAY_CARD = createAction<number>('game/playcard');
+export const LOAD_TEST_STATE = createAction<any>('game/loadteststate');
 
 export const initialState = () => {
     const newDeck = shuffleDeck();
@@ -36,9 +36,7 @@ export interface GameState {
 export const gameReducer = createReducer(initialState(), (builder) => {
     builder
         .addCase(RESET_GAME, (state, action) => initialState())
-        .addCase(LOAD_TEST_STATE, (state, action) => {
-            return JSON.parse(JSON.stringify(action.payload.testState));
-        })
+        .addCase(LOAD_TEST_STATE, (state, action) => JSON.parse(JSON.stringify(action.payload.testState)))
         .addCase(SET_ROYALTY_ASIDE, (state, action) => {
             const { skippedRoyalty, deckInHand, currentCard } = state;
 
@@ -124,5 +122,5 @@ export const gameReducer = createReducer(initialState(), (builder) => {
             // next card is top of deck
             // take next card out of deck
             state.currentCard = deckInHand.shift();
-        })
-})
+        });
+});

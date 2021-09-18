@@ -1,5 +1,5 @@
-import { getGamePhase } from '../app/game.selectors';
-import { instructionIdentifiers } from '../app/game.consts';
+import { getGamePhase } from '../app/game.selectors.js';
+import { instructionIdentifiers } from '../app/game.consts.js';
 
 const setInstructionActive = (identifier, active = false, complete = false) => {
     const instructionNode = document.getElementById(identifier);

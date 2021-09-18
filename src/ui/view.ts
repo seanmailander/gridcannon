@@ -1,6 +1,6 @@
-import { getSuitAsClassname, isRoyalty } from '../app/deck';
+import { getSuitAsClassname, isRoyalty } from '../app/deck.js';
 
-import { getURIToCardImage } from './playing_cards';
+import { getURIToCardImage } from './playing_cards.js';
 
 import {
     whatLegalMoves,
@@ -8,8 +8,8 @@ import {
     getHintForCardInHand,
     openSpotsForNonRoyal,
     countTotalArmor,
-} from '../app/game.selectors';
-import { playSpots } from '../app/game.consts';
+} from '../app/game.selectors.js';
+import { playSpots } from '../app/game.consts.js';
 
 export const setupGrid = () => {
     const grid = document.getElementById('grid');
@@ -90,7 +90,7 @@ export const drawGrid = (state) => {
                     spot.appendChild(cardImage);
                     const armorValue = countTotalArmor(stack);
                     spot.className = `cardSpot ${getSuitAsClassname(suit)} ${isLegal ? 'legal' : ''
-                        } ${showTargets && isOpenTarget ? 'targetted' : ''}`;
+                    } ${showTargets && isOpenTarget ? 'targetted' : ''}`;
 
                     if (hasStack) {
                         const badge = document.createElement('span');
@@ -106,7 +106,7 @@ export const drawGrid = (state) => {
                 cardImage.src = getURIToCardImage({ suit, card });
                 spot.appendChild(cardImage);
                 spot.className = `cardSpot ${getSuitAsClassname(suit)} ${isLegal ? 'legal' : ''
-                    } ${hasStack ? 'stack' : ''}`;
+                } ${hasStack ? 'stack' : ''}`;
             }
         } else {
             const cardImage = document.createElement('img');

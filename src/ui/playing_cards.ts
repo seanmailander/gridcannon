@@ -1,5 +1,5 @@
 /* eslint-disable import/prefer-default-export */
-import { SUITS, JOKER } from '../app/deck';
+import { SUITS, JOKER } from '../app/deck.js';
 
 // Grab relative loaded path to image assets
 const rootPath = './images/playing_cards/';

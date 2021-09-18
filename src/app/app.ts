@@ -1,19 +1,19 @@
-import { setupGrid, attachToInterface } from '../ui/view';
-
 import {
+    setupGrid, attachToInterface,
     drawGrid, drawDeck, drawCurrentCard, changeHint,
 } from '../ui/view';
-import setInstructions from '../ui/instructions';
+
+import setInstructions from '../ui/instructions.js';
 import {
     dealNextCard,
     tryToPlayCard,
-} from './game.commands';
+} from './game.commands.js';
 import {
     RESET_GAME,
     LOAD_TEST_STATE,
-} from './game.reducer';
+} from './game.reducer.js';
 
-import { howManyCardsPlaced } from './game.selectors';
+import { howManyCardsPlaced } from './game.selectors.js';
 import {
     noRoyalsOnDeal,
     alreadyWon,
@@ -25,9 +25,10 @@ import {
     canWeDoIt,
     addingArmor,
     unwinnableArmor,
-} from './game.test-states';
+} from './game.test-states.js';
 
-import { store } from './store';
+import { store } from './store.js';
+
 const { dispatch, getState } = store;
 
 const dealGrid = () => {
@@ -77,6 +78,6 @@ export default function onLoad() {
         drawCurrentCard(state);
         changeHint(state);
         setInstructions(state);
-    })
+    });
     restartGame();
 }

@@ -42,16 +42,15 @@ export const getSuitAsClassname = (suit) => {
 };
 
 export interface ICard {
-    suit: String,
-    card: Number,
-};
+    suit: string,
+    card: number,
+}
 
 export const shuffleDeck = () => {
     const deck: Array<ICard> = Object.keys(SUITS).map((suit) => Object.keys(CARDS).map((card) => ({
         suit: SUITS[suit],
         card: CARDS[card],
     }))).flat();
-
 
     const joker = {
         suit: '',

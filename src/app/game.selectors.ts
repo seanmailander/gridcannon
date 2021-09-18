@@ -5,7 +5,7 @@ import {
     royalSpots,
     triggerSpots,
     instructionIdentifiers,
-} from './game.consts';
+} from './game.consts.js';
 import {
     colorMaps,
     isRoyalty,
@@ -13,7 +13,7 @@ import {
     CARDS,
     JOKER,
     isNotFaceCard,
-} from './deck';
+} from './deck.js';
 
 // Selector: count the number of placed cards in the grid
 export const howManyCardsPlaced = (state) => dealSpots.reduce(

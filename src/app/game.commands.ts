@@ -27,5 +27,4 @@ export const tryToPlayCard = (targetPosition) => (dispatch, getState) => {
     if (legalPositions.indexOf(targetPosition) !== -1) {
         return dispatch(PLAY_CARD(targetPosition));
     }
-    return;
 };

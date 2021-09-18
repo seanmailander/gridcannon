@@ -1,9 +1,9 @@
 import '../libs/polyfills';
 
-import { tryToPlayCard } from './game.actions';
-import { applyStateChange } from './game.reducer';
-import { gameIsWon } from './game.selectors';
-import { aboutToWin } from './game.test-states';
+import { tryToPlayCard } from './game.actions.js';
+import { applyStateChange } from './game.reducer.js';
+import { gameIsWon } from './game.selectors.js';
+import { aboutToWin } from './game.test-states.js';
 
 describe('can win the game', () => {
     test('should allow a winning move', () => {
