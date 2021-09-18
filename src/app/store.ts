@@ -2,7 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import { gameReducer } from "./game.reducer";
 
 export const store = configureStore({
-    reducer: gameReducer,
+  reducer: gameReducer,
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
