@@ -7,11 +7,11 @@ import {
   changeHint,
 } from "../ui/view";
 
-import setInstructions from "../ui/instructions.js";
-import { dealNextCard, tryToPlayCard } from "./game.commands.js";
-import { RESET_GAME, LOAD_TEST_STATE } from "./game.reducer.js";
+import setInstructions from "../ui/instructions";
+import { dealNextCard, tryToPlayCard } from "./game.commands";
+import { RESET_GAME, LOAD_TEST_STATE } from "./game.reducer";
 
-import { howManyCardsPlaced } from "./game.selectors.js";
+import { howManyCardsPlaced } from "./game.selectors";
 import {
   noRoyalsOnDeal,
   alreadyWon,
@@ -23,9 +23,9 @@ import {
   canWeDoIt,
   addingArmor,
   unwinnableArmor,
-} from "./game.test-states.js";
+} from "./game.test-states";
 
-import { store } from "./store.js";
+import { store } from "./store";
 
 const { dispatch, getState } = store;
 

@@ -1,5 +1,3 @@
-import "./libs/polyfills";
-
 import onLoad from "./app/app";
 import { $on } from "./ui/helpers";
 

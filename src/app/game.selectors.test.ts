@@ -1,5 +1,3 @@
-import "../libs/polyfills";
-
 import { whatLegalMoves, gameIsWon, scoreGame } from "./game.selectors";
 import { SUITS, CARDS } from "./deck";
 import {
