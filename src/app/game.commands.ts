@@ -3,6 +3,7 @@ import { SET_ROYALTY_ASIDE, PLACE_CARD_DURING_DEAL, PLAY_CARD } from './game.red
 import { isRoyalty } from './deck';
 import { howManyCardsPlaced, whatLegalMoves } from './game.selectors';
 import { dealSpots } from './game.consts';
+import { AppDispatch } from './store';
 
 export const dealNextCard = (targetPosition) => (dispatch, getState) => {
     const { currentCard } = getState();
@@ -15,7 +16,7 @@ export const dealNextCard = (targetPosition) => (dispatch, getState) => {
     return dispatch(PLACE_CARD_DURING_DEAL(position));
 };
 
-export const tryToPlayCard = (targetPosition) => (dispatch, getState) => {
+export const tryToPlayCard = (targetPosition: number) => (dispatch: AppDispatch, getState) => {
     const state = getState();
     const dealIsFinished = howManyCardsPlaced(state) === 8;
 
