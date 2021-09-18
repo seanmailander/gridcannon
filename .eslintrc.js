@@ -19,7 +19,6 @@ module.exports = {
     project: "./tsconfig.json",
   },
   rules: {
-    indent: ["error", 4],
     "import/extensions": "off",
     "max-len": "off",
     "@typescript-eslint/no-unused-vars": "warn",
