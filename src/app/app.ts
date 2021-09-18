@@ -1,68 +1,81 @@
-import { setupGrid, attachToInterface } from '../ui/view.ts';
-
-import getInstance from './game.reducer.ts';
-
 import {
-    resetGame,
-    dealNextCard,
-    tryToPlayCard,
-    loadTestState,
-} from './game.actions.ts';
+  setupGrid,
+  attachToInterface,
+  drawGrid,
+  drawDeck,
+  drawCurrentCard,
+  changeHint,
+} from "../ui/view";
 
-import { howManyCardsPlaced } from './game.selectors.ts';
+import setInstructions from "../ui/instructions";
+import { dealNextCard, tryToPlayCard } from "./game.commands";
+import { RESET_GAME, LOAD_TEST_STATE } from "./game.reducer";
+
+import { howManyCardsPlaced } from "./game.selectors";
 import {
-    noRoyalsOnDeal,
-    alreadyWon,
-    closeToAWin,
-    midGameArmor,
-    noCardsLeft,
-    doubleTrigger,
-    aboutToWin,
-    canWeDoIt,
-    addingArmor,
-    unwinnableArmor,
-} from './game.test-states.ts';
+  noRoyalsOnDeal,
+  alreadyWon,
+  closeToAWin,
+  midGameArmor,
+  noCardsLeft,
+  doubleTrigger,
+  aboutToWin,
+  canWeDoIt,
+  addingArmor,
+  unwinnableArmor,
+} from "./game.test-states";
 
-const dispatch = getInstance();
+import { store } from "./store";
+
+const { dispatch, getState } = store;
 
 const dealGrid = () => {
-    let placedCards = 0;
-    // Place grid one-by-one
-    while (placedCards < 8) {
-        const state = dispatch(dealNextCard(placedCards));
-        placedCards = howManyCardsPlaced(state);
-    }
+  let placedCards = 0;
+  // Place grid one-by-one
+  while (placedCards < 8) {
+    dispatch(dealNextCard(placedCards));
+    const state = getState();
+    placedCards = howManyCardsPlaced(state);
+  }
 };
 
 const cardSpotClicked = (position) => {
-    dispatch(tryToPlayCard(position));
+  dispatch(tryToPlayCard(position));
 };
 
 const restartGame = () => {
-    dispatch(resetGame);
-    dealGrid();
+  dispatch(RESET_GAME());
+  dealGrid();
 };
 
 const logStateToConsole = () => {
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    const noopAction = () => { };
-    const currentState = dispatch(noopAction);
-    // eslint-disable-next-line no-console
-    console.debug(JSON.stringify(currentState));
-    // console.debug(LZString.compressToBase64(JSON.stringify(dispatch(() => {}))));
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  const noopAction = () => {};
+  const currentState = dispatch(noopAction);
+  // eslint-disable-next-line no-console
+  console.debug(JSON.stringify(currentState));
+  // console.debug(LZString.compressToBase64(JSON.stringify(dispatch(() => {}))));
 };
 
 const loadState = () => {
-    dispatch(loadTestState(unwinnableArmor));
+  dispatch(LOAD_TEST_STATE(unwinnableArmor));
 };
 
 export default function onLoad() {
-    setupGrid();
-    attachToInterface({
-        restart: restartGame,
-        placeCard: cardSpotClicked,
-        saveState: logStateToConsole,
-        loadState,
-    });
-    restartGame();
+  setupGrid();
+  attachToInterface({
+    restart: restartGame,
+    placeCard: cardSpotClicked,
+    saveState: logStateToConsole,
+    loadState,
+  });
+  const unsubscribe = store.subscribe(() => {
+    const state = store.getState();
+    drawGrid(state);
+    drawDeck(state);
+    drawCurrentCard(state);
+    changeHint(state);
+    setInstructions(state);
+  });
+  restartGame();
 }
