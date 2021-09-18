@@ -41,17 +41,23 @@ export const getSuitAsClassname = (suit) => {
     return suitToClassMap[suit];
 };
 
+export interface ICard {
+    suit: String,
+    card: Number,
+};
+
 export const shuffleDeck = () => {
-    const deck = Object.keys(SUITS).map((suit) => Object.keys(CARDS).map((card) => ({
+    const deck: Array<ICard> = Object.keys(SUITS).map((suit) => Object.keys(CARDS).map((card) => ({
         suit: SUITS[suit],
         card: CARDS[card],
     }))).flat();
 
+
     const joker = {
         suit: '',
         card: JOKER,
-    };
-    const withJokers = [].concat(deck, joker, joker);
+    } as ICard;
+    const withJokers: Array<ICard> = [].concat(deck, joker, joker);
 
     const ugglyShuffle = () => (Math.random() > 0.5 ? -1 : 1);
 

@@ -1,7 +1,7 @@
-import '../libs/polyfills.ts';
+import '../libs/polyfills';
 
-import { whatLegalMoves, gameIsWon, scoreGame } from './game.selectors.ts';
-import { SUITS, CARDS } from './deck.ts';
+import { whatLegalMoves, gameIsWon, scoreGame } from './game.selectors';
+import { SUITS, CARDS } from './deck';
 import {
     alreadyWon,
     closeToAWin,
@@ -11,7 +11,7 @@ import {
     midGameArmor,
     noCardsLeft,
     closeToAWinNoArmorWithBonus,
-} from './game.test-states.ts';
+} from './game.test-states';
 
 describe('finds legal moves', () => {
     test('should early-out before deal is complete', () => {

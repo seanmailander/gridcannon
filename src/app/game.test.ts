@@ -1,13 +1,13 @@
-import '../libs/polyfills.ts';
+import '../libs/polyfills';
 
-import { tryToPlayCard } from './game.actions.ts';
-import { applyStateChange } from './game.reducer.ts';
-import { gameIsWon } from './game.selectors.ts';
-import { aboutToWin } from './game.test-states.ts';
+import { tryToPlayCard } from './game.actions';
+import { applyStateChange } from './game.reducer';
+import { gameIsWon } from './game.selectors';
+import { aboutToWin } from './game.test-states';
 
 describe('can win the game', () => {
     test('should allow a winning move', () => {
-    // Arrange
+        // Arrange
         const state = aboutToWin;
         const position = 17;
 

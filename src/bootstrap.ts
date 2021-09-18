@@ -1,7 +1,7 @@
-import './libs/polyfills.ts';
+import './libs/polyfills';
 
-import onLoad from './app/app.ts';
-import { $on } from './ui/helpers.ts';
+import onLoad from './app/app';
+import { $on } from './ui/helpers';
 
 import './ui/styles.css';
 

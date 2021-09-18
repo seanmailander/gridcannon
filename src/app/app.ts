@@ -1,15 +1,19 @@
-import { setupGrid, attachToInterface } from '../ui/view.ts';
-
-import getInstance from './game.reducer.ts';
+import { setupGrid, attachToInterface } from '../ui/view';
 
 import {
-    resetGame,
+    drawGrid, drawDeck, drawCurrentCard, changeHint,
+} from '../ui/view';
+import setInstructions from '../ui/instructions';
+import {
     dealNextCard,
     tryToPlayCard,
-    loadTestState,
-} from './game.actions.ts';
+} from './game.commands';
+import {
+    RESET_GAME,
+    LOAD_TEST_STATE,
+} from './game.reducer';
 
-import { howManyCardsPlaced } from './game.selectors.ts';
+import { howManyCardsPlaced } from './game.selectors';
 import {
     noRoyalsOnDeal,
     alreadyWon,
@@ -21,15 +25,17 @@ import {
     canWeDoIt,
     addingArmor,
     unwinnableArmor,
-} from './game.test-states.ts';
+} from './game.test-states';
 
-const dispatch = getInstance();
+import { store } from './store';
+const { dispatch, getState } = store;
 
 const dealGrid = () => {
     let placedCards = 0;
     // Place grid one-by-one
     while (placedCards < 8) {
-        const state = dispatch(dealNextCard(placedCards));
+        dispatch(dealNextCard(placedCards));
+        const state = getState();
         placedCards = howManyCardsPlaced(state);
     }
 };
@@ -39,7 +45,7 @@ const cardSpotClicked = (position) => {
 };
 
 const restartGame = () => {
-    dispatch(resetGame);
+    dispatch(RESET_GAME());
     dealGrid();
 };
 
@@ -53,7 +59,7 @@ const logStateToConsole = () => {
 };
 
 const loadState = () => {
-    dispatch(loadTestState(unwinnableArmor));
+    dispatch(LOAD_TEST_STATE(unwinnableArmor));
 };
 
 export default function onLoad() {
@@ -64,5 +70,13 @@ export default function onLoad() {
         saveState: logStateToConsole,
         loadState,
     });
+    const unsubscribe = store.subscribe(() => {
+        const state = store.getState();
+        drawGrid(state);
+        drawDeck(state);
+        drawCurrentCard(state);
+        changeHint(state);
+        setInstructions(state);
+    })
     restartGame();
 }
