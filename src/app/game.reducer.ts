@@ -86,16 +86,10 @@ export const gameReducer = createReducer(initialState(), (builder) => {
             state.currentCard = nextCard;
         })
         .addCase(PLAY_CARD, (state, action) => {
-
-            let {
+            const {
                 grid, deckInHand, skippedRoyalty, currentCard, bonus,
             } = state;
             const { payload: position } = action;
-
-            // Immutable state, so duplicate
-            const newGrid = grid.slice();
-            const newDeckInHand = deckInHand.slice();
-            const newBonus = bonus.slice();
 
             // put card in grid
             // stacks on!
@@ -103,19 +97,19 @@ export const gameReducer = createReducer(initialState(), (builder) => {
             // should this clear the stack?
             if (currentCard.card === JOKER || currentCard.card === CARDS.ACE) {
                 // reset the stack, returning it to the deck in hand
-                newDeckInHand.push(...newGrid[position]);
-                newGrid[position] = [currentCard];
+                deckInHand.push(...grid[position]);
+                grid[position] = [currentCard];
             } else {
-                newGrid[position].unshift(currentCard);
+                grid[position].unshift(currentCard);
             }
 
             // check for trigger
             if (!isRoyalty(currentCard)) {
-                const destroyedPositions = targetsFiredUpon(position, newGrid);
-                destroyedPositions.forEach((destroyPos) => newGrid[destroyPos].push({ destroyed: true }));
+                const destroyedPositions = targetsFiredUpon(position, grid);
+                destroyedPositions.forEach((destroyPos) => grid[destroyPos].push({ destroyed: true }));
                 if (destroyedPositions.length > 1) {
                     // Double points for double trigger
-                    newBonus.push(destroyedPositions.map((pos) => newGrid[pos]));
+                    bonus.push(destroyedPositions.map((pos) => grid[pos]));
                 }
             }
 
@@ -123,40 +117,12 @@ export const gameReducer = createReducer(initialState(), (builder) => {
             const isMoreRoyalty = skippedRoyalty.length > 0;
             if (isMoreRoyalty) {
                 // next card is top of royalty
-                const copiedRoyalty = skippedRoyalty.slice();
                 // take next card out of royalty
-                const nextCard = copiedRoyalty.shift();
-
-                // return new state
-                return {
-                    ...state,
-                    // put current card in grid
-                    grid: newGrid,
-                    // no change to deck in hand
-                    deckInHand: newDeckInHand,
-                    // take next card out of royalty
-                    skippedRoyalty: copiedRoyalty,
-                    // show next card from top of royalty
-                    currentCard: nextCard,
-                };
+                state.currentCard = skippedRoyalty.shift();
+                return;
             }
             // next card is top of deck
             // take next card out of deck
-            const nextCard = newDeckInHand.shift();
-
-            // return new state
-            return {
-                ...state,
-                // put current card in grid
-                grid: newGrid,
-                // take next card out of deck in hand
-                deckInHand: newDeckInHand,
-                // no change to royalty
-                skippedRoyalty,
-                // show next card from top of deck
-                currentCard: nextCard,
-                // accumulate a bonus for any triggers
-                bonus: newBonus,
-            };
+            state.currentCard = deckInHand.shift();
         })
 })
