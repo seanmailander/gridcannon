@@ -11,16 +11,18 @@ import { howManyCardsPlaced, whatLegalMoves } from "./game.selectors";
 import { dealSpots } from "./game.consts";
 import { AppDispatch } from "./store";
 
-export const dealNextCard = (targetPosition) => (dispatch, getState) => {
-  const { currentCard } = getState();
-  if (isRoyalty(currentCard)) {
-    // Place aside
-    return dispatch(SET_ROYALTY_ASIDE());
-  }
-  // Place in grid
-  const position = dealSpots[targetPosition];
-  return dispatch(PLACE_CARD_DURING_DEAL(position));
-};
+export const dealNextCard =
+  (dealIndex: number) =>
+  (dispatch: AppDispatch, getState): void | AnyAction => {
+    const { currentCard } = getState();
+    if (isRoyalty(currentCard)) {
+      // Place aside
+      return dispatch(SET_ROYALTY_ASIDE());
+    }
+    // Place in grid
+    const position = dealSpots[dealIndex];
+    return dispatch(PLACE_CARD_DURING_DEAL(position));
+  };
 
 export const tryToPlayCard =
   (targetPosition: number) =>
