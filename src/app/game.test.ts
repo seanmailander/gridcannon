@@ -5,13 +5,10 @@ import { gameIsWon } from "./game.selectors";
 import { aboutToWin } from "./game.test-states";
 import { RootState } from "./store";
 
-expect.addSnapshotSerializer({
-    test: (val) => val && "grid" in val && "deckInHand" in val,
-    print: (val) => textRender(val as any),
-});
 
 const range = (n) => [...Array(n).keys()];
 
+/* eslint-disable no-nested-ternary */
 const cardToVal = (card) =>
     card === CARDS.JACK
         ? "J"
@@ -30,11 +27,13 @@ const renderCard = (card: ICard) =>
                 ? ` ${cardToVal(card.card)}:${card.suit} `
                 : ""
         }${card?.destroyed ? "  x  " : ""}`;
+/* eslint-enable no-nested-ternary */
 
 const renderCardStack = (cardStack: ICard[]) =>
     renderCard(cardStack.slice(-1)[0]);
 
-export const textRender = (state: RootState) => {
+/* eslint-disable prefer-template */
+const textRender = (state: RootState) => {
     const gridSize = 5;
     const { skippedRoyalty, deckInHand, currentCard, grid } = state;
 
@@ -53,6 +52,12 @@ export const textRender = (state: RootState) => {
     render += "\nRemaining Deck: " + deckInHand.map(renderCard).join(",");
     return render.trim();
 };
+/* eslint-enable prefer-template */
+
+expect.addSnapshotSerializer({
+    test: (val) => val && "grid" in val && "deckInHand" in val,
+    print: (val) => textRender(val as any),
+});
 
 const thunk =
     ({ dispatch, getState }) =>
