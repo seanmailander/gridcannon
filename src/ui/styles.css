@@ -36,13 +36,13 @@ ul {
   list-style-type: none;
 }
 
-#game {
+#main {
   display: flex;
   justify-content: center;
   margin: 10px 80px;
 }
 
-#game .grid-holder {
+#main .grid-holder {
   flex-grow: 1;
   display: flex;
   justify-content: center;

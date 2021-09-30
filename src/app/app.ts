@@ -9,12 +9,10 @@ import {
 
 import setInstructions from "../ui/instructions";
 import { dealNextCard, tryToPlayCard } from "./game.commands";
-import { RESET_GAME, LOAD_TEST_STATE } from "./game.reducer";
+import { RESET_GAME, LOAD_TEST_STATE, SHOW_MENU, SHOW_GAME } from "./game.reducer";
 
 import { howManyCardsPlaced } from "./game.selectors";
-import {
-    unwinnableArmor,
-} from "./game.test-states";
+import { unwinnableArmor } from "./game.test-states";
 
 import { store } from "./store";
 
@@ -66,5 +64,5 @@ export default function onLoad() {
         changeHint(state);
         setInstructions(state);
     });
-    restartGame();
+    // restartGame();
 }
