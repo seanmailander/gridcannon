@@ -21,22 +21,11 @@ import { store } from "../app/store";
 import connect from './component-connector';
 
 import sharedStyles from './styles.css';
-import { dealNextCard, tryToPlayCard } from '../app/game.commands';
+import gameStyles from './styles.game.scss';
+import { dealGrid, tryToPlayCard } from '../app/game.commands';
 import { unwinnableArmor } from '../app/game.test-states';
 
 const { dispatch, getState } = store;
-
-
-
-const dealGrid = () => {
-    let placedCards = 0;
-    // Place grid one-by-one
-    while (placedCards < 8) {
-        dispatch(dealNextCard(placedCards));
-        const state = getState();
-        placedCards = howManyCardsPlaced(state);
-    }
-};
 
 const cardSpotClicked = (position) => {
     dispatch(tryToPlayCard(position));
@@ -59,22 +48,6 @@ const loadState = () => {
 };
 
 
-export const setupGrid = () => {
-    const grid = document.getElementById("grid");
-    [...Array(5)].forEach((element, i) => {
-        const row = document.createElement("section");
-        row.id = `row${i}`;
-        row.className = "row";
-        grid.appendChild(row);
-
-        [...Array(5)].forEach((element2, j) => {
-            const cardSpot = document.createElement("section");
-            cardSpot.id = `spot${i * 5 + j}`;
-            cardSpot.className = "cardSpot";
-            row.appendChild(cardSpot);
-        });
-    });
-};
 
 export const drawDeck = (state) => {
     const cardElement = document.getElementById("deck");
@@ -111,63 +84,6 @@ export const drawCurrentCard = (state) => {
     }
 };
 
-export const drawGrid = (state) => {
-    const { grid, currentCard } = state;
-    const legalMoves = whatLegalMoves(state);
-    const openTargets = whatOpenTargets(state);
-    const showTargets =
-        !isRoyalty(currentCard) && openSpotsForNonRoyal(state).length > 0;
-    grid.forEach((stack, index) => {
-        const spot = document.getElementById(`spot${index}`);
-        [...spot.childNodes].forEach((node) => spot.removeChild(node));
-
-        const isLegal = legalMoves.indexOf(index) !== -1;
-        const isRoyal = playSpots.indexOf(index) === -1;
-        const isOpenTarget = openTargets.indexOf(index) !== -1;
-        const hasCard = stack.length > 0;
-        const hasStack = stack.length > 1;
-
-        if (hasCard) {
-            if (isRoyal) {
-                const [lastCard] = stack.slice(-1);
-                const { suit, card, destroyed = false } = lastCard;
-                if (destroyed) {
-                    const cardImage = document.createElement("img");
-                    cardImage.src = getURIToCardImage({ destroyed });
-                    spot.appendChild(cardImage);
-                    spot.className = "cardSpot";
-                } else {
-                    const cardImage = document.createElement("img");
-                    cardImage.src = getURIToCardImage({ suit, card });
-                    spot.appendChild(cardImage);
-                    const armorValue = countTotalArmor(stack);
-                    spot.className = `cardSpot ${getSuitAsClassname(suit)} ${isLegal ? "legal" : ""
-                        } ${showTargets && isOpenTarget ? "targetted" : ""}`;
-
-                    if (hasStack) {
-                        const badge = document.createElement("span");
-                        badge.className = "badge";
-                        const armorText = document.createTextNode(armorValue);
-                        badge.appendChild(armorText);
-                        spot.appendChild(badge);
-                    }
-                }
-            } else {
-                const { suit, card } = stack[0];
-                const cardImage = document.createElement("img");
-                cardImage.src = getURIToCardImage({ suit, card });
-                spot.appendChild(cardImage);
-                spot.className = `cardSpot ${getSuitAsClassname(suit)} ${isLegal ? "legal" : ""
-                    } ${hasStack ? "stack" : ""}`;
-            }
-        } else {
-            const cardImage = document.createElement("img");
-            cardImage.src = getURIToCardImage({ empty: true });
-            spot.appendChild(cardImage);
-            spot.className = `cardSpot ${isLegal ? "legal" : "unplayed"}`;
-        }
-    });
-};
 
 export const changeHint = (state) => {
     const hint = getHintForCardInHand(state);
@@ -193,7 +109,6 @@ export const attachToInterface = (handlers) => {
 
 
 export default function onLoad() {
-    setupGrid();
     attachToInterface({
         restart: restartGame,
         placeCard: cardSpotClicked,
@@ -202,7 +117,6 @@ export default function onLoad() {
     });
     store.subscribe(() => {
         const state = store.getState();
-        drawGrid(state);
         drawDeck(state);
         drawCurrentCard(state);
         changeHint(state);
@@ -249,10 +163,87 @@ aria-label="View source on Github"
   ></path></svg></a>
 `;
 
+const drawCard = (imageSource) => html`
+    <img src=${imageSource} />`;
+
+const drawBadge = (armor) => html`
+    <span class="badge">${armor}</span>
+`;
+
+const drawGrid = (state) => {
+    const { grid, currentCard } = state;
+    const legalMoves = whatLegalMoves(state);
+    const openTargets = whatOpenTargets(state);
+    const showTargets =
+        !isRoyalty(currentCard) && openSpotsForNonRoyal(state).length > 0;
+
+    return html`
+
+    ${[...Array(5)].map((_, i) => html`
+    <section id='row${i}' class='row'>
+        ${[...Array(5)].map((_, j) => {
+
+        const spotIndex = i * 5 + j;
+        const stack = grid[spotIndex];
+
+        const isLegal = legalMoves.indexOf(spotIndex) !== -1;
+        const isRoyal = playSpots.indexOf(spotIndex) === -1;
+        const isOpenTarget = openTargets.indexOf(spotIndex) !== -1;
+        const hasCard = stack.length > 0;
+        const hasStack = stack.length > 1;
+
+        let cardImage = null;
+        const cardClasses = ['cardSpot'];
+        let badge = null;
+
+        if (hasCard) {
+            if (isRoyal) {
+                const [lastCard] = stack.slice(-1);
+                const { suit, card, destroyed = false } = lastCard;
+                if (destroyed) {
+                    cardImage = drawCard(getURIToCardImage({ destroyed }));
+                } else {
+                    cardImage = drawCard(getURIToCardImage({ suit, card }));
+                    cardClasses.push(getSuitAsClassname(suit));
+                    cardClasses.push(isLegal ? "legal" : null);
+                    cardClasses.push(showTargets && isOpenTarget ? "targetted" : null);
+
+                    if (hasStack) {
+                        badge = drawBadge(countTotalArmor(stack));
+                    }
+                }
+            } else {
+                const { suit, card } = stack[0];
+                cardImage = drawCard(getURIToCardImage({ suit, card }));
+                cardClasses.push(getSuitAsClassname(suit));
+                cardClasses.push(isLegal ? "legal" : null);
+                cardClasses.push(hasStack ? "stack" : null);
+            }
+        } else {
+            cardImage = drawCard(getURIToCardImage({ empty: true }));
+            cardClasses.push(isLegal ? "legal" : "unplayed");
+        }
+
+        return html`
+                <section id="spot${spotIndex}" class="${cardClasses}">
+                    ${cardImage}
+                </section>
+            `;
+    })}
+        `)}
+`;
+};
+
+
 function renderScene({ state, scene }) {
     if (scene !== scenes.GAME) {
         return html``;
     }
+
+
+
+
+
     return html`
     <section id="game">
       <section class="heading">
@@ -275,7 +266,7 @@ function renderScene({ state, scene }) {
           </section>
         </section>
         <section class="grid-holder">
-          <section id="grid" class="grid"></section>
+          <section id="grid" class="grid">${drawGrid(state)}</section>
         </section>
         <section class="right-bar">
           <h2 id="i-setup">The Setup</h2>
@@ -315,7 +306,7 @@ function renderScene({ state, scene }) {
         <simple-counter count="10"></simple-counter>
       </section>
     </section>
-        `.style(sharedStyles);
+        `.style(sharedStyles, gameStyles);
 }
 
 define({

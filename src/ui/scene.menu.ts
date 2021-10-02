@@ -1,4 +1,5 @@
 import { html, define } from 'https://unpkg.com/hybrids@^6';
+import { dealGrid } from '../app/game.commands';
 import { scenes } from '../app/game.consts';
 import { RESET_GAME, SHOW_GAME, SHOW_MENU } from '../app/game.reducer';
 
@@ -12,6 +13,7 @@ const { dispatch, getState } = store;
 function startNewGame(host) {
     dispatch(SHOW_GAME());
     dispatch(RESET_GAME());
+    dispatch(dealGrid());
 }
 
 function optionToggle(option) {
