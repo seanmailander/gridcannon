@@ -49,42 +49,6 @@ const loadState = () => {
 
 
 
-export const drawDeck = (state) => {
-    const cardElement = document.getElementById("deck");
-    [...cardElement.childNodes].forEach((node) => cardElement.removeChild(node));
-
-    const remainingElement = document.getElementById("cardsRemaining");
-    [...remainingElement.childNodes].forEach((node) =>
-        remainingElement.removeChild(node)
-    );
-
-    const { deckInHand, skippedRoyalty } = state;
-    if (deckInHand && deckInHand.length > 0) {
-        const cardImage = document.createElement("img");
-        cardImage.src = getURIToCardImage({ destroyed: true });
-        cardElement.appendChild(cardImage);
-        const deckLengthNode = document.createTextNode(
-            `${deckInHand.length + skippedRoyalty.length} cards remaining`
-        );
-        remainingElement.appendChild(deckLengthNode);
-    }
-};
-
-export const drawCurrentCard = (state) => {
-    const cardElement = document.getElementById("currentCard");
-    [...cardElement.childNodes].forEach((node) => cardElement.removeChild(node));
-
-    const { currentCard } = state;
-    if (currentCard) {
-        const { suit, card } = currentCard;
-        const cardImage = document.createElement("img");
-        cardImage.src = getURIToCardImage({ suit, card });
-        cardElement.appendChild(cardImage);
-        cardElement.className = `${getSuitAsClassname(suit)}`;
-    }
-};
-
-
 export const changeHint = (state) => {
     const hint = getHintForCardInHand(state);
     const hintNode = document.getElementById("hint");
@@ -117,8 +81,6 @@ export default function onLoad() {
     });
     store.subscribe(() => {
         const state = store.getState();
-        drawDeck(state);
-        drawCurrentCard(state);
         changeHint(state);
         setInstructions(state);
     });
@@ -235,14 +197,57 @@ const drawGrid = (state) => {
 };
 
 
+const drawDeck = (state) => {
+    const { deckInHand, skippedRoyalty } = state;
+    if (deckInHand && deckInHand.length > 0) {
+        const cardImage = drawCard(getURIToCardImage({ destroyed: true }));
+
+        return html`
+            <div id="deck">
+            ${cardImage}
+            </div>
+        `;
+    }
+
+    return html``;
+};
+
+const drawCardsRemaining = (state) => {
+    const { deckInHand, skippedRoyalty } = state;
+    if (deckInHand && deckInHand.length > 0) {
+        return html`
+        <div id="cardsRemaining">
+            ${deckInHand.length + skippedRoyalty.length} cards remaining
+        </div>
+        `;
+    }
+
+    return html``;
+};
+
+const drawCurrentCard = (state) => {
+    const { currentCard } = state;
+    if (currentCard) {
+        const { suit, card } = currentCard;
+        const cardImage = drawCard(getURIToCardImage({ suit, card }));
+
+        return html`
+
+        <div id="currentCard" class=${getSuitAsClassname(suit)}>
+            ${cardImage}
+        </div>
+        Current card
+        `;
+    }
+
+    return html``;
+};
+
+
 function renderScene({ state, scene }) {
     if (scene !== scenes.GAME) {
         return html``;
     }
-
-
-
-
 
     return html`
     <section id="game">
@@ -253,11 +258,12 @@ function renderScene({ state, scene }) {
       </section>
       <section id="main">
         <section class="left-bar">
-          <div id="currentCard"></div>
-          Current card
+            ${drawCurrentCard(state)}
 
-          <div id="deck"></div>
-          <div id="cardsRemaining"></div>
+            ${drawDeck(state)}
+
+            ${drawCardsRemaining(state)}
+
 
           <section class="controls">
             <button id="restartBtn">Restart game</button>
