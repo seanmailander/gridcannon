@@ -21,9 +21,11 @@ function renderScene({ scene }) {
     <section class="heading">
     <h1>GridCannon</h1>
     </section>
-    <button onclick="${loadMenu}">
-        Get started
-    </button>
+    <section class="heading">
+        <button onclick="${loadMenu}">
+            Get started
+        </button>
+    </section>
     `.style(sharedStyles);
 }
 

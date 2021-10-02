@@ -1,20 +1,255 @@
 import { html, define } from 'https://unpkg.com/hybrids@^6';
-import { scenes } from '../app/game.consts';
-import { SHOW_MENU } from '../app/game.reducer';
+
+import { getSuitAsClassname, isRoyalty } from "../app/deck";
+
+import { getURIToCardImage } from "./playing_cards";
+
+import {
+    whatLegalMoves,
+    whatOpenTargets,
+    getHintForCardInHand,
+    openSpotsForNonRoyal,
+    countTotalArmor,
+    getGamePhase,
+    howManyCardsPlaced,
+} from "../app/game.selectors";
+import { playSpots, scenes } from "../app/game.consts";
+
+import { LOAD_TEST_STATE, RESET_GAME, SHOW_MENU } from '../app/game.reducer';
 
 import { store } from "../app/store";
 import connect from './component-connector';
 
 import sharedStyles from './styles.css';
+import { dealNextCard, tryToPlayCard } from '../app/game.commands';
+import { unwinnableArmor } from '../app/game.test-states';
 
 const { dispatch, getState } = store;
+
+
+
+const dealGrid = () => {
+    let placedCards = 0;
+    // Place grid one-by-one
+    while (placedCards < 8) {
+        dispatch(dealNextCard(placedCards));
+        const state = getState();
+        placedCards = howManyCardsPlaced(state);
+    }
+};
+
+const cardSpotClicked = (position) => {
+    dispatch(tryToPlayCard(position));
+};
+
+const restartGame = () => {
+    dispatch(RESET_GAME());
+    dealGrid();
+};
+
+const logStateToConsole = () => {
+    const currentState = getState();
+    // eslint-disable-next-line no-console
+    console.debug(JSON.stringify(currentState));
+    // console.debug(LZString.compressToBase64(JSON.stringify(currentState)));
+};
+
+const loadState = () => {
+    dispatch(LOAD_TEST_STATE(unwinnableArmor));
+};
+
+
+export const setupGrid = () => {
+    const grid = document.getElementById("grid");
+    [...Array(5)].forEach((element, i) => {
+        const row = document.createElement("section");
+        row.id = `row${i}`;
+        row.className = "row";
+        grid.appendChild(row);
+
+        [...Array(5)].forEach((element2, j) => {
+            const cardSpot = document.createElement("section");
+            cardSpot.id = `spot${i * 5 + j}`;
+            cardSpot.className = "cardSpot";
+            row.appendChild(cardSpot);
+        });
+    });
+};
+
+export const drawDeck = (state) => {
+    const cardElement = document.getElementById("deck");
+    [...cardElement.childNodes].forEach((node) => cardElement.removeChild(node));
+
+    const remainingElement = document.getElementById("cardsRemaining");
+    [...remainingElement.childNodes].forEach((node) =>
+        remainingElement.removeChild(node)
+    );
+
+    const { deckInHand, skippedRoyalty } = state;
+    if (deckInHand && deckInHand.length > 0) {
+        const cardImage = document.createElement("img");
+        cardImage.src = getURIToCardImage({ destroyed: true });
+        cardElement.appendChild(cardImage);
+        const deckLengthNode = document.createTextNode(
+            `${deckInHand.length + skippedRoyalty.length} cards remaining`
+        );
+        remainingElement.appendChild(deckLengthNode);
+    }
+};
+
+export const drawCurrentCard = (state) => {
+    const cardElement = document.getElementById("currentCard");
+    [...cardElement.childNodes].forEach((node) => cardElement.removeChild(node));
+
+    const { currentCard } = state;
+    if (currentCard) {
+        const { suit, card } = currentCard;
+        const cardImage = document.createElement("img");
+        cardImage.src = getURIToCardImage({ suit, card });
+        cardElement.appendChild(cardImage);
+        cardElement.className = `${getSuitAsClassname(suit)}`;
+    }
+};
+
+export const drawGrid = (state) => {
+    const { grid, currentCard } = state;
+    const legalMoves = whatLegalMoves(state);
+    const openTargets = whatOpenTargets(state);
+    const showTargets =
+        !isRoyalty(currentCard) && openSpotsForNonRoyal(state).length > 0;
+    grid.forEach((stack, index) => {
+        const spot = document.getElementById(`spot${index}`);
+        [...spot.childNodes].forEach((node) => spot.removeChild(node));
+
+        const isLegal = legalMoves.indexOf(index) !== -1;
+        const isRoyal = playSpots.indexOf(index) === -1;
+        const isOpenTarget = openTargets.indexOf(index) !== -1;
+        const hasCard = stack.length > 0;
+        const hasStack = stack.length > 1;
+
+        if (hasCard) {
+            if (isRoyal) {
+                const [lastCard] = stack.slice(-1);
+                const { suit, card, destroyed = false } = lastCard;
+                if (destroyed) {
+                    const cardImage = document.createElement("img");
+                    cardImage.src = getURIToCardImage({ destroyed });
+                    spot.appendChild(cardImage);
+                    spot.className = "cardSpot";
+                } else {
+                    const cardImage = document.createElement("img");
+                    cardImage.src = getURIToCardImage({ suit, card });
+                    spot.appendChild(cardImage);
+                    const armorValue = countTotalArmor(stack);
+                    spot.className = `cardSpot ${getSuitAsClassname(suit)} ${isLegal ? "legal" : ""
+                        } ${showTargets && isOpenTarget ? "targetted" : ""}`;
+
+                    if (hasStack) {
+                        const badge = document.createElement("span");
+                        badge.className = "badge";
+                        const armorText = document.createTextNode(armorValue);
+                        badge.appendChild(armorText);
+                        spot.appendChild(badge);
+                    }
+                }
+            } else {
+                const { suit, card } = stack[0];
+                const cardImage = document.createElement("img");
+                cardImage.src = getURIToCardImage({ suit, card });
+                spot.appendChild(cardImage);
+                spot.className = `cardSpot ${getSuitAsClassname(suit)} ${isLegal ? "legal" : ""
+                    } ${hasStack ? "stack" : ""}`;
+            }
+        } else {
+            const cardImage = document.createElement("img");
+            cardImage.src = getURIToCardImage({ empty: true });
+            spot.appendChild(cardImage);
+            spot.className = `cardSpot ${isLegal ? "legal" : "unplayed"}`;
+        }
+    });
+};
+
+export const changeHint = (state) => {
+    const hint = getHintForCardInHand(state);
+    const hintNode = document.getElementById("hint");
+    [...hintNode.childNodes].forEach((node) => hintNode.removeChild(node));
+    const hintText = document.createTextNode(hint);
+    hintNode.appendChild(hintText);
+};
+
+export const attachToInterface = (handlers) => {
+    const restartBtn = document.getElementById("restartBtn");
+    restartBtn.addEventListener("click", handlers.restart);
+    const saveStateBtn = document.getElementById("saveStateBtn");
+    saveStateBtn.addEventListener("click", handlers.saveState);
+    const loadTestStateBtn = document.getElementById("loadStateBtn");
+    loadTestStateBtn.addEventListener("click", handlers.loadState);
+
+    [...Array(25)].forEach((element, index) => {
+        const spot = document.getElementById(`spot${index}`);
+        spot.addEventListener("click", () => handlers.placeCard(index));
+    });
+};
+
+
+export default function onLoad() {
+    setupGrid();
+    attachToInterface({
+        restart: restartGame,
+        placeCard: cardSpotClicked,
+        saveState: logStateToConsole,
+        loadState,
+    });
+    store.subscribe(() => {
+        const state = store.getState();
+        drawGrid(state);
+        drawDeck(state);
+        drawCurrentCard(state);
+        changeHint(state);
+        setInstructions(state);
+    });
+}
 
 
 function loadMenu(host) {
     dispatch(SHOW_MENU());
 }
 
-function renderScene({ scene }) {
+const octoCorner = () => html`
+<!-- Thanks go to http://tholman.com/github-corners/ -->
+<a
+href="https://github.com/seanmailander/gridcannon"
+class="github-corner"
+aria-label="View source on Github"
+><svg
+  width="80"
+  height="80"
+  viewBox="0 0 250 250"
+  style="
+    fill: #30228f;
+    color: #665bb2;
+    position: absolute;
+    top: 0;
+    border: 0;
+    right: 0;
+  "
+  aria-hidden="true"
+>
+  <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+  <path
+    d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+    fill="currentColor"
+    style="transform-origin: 130px 106px"
+    class="octo-arm"
+  ></path>
+  <path
+    d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+    fill="currentColor"
+    class="octo-body"
+  ></path></svg></a>
+`;
+
+function renderScene({ state, scene }) {
     if (scene !== scenes.GAME) {
         return html``;
     }
@@ -23,37 +258,7 @@ function renderScene({ scene }) {
       <section class="heading">
         <h1>GridCannon</h1>
 
-        <!-- Thanks go to http://tholman.com/github-corners/ -->
-        <a
-          href="https://github.com/seanmailander/gridcannon"
-          class="github-corner"
-          aria-label="View source on Github"
-          ><svg
-            width="80"
-            height="80"
-            viewBox="0 0 250 250"
-            style="
-              fill: #30228f;
-              color: #665bb2;
-              position: absolute;
-              top: 0;
-              border: 0;
-              right: 0;
-            "
-            aria-hidden="true"
-          >
-            <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
-            <path
-              d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
-              fill="currentColor"
-              style="transform-origin: 130px 106px"
-              class="octo-arm"
-            ></path>
-            <path
-              d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
-              fill="currentColor"
-              class="octo-body"
-            ></path></svg></a>
+        ${octoCorner()}
       </section>
       <section id="main">
         <section class="left-bar">
@@ -116,5 +321,6 @@ function renderScene({ scene }) {
 define({
     tag: "game-scene",
     scene: connect(store, state => state.scene),
+    state: connect(store, state => state),
     render: renderScene
 });
