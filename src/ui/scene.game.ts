@@ -43,7 +43,7 @@ const logStateToConsole = () => {
 };
 
 const loadState = () => {
-    dispatch(LOAD_TEST_STATE(addingArmor));
+    dispatch(LOAD_TEST_STATE(aboutToWin));
 };
 
 

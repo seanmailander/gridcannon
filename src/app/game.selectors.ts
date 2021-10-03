@@ -71,10 +71,20 @@ export const getOpenRoyaltyStacks = ({ grid }) =>
 
 export const whatLegalMoves = (state) => {
   // Selector: find any legal positions for the current card
+
+  // Check that we've finished the deal
   const { currentCard, grid } = state;
   if (!currentCard || howManyCardsPlaced(state) < 8) {
     return [];
   }
+
+  // Check that the game isnt over
+  const { isWon, isLost } = getGamePhase(state);
+  if (isWon || isLost) {
+      return [];
+  }
+
+
   if (isRoyalty(currentCard)) {
     // placing royalty around the outside
     const { suit } = currentCard;

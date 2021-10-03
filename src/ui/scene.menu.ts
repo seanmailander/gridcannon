@@ -47,14 +47,6 @@ function renderScene({ scene }) {
     }
 
     return html`
-    <style>
-        .menu {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-    </style>
     <section class="heading">
     <h1>Menu</h1>
     </section>
