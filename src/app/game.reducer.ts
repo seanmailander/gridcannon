@@ -50,9 +50,10 @@ export const gameReducer = createReducer(initialState(), (builder) => {
             state.scene = scenes.GAME
         })
         .addCase(RESET_GAME, (state, action) => initialState(scenes.GAME))
-        .addCase(LOAD_TEST_STATE, (state, action) =>
-            JSON.parse(JSON.stringify(action.payload))
-        )
+        .addCase(LOAD_TEST_STATE, (state, action) => ({
+            ...JSON.parse(JSON.stringify(action.payload)),
+            scene: scenes.GAME
+        }))
         .addCase(SET_ROYALTY_ASIDE, (state, action) => {
             const { skippedRoyalty, deckInHand, currentCard } = state;
 
