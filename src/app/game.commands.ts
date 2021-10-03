@@ -11,16 +11,6 @@ import { howManyCardsPlaced, whatLegalMoves } from "./game.selectors";
 import { dealSpots } from "./game.consts";
 import { AppDispatch } from "./store";
 
-export const dealGrid = () => (dispatch: AppDispatch, getState): void | AnyAction => {
-    let placedCards = 0;
-    // Place grid one-by-one
-    while (placedCards < 8) {
-        dispatch(dealNextCard(placedCards));
-        const state = getState();
-        placedCards = howManyCardsPlaced(state);
-    }
-};
-
 export const dealNextCard =
     (dealIndex: number) =>
         (dispatch: AppDispatch, getState): void | AnyAction => {
@@ -33,6 +23,17 @@ export const dealNextCard =
             const position = dealSpots[dealIndex];
             return dispatch(PLACE_CARD_DURING_DEAL(position));
         };
+        
+export const dealGrid = () => (dispatch: AppDispatch, getState): void | AnyAction => {
+    let placedCards = 0;
+    // Place grid one-by-one
+    while (placedCards < 8) {
+        dispatch(dealNextCard(placedCards));
+        const state = getState();
+        placedCards = howManyCardsPlaced(state);
+    }
+};
+
 
 export const tryToPlayCard =
     (targetPosition: number) =>

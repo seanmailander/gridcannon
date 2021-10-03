@@ -48,7 +48,7 @@ const loadState = () => {
 
 
 
-export const drawHint = (state) => {
+const drawHint = (state) => {
     const hint = getHintForCardInHand(state);
     return html`
     <p id="hint">${hint}</p>
@@ -109,9 +109,9 @@ const drawGrid = (state) => {
 
     return html`
 
-    ${[...Array(5)].map((_, i) => html`
+    ${[...Array(5)].map((_1, i) => html`
     <section id='row${i}' class='row'>
-        ${[...Array(5)].map((_, j) => {
+        ${[...Array(5)].map((_2, j) => {
 
         const spotIndex = i * 5 + j;
         const stack = grid[spotIndex];

@@ -4,11 +4,9 @@ function connect(store, selector) {
 
     return {
         get,
-        connect: (host, key, invalidate) => {
-            return store.subscribe(() => {
+        connect: (host, key, invalidate) => store.subscribe(() => {
                 if (host[key] !== get()) invalidate();
-            });
-        },
+            }),
     };
 }
 
