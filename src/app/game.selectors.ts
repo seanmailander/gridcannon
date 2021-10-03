@@ -69,52 +69,6 @@ export const getOpenRoyaltyStacks = ({ grid }) =>
     .filter((spot) => !isDestroyed(lastInStack(spot)))
     .map((spot) => spot.reduce((acc, curr) => acc + curr.card, 0));
 
-export const whatLegalMoves = (state) => {
-  // Selector: find any legal positions for the current card
-  const { currentCard, grid } = state;
-  if (!currentCard || howManyCardsPlaced(state) < 8) {
-    return [];
-  }
-  if (isRoyalty(currentCard)) {
-    // placing royalty around the outside
-    const { suit } = currentCard;
-    const getCardValueAgainstThisRoyal = cardValue(suit);
-    const mostSimilarCardSpot = dealSpots.reduce((prev, curr) => {
-      const allowedSpots = outsideForGivenGridPosition[curr];
-      const spotsAvailable = allowedSpots.filter(
-        (allowedSpot) => grid[allowedSpot].length === 0
-      );
-      if (spotsAvailable.length === 0) {
-        return prev;
-      }
-      const previousCard = grid[prev][0];
-      const targetCard = grid[curr][0];
-      if (
-        getCardValueAgainstThisRoyal(targetCard) >
-        getCardValueAgainstThisRoyal(previousCard)
-      ) {
-        return curr;
-      }
-      return prev;
-    }, 0);
-
-    const allowedSpots = outsideForGivenGridPosition[mostSimilarCardSpot] || [];
-    const emptySpots = allowedSpots.filter((spot) => grid[spot].length === 0);
-    if (!emptySpots || emptySpots.length < 1) {
-      throw new Error("oops, didnt get a good legal move for royalty");
-    }
-    return emptySpots;
-  }
-  // Look for open spots for a non-royal card
-  const openSpots = openSpotsForNonRoyal(state);
-
-  if (openSpots.length < 1) {
-    // gotta go for the armor
-    return royalSpots.filter((spot) => grid[spot].length > 0);
-  }
-  return openSpots;
-};
-
 const addPayloads = (grid, payload, targetRoyal) => {
   const firstPayload = grid[payload[0]][0] || {};
   const secondPayload = grid[payload[1]][0] || {};
@@ -247,6 +201,61 @@ export const getGamePhase = (state) => {
   };
 
   return gamePhase;
+};
+
+export const whatLegalMoves = (state) => {
+  // Selector: find any legal positions for the current card
+
+  // Check that we've finished the deal
+  const { currentCard, grid } = state;
+  if (!currentCard || howManyCardsPlaced(state) < 8) {
+    return [];
+  }
+
+  // Check that the game isnt over
+  const { isWon, isLost } = getGamePhase(state);
+  if (isWon || isLost) {
+    return [];
+  }
+
+  if (isRoyalty(currentCard)) {
+    // placing royalty around the outside
+    const { suit } = currentCard;
+    const getCardValueAgainstThisRoyal = cardValue(suit);
+    const mostSimilarCardSpot = dealSpots.reduce((prev, curr) => {
+      const allowedSpots = outsideForGivenGridPosition[curr];
+      const spotsAvailable = allowedSpots.filter(
+        (allowedSpot) => grid[allowedSpot].length === 0
+      );
+      if (spotsAvailable.length === 0) {
+        return prev;
+      }
+      const previousCard = grid[prev][0];
+      const targetCard = grid[curr][0];
+      if (
+        getCardValueAgainstThisRoyal(targetCard) >
+        getCardValueAgainstThisRoyal(previousCard)
+      ) {
+        return curr;
+      }
+      return prev;
+    }, 0);
+
+    const allowedSpots = outsideForGivenGridPosition[mostSimilarCardSpot] || [];
+    const emptySpots = allowedSpots.filter((spot) => grid[spot].length === 0);
+    if (!emptySpots || emptySpots.length < 1) {
+      throw new Error("oops, didnt get a good legal move for royalty");
+    }
+    return emptySpots;
+  }
+  // Look for open spots for a non-royal card
+  const openSpots = openSpotsForNonRoyal(state);
+
+  if (openSpots.length < 1) {
+    // gotta go for the armor
+    return royalSpots.filter((spot) => grid[spot].length > 0);
+  }
+  return openSpots;
 };
 
 export const getHintForCardInHand = (state) => {

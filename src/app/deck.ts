@@ -45,6 +45,7 @@ export interface ICard {
   suit?: string;
   card?: number;
   destroyed?: boolean;
+  empty?: boolean;
 }
 
 export const shuffleDeck = () => {

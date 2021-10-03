@@ -2,9 +2,13 @@
 import { createAction, createReducer } from "@reduxjs/toolkit";
 
 import { shuffleDeck, isRoyalty, CARDS, JOKER, ICard } from "./deck";
+import { scenes } from "./game.consts";
 
 import { howManyCardsPlaced, targetsFiredUpon } from "./game.selectors";
 
+export const SHOW_SPLASH = createAction<number>("scenes/splash");
+export const SHOW_MENU = createAction<number>("scenes/menu");
+export const SHOW_GAME = createAction<number>("scenes/game");
 export const RESET_GAME = createAction<number>("game/reset");
 export const DEAL_GRID = createAction<number>("game/deal");
 export const PLACE_CARD_DURING_DEAL = createAction<number>("game/placecard");
@@ -12,10 +16,11 @@ export const SET_ROYALTY_ASIDE = createAction("game/setroyaltyaside");
 export const PLAY_CARD = createAction<number>("game/playcard");
 export const LOAD_TEST_STATE = createAction<any>("game/loadteststate");
 
-export const initialState = () => {
+export const initialState = (scene = scenes.SPLASH) => {
   const newDeck = shuffleDeck();
   const topCard = newDeck.shift();
   return {
+    scene,
     deckInHand: newDeck,
     currentCard: topCard,
     skippedRoyalty: [],
@@ -25,6 +30,7 @@ export const initialState = () => {
 };
 
 export interface GameState {
+  scene: String;
   deckInHand: Array<ICard>;
   currentCard: ICard;
   skippedRoyalty: Array<ICard>;
@@ -34,10 +40,20 @@ export interface GameState {
 
 export const gameReducer = createReducer(initialState(), (builder) => {
   builder
-    .addCase(RESET_GAME, (state, action) => initialState())
-    .addCase(LOAD_TEST_STATE, (state, action) =>
-      JSON.parse(JSON.stringify(action.payload))
-    )
+    .addCase(SHOW_SPLASH, (state, action) => {
+      state.scene = scenes.SPLASH;
+    })
+    .addCase(SHOW_MENU, (state, action) => {
+      state.scene = scenes.MENU;
+    })
+    .addCase(SHOW_GAME, (state, action) => {
+      state.scene = scenes.GAME;
+    })
+    .addCase(RESET_GAME, (state, action) => initialState(scenes.GAME))
+    .addCase(LOAD_TEST_STATE, (state, action) => ({
+      ...JSON.parse(JSON.stringify(action.payload)),
+      scene: scenes.GAME,
+    }))
     .addCase(SET_ROYALTY_ASIDE, (state, action) => {
       const { skippedRoyalty, deckInHand, currentCard } = state;
 

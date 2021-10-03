@@ -96,3 +96,9 @@ export const instructionIdentifiers = {
   LOSENOROYAL: "i-lose-noroyal",
   LOSEOVERARMORED: "i-lose-overarmored",
 };
+
+export const scenes = {
+  SPLASH: "splash",
+  MENU: "menu",
+  GAME: "game",
+};
