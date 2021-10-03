@@ -1,7 +1,7 @@
 /* eslint-disable */
 
 export const greenNewDeal = {
-    scene: 'game',
+  scene: "game",
   deckInHand: [
     { suit: "s", card: 8 },
     { suit: "s", card: 11 },
@@ -90,7 +90,7 @@ export const greenNewDeal = {
 };
 
 export const noRoyalsOnDeal = {
-    scene: 'game',
+  scene: "game",
   bonus: [],
   deckInHand: [
     { suit: "d", card: 12 },
@@ -171,7 +171,7 @@ export const noRoyalsOnDeal = {
 };
 
 export const closeToAWin = {
-    scene: 'game',
+  scene: "game",
   bonus: [],
   deckInHand: [
     { suit: "c", card: 9 },
@@ -253,7 +253,7 @@ export const closeToAWin = {
 };
 
 export const closeToAWinNoArmor = {
-    scene: 'game',
+  scene: "game",
   bonus: [],
   deckInHand: [
     { suit: "c", card: 9 },
@@ -337,11 +337,13 @@ export const closeToAWinNoArmor = {
 };
 
 export const closeToAWinNoArmorWithBonus = {
-    scene: 'game',
-  bonus: [[
-    [{ suit: "s", card: 11 }, { destroyed: true }],
-    [{ suit: "c", card: 12 }, { destroyed: true }],
-  ]],
+  scene: "game",
+  bonus: [
+    [
+      [{ suit: "s", card: 11 }, { destroyed: true }],
+      [{ suit: "c", card: 12 }, { destroyed: true }],
+    ],
+  ],
   deckInHand: [
     { suit: "c", card: 9 },
     { suit: "c", card: 1 },
@@ -424,7 +426,7 @@ export const closeToAWinNoArmorWithBonus = {
 };
 
 export const alreadyWon = {
-    scene: 'game',
+  scene: "game",
   bonus: [],
   deckInHand: [],
   currentCard: { suit: "s", card: 8 },
@@ -504,7 +506,7 @@ export const alreadyWon = {
 };
 
 export const alreadyWonNoArmor = {
-    scene: 'game',
+  scene: "game",
   bonus: [],
   deckInHand: [],
   currentCard: { suit: "s", card: 8 },
@@ -586,7 +588,7 @@ export const alreadyWonNoArmor = {
 };
 
 export const midGameArmor = {
-    scene: 'game',
+  scene: "game",
   bonus: [],
   deckInHand: [
     { suit: "", card: 0 },
@@ -670,7 +672,7 @@ export const midGameArmor = {
 };
 
 export const noCardsLeft = {
-    scene: 'game',
+  scene: "game",
   bonus: [],
   deckInHand: [],
   skippedRoyalty: [],
@@ -771,7 +773,7 @@ export const noCardsLeft = {
 };
 
 export const doubleTrigger = {
-    scene: 'game',
+  scene: "game",
   bonus: [],
   deckInHand: [
     { suit: "d", card: 5 },
@@ -855,7 +857,7 @@ export const doubleTrigger = {
 };
 
 export const aboutToWin = {
-    scene: 'game',
+  scene: "game",
   deckInHand: [
     { suit: "c", card: 7 },
     { suit: "s", card: 5 },
@@ -946,7 +948,7 @@ export const aboutToWin = {
 };
 
 export const canWeDoIt = {
-    scene: 'game',
+  scene: "game",
   deckInHand: [
     { suit: "d", card: 9 },
     { suit: "d", card: 8 },
@@ -1041,7 +1043,7 @@ export const canWeDoIt = {
 };
 
 export const lastTry = {
-    scene: 'game',
+  scene: "game",
   deckInHand: [
     { suit: "d", card: 4 },
     { suit: "h", card: 5 },
@@ -1129,7 +1131,7 @@ export const lastTry = {
 };
 
 export const addingArmor = {
-    scene: 'game',
+  scene: "game",
   deckInHand: [
     { suit: "s", card: 2 },
     { suit: "c", card: 8 },
@@ -1212,7 +1214,7 @@ export const addingArmor = {
 };
 
 export const unwinnableArmor = {
-    scene: 'game',
+  scene: "game",
   deckInHand: [{ suit: "h", card: 2 }],
   currentCard: { suit: "s", card: 2 },
   skippedRoyalty: [],
