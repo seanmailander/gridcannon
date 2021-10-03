@@ -10,8 +10,6 @@ import {
     getHintForCardInHand,
     openSpotsForNonRoyal,
     countTotalArmor,
-    getGamePhase,
-    howManyCardsPlaced,
 } from "../app/game.selectors";
 import { playSpots, scenes } from "../app/game.consts";
 
@@ -56,14 +54,6 @@ export const drawHint = (state) => {
     <p id="hint">${hint}</p>
     `;
 };
-
-export default function onLoad() {
-    store.subscribe(() => {
-        const state = store.getState();
-        setInstructions(state);
-    });
-}
-
 
 function loadMenu(host) {
     dispatch(SHOW_MENU());
@@ -167,6 +157,7 @@ const drawGrid = (state) => {
         return html`
                 <section id="spot${spotIndex}" class="${cardClasses.filter(x => !!x)}" onclick=${cardSpotClicked(spotIndex)}>
                     ${cardImage}
+                    ${badge}
                 </section>
             `;
     })}
