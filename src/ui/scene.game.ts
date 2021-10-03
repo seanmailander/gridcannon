@@ -34,7 +34,7 @@ const cardSpotClicked = (position) => () => {
 
 const restartGame = () => {
     dispatch(RESET_GAME());
-    dealGrid();
+    dispatch(dealGrid());
 };
 
 const logStateToConsole = () => {
