@@ -17,15 +17,29 @@ function startNewGame(host) {
 }
 
 function optionToggle(option) {
-    const { id, description } = option;
+    const { id, title, description } = option;
     return html`
     <div class="toggle">
         <input id="${id}" type="checkbox" />
         <label class="toggle-item" for="${id}"></label>
-        <span>${description}</span>
+        <span>${title}</span> <br />
+        <small>${description}</small>
     </div>
 `;
 }
+
+const helperOptions = [
+    { id: 'recall', title: 'Perfect Recall', description: 'All stacks are visible for reset' },
+    { id: 'premonition', title: 'Premonition', description: 'Next three cards are visible' },
+    { id: 'timetravel', title: 'Time Travel', description: 'Undo up to three moves' },
+    { id: 'kidding', title: 'Just Kidding', description: 'Three extra jokers' },
+];
+const hinderenceOptions = [
+    { id: 'harder', title: 'Harder', description: 'Shot clock adds armor' },
+    { id: 'better', title: 'Better', description: 'Only one joker' },
+    { id: 'faster', title: 'Faster', description: 'Royals gain armor over time(or Shot clock adds armor)' },
+    { id: 'stronger', title: 'Stronger', description: 'All royals start with two armor' },
+];
 
 function renderScene({ scene }) {
     if (scene !== scenes.MENU) {
@@ -54,20 +68,13 @@ function renderScene({ scene }) {
         <section class="helpers">
         <h3>I need some help...</h3>
 
-        ${optionToggle({ id: 'recall', description: 'Perfect Recall - All stacks are visible for reset' })}
-        ${optionToggle({ id: 'premonition', description: 'Premonition - Next three cards are visible' })}
-        ${optionToggle({ id: 'timetravel', description: 'Time Travel - Undo up to three moves' })}
-        ${optionToggle({ id: 'kidding', description: 'Just kidding - Three extra jokers' })}
+        ${helperOptions.map(optionToggle)}
     </section>
     
             <section class="hinderenace">
                 <h3>I've done this before...</h3>
 
-                ${optionToggle({ id: 'harder', description: 'Harder - Shot clock adds armor' })}
-                ${optionToggle({ id: 'better', description: 'Better - Only one joker' })}
-                ${optionToggle({ id: 'faster', description: 'Faster - Royals gain armor over time(or Shot clock adds armor)' })}
-                ${optionToggle({ id: 'stronger', description: 'Stronger - All royals start with two armor' })}
-
+                ${hinderenceOptions.map(optionToggle)}
             </section>
 
 

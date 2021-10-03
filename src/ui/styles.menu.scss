@@ -10,8 +10,8 @@
 }
 
 .toggle {
-    width:100%;
-    margin-bottom:10px;
+  width: 100%;
+  margin-bottom: 10px;
   position: relative;
   display: inline-block;
 
@@ -76,5 +76,14 @@
     &:before {
       left: 1.5em;
     }
+  }
+
+  input ~ span,
+  input ~ small {
+    opacity: 60%;
+  }
+  input:checked ~ span,
+  input:checked ~ small {
+    opacity: 100%;
   }
 }
