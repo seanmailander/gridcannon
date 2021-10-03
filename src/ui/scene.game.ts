@@ -21,7 +21,7 @@ import connect from './component-connector';
 import sharedStyles from './styles.css';
 import gameStyles from './styles.game.scss';
 import { dealGrid, tryToPlayCard } from '../app/game.commands';
-import { unwinnableArmor } from '../app/game.test-states';
+import { aboutToWin } from '../app/game.test-states';
 import drawInstructions from './instructions';
 
 const { dispatch, getState } = store;
@@ -43,7 +43,7 @@ const logStateToConsole = () => {
 };
 
 const loadState = () => {
-    dispatch(LOAD_TEST_STATE(unwinnableArmor));
+    dispatch(LOAD_TEST_STATE(aboutToWin));
 };
 
 
