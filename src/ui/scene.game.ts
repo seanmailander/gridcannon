@@ -1,4 +1,4 @@
-import { html, define } from 'https://unpkg.com/hybrids@^6';
+import { html, define } from 'hybrids';
 
 import { getSuitAsClassname, isRoyalty } from "../app/deck";
 

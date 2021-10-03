@@ -1,4 +1,4 @@
-import { html, define } from 'https://unpkg.com/hybrids@^6';
+import { html, define } from 'hybrids';
 import { dealGrid } from '../app/game.commands';
 import { scenes } from '../app/game.consts';
 import { RESET_GAME, SHOW_GAME, SHOW_MENU } from '../app/game.reducer';

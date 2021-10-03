@@ -1,4 +1,4 @@
-import { html, define } from 'https://unpkg.com/hybrids@^6';
+import { html, define } from 'hybrids';
 import { instructionIdentifiers } from '../app/game.consts';
 
 import { getGamePhase } from "../app/game.selectors";
