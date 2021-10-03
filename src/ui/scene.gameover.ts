@@ -1,6 +1,6 @@
 import { html, define } from "hybrids";
 
-import { getGamePhase } from "../app/game.selectors";
+import { getGamePhase, scoreGame } from "../app/game.selectors";
 import { scenes } from "../app/game.consts";
 
 import { RESET_GAME, SHOW_MENU } from "../app/game.reducer";
@@ -22,7 +22,7 @@ function newGame() {
   dispatch(dealGrid());
 }
 
-function renderScene({ gamePhase, scene }) {
+function renderScene({ gamePhase, gameScore, scene }) {
   if (scene !== scenes.GAME) {
     return html``;
   }
@@ -32,6 +32,8 @@ function renderScene({ gamePhase, scene }) {
   if (!isWon && !isLost) {
     return html``;
   }
+
+  const { score, merits, demerits, extraPoints } = gameScore;
 
   return html`
     <section id="gameover">
@@ -44,7 +46,13 @@ function renderScene({ gamePhase, scene }) {
           <button onclick=${newGame}>New game</button>
         </section>
 
-        <section class="score-footer">Your score: 0</section>
+        <section class="score-footer">
+        <p>Your score: ${score}</p>
+        <p>
+            Merits: +${merits} <br />
+            Demerits: -${demerits} <br />
+            Extra Points: ${extraPoints}
+        </section>
       </section>
     </section>
   `.style(sharedStyles, gameOverStyles);
@@ -54,5 +62,6 @@ define({
   tag: "gameover-scene",
   scene: connect(store, (state) => state.scene),
   gamePhase: connect(store, (state) => getGamePhase(state)),
+  gameScore: connect(store, (state) => scoreGame(state)),
   render: renderScene,
 });
