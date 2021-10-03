@@ -16,7 +16,7 @@ export const SET_ROYALTY_ASIDE = createAction("game/setroyaltyaside");
 export const PLAY_CARD = createAction<number>("game/playcard");
 export const LOAD_TEST_STATE = createAction<any>("game/loadteststate");
 
-export const initialState = (scene = scenes.SPLASH) => {
+export const initialState = (scene = scenes.GAME) => {
   const newDeck = shuffleDeck();
   const topCard = newDeck.shift();
   return {

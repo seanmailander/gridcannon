@@ -33,7 +33,7 @@ function renderScene({ gamePhase, gameScore, scene }) {
     return html``;
   }
 
-  const { score, merits, demerits, extraPoints } = gameScore;
+  const { total, merits, demerits, extraPoints } = gameScore;
 
   return html`
     <section id="gameover">
@@ -47,11 +47,19 @@ function renderScene({ gamePhase, gameScore, scene }) {
         </section>
 
         <section class="score-footer">
-        <p>Your score: ${score}</p>
+        <p>Your score: ${total}</p>
         <p>
-            Merits: +${merits} <br />
-            Demerits: -${demerits} <br />
-            Extra Points: ${extraPoints}
+            Merits: +${merits.total} <br />
+            <small>x1 for each destroyed royal = 1 x ${merits.destroyedRoyals}</small> <br />
+            <small>x2 for each destroyed royal = 2 x ${merits.destroyedArmor}</small> <br />
+            <br />
+            Demerits: -${demerits.total} <br />
+            <small>x1 for each remaining royal = 1 x ${demerits.remainingRoyals}</small> <br />
+            <small>x2 for each remaining armor = 2 x ${demerits.remainingArmor}</small> <br />
+            <br />
+            Extra Points: ++${extraPoints.total}<br />
+            <small>x2 points (royal and armor) for every double-trigger = 2 x ${extraPoints.bonusRoyals + extraPoints.bonusArmor * 2}</small> <br />
+            <br />
         </section>
       </section>
     </section>

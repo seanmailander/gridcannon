@@ -293,13 +293,15 @@ export const countTotalArmor = (stack) =>
     stack.reduce((acc, curr) => acc + (isNotFaceCard(curr) ? curr.card : 0), 0);
 
 export const scoreGame = (state: RootState) => {
-    // Selector:
-    //  plusses:
+    // Scoring
+    //  merits:
     //      1 point for each destroyed royals
-    //      1 point for each destroyed armor
-    //  minuses:
+    //      2 point for each destroyed armor
+    //  demerits:
     //      -1 point for each remaining royal
-    //      -1 point for each remaining armor
+    //      -2 point for each remaining armor
+    //  extra points:
+    //      x2 royal value for every double-trigger
     const { grid, bonus } = state;
     const royalStacks = getRoyalStacks(grid);
     const stacksWithDestroyedRoyal = royalStacks.filter((stack) =>
@@ -327,12 +329,24 @@ export const scoreGame = (state: RootState) => {
         0
     );
 
-    const merits = destroyedRoyals + destroyedArmor;
-    const demerits = remainingRoyals + remainingArmor;
-    const extraPoints = bonusRoyals + bonusArmor;
+    const merits = {
+        total: destroyedRoyals + destroyedArmor * 2,
+        destroyedRoyals,
+        destroyedArmor,
+    };
+    const demerits = {
+        total: remainingRoyals + remainingArmor * 2,
+        remainingRoyals,
+        remainingArmor,
+    };
+    const extraPoints = {
+        total: 2 * (bonusRoyals + bonusArmor * 2),
+        bonusRoyals,
+        bonusArmor,
+    };
 
     return {
-        score: merits - demerits + extraPoints,
+        total: merits.total - demerits.total + extraPoints.total,
         merits,
         demerits,
         extraPoints,
