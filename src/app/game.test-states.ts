@@ -338,10 +338,10 @@ export const closeToAWinNoArmor = {
 
 export const closeToAWinNoArmorWithBonus = {
     scene: 'game',
-  bonus: [
+  bonus: [[
     [{ suit: "s", card: 11 }, { destroyed: true }],
     [{ suit: "c", card: 12 }, { destroyed: true }],
-  ],
+  ]],
   deckInHand: [
     { suit: "c", card: 9 },
     { suit: "c", card: 1 },
