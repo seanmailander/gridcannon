@@ -21,7 +21,7 @@ import connect from './component-connector';
 import sharedStyles from './styles.css';
 import gameStyles from './styles.game.scss';
 import { dealGrid, tryToPlayCard } from '../app/game.commands';
-import { aboutToWin } from '../app/game.test-states';
+import { aboutToWin, addingArmor } from '../app/game.test-states';
 import drawInstructions from './instructions';
 
 const { dispatch, getState } = store;
@@ -43,7 +43,7 @@ const logStateToConsole = () => {
 };
 
 const loadState = () => {
-    dispatch(LOAD_TEST_STATE(aboutToWin));
+    dispatch(LOAD_TEST_STATE(addingArmor));
 };
 
 
@@ -199,10 +199,11 @@ const drawCurrentCard = (state) => {
     if (currentCard) {
         const { suit, card } = currentCard;
         const cardImage = drawCard(getURIToCardImage({ suit, card }));
+        const classNames = [].push(getSuitAsClassname(suit));
 
         return html`
 
-        <div id="currentCard" class=${getSuitAsClassname(suit)}>
+        <div id="currentCard" class=${classNames}>
             ${cardImage}
         </div>
         Current card
