@@ -1,8 +1,9 @@
 /* eslint-disable no-param-reassign */
 import { createAction, createReducer } from "@reduxjs/toolkit";
 
-import { shuffleDeck, isRoyalty, CARDS, JOKER, ICard } from "./deck";
+import { shuffleDeck, isRoyalty, CARDS, JOKER } from "./deck";
 import { scenes } from "./game.consts";
+import { GameState } from "./game.interfaces";
 
 import { howManyCardsPlaced, targetsFiredUpon } from "./game.selectors";
 
@@ -28,15 +29,6 @@ export const initialState = (scene = scenes.GAME) => {
     bonus: [],
   } as GameState;
 };
-
-export interface GameState {
-  scene: String;
-  deckInHand: Array<ICard>;
-  currentCard: ICard;
-  skippedRoyalty: Array<ICard>;
-  grid: Array<Array<ICard>>;
-  bonus: Array<Array<ICard>>;
-}
 
 export const gameReducer = createReducer(initialState(), (builder) => {
   builder

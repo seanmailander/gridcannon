@@ -1,6 +1,7 @@
 /* eslint-disable */
 
 export const greenNewDeal = {
+    scene: 'game',
   deckInHand: [
     { suit: "s", card: 8 },
     { suit: "s", card: 11 },
@@ -89,6 +90,7 @@ export const greenNewDeal = {
 };
 
 export const noRoyalsOnDeal = {
+    scene: 'game',
   bonus: [],
   deckInHand: [
     { suit: "d", card: 12 },
@@ -169,6 +171,7 @@ export const noRoyalsOnDeal = {
 };
 
 export const closeToAWin = {
+    scene: 'game',
   bonus: [],
   deckInHand: [
     { suit: "c", card: 9 },
@@ -250,6 +253,7 @@ export const closeToAWin = {
 };
 
 export const closeToAWinNoArmor = {
+    scene: 'game',
   bonus: [],
   deckInHand: [
     { suit: "c", card: 9 },
@@ -333,6 +337,7 @@ export const closeToAWinNoArmor = {
 };
 
 export const closeToAWinNoArmorWithBonus = {
+    scene: 'game',
   bonus: [
     [{ suit: "s", card: 11 }, { destroyed: true }],
     [{ suit: "c", card: 12 }, { destroyed: true }],
@@ -419,6 +424,7 @@ export const closeToAWinNoArmorWithBonus = {
 };
 
 export const alreadyWon = {
+    scene: 'game',
   bonus: [],
   deckInHand: [],
   currentCard: { suit: "s", card: 8 },
@@ -498,6 +504,7 @@ export const alreadyWon = {
 };
 
 export const alreadyWonNoArmor = {
+    scene: 'game',
   bonus: [],
   deckInHand: [],
   currentCard: { suit: "s", card: 8 },
@@ -579,6 +586,7 @@ export const alreadyWonNoArmor = {
 };
 
 export const midGameArmor = {
+    scene: 'game',
   bonus: [],
   deckInHand: [
     { suit: "", card: 0 },
@@ -662,9 +670,11 @@ export const midGameArmor = {
 };
 
 export const noCardsLeft = {
+    scene: 'game',
   bonus: [],
   deckInHand: [],
   skippedRoyalty: [],
+  currentCard: null,
   grid: [
     [],
     [
@@ -761,6 +771,7 @@ export const noCardsLeft = {
 };
 
 export const doubleTrigger = {
+    scene: 'game',
   bonus: [],
   deckInHand: [
     { suit: "d", card: 5 },
@@ -844,6 +855,7 @@ export const doubleTrigger = {
 };
 
 export const aboutToWin = {
+    scene: 'game',
   deckInHand: [
     { suit: "c", card: 7 },
     { suit: "s", card: 5 },
@@ -934,6 +946,7 @@ export const aboutToWin = {
 };
 
 export const canWeDoIt = {
+    scene: 'game',
   deckInHand: [
     { suit: "d", card: 9 },
     { suit: "d", card: 8 },
@@ -1028,6 +1041,7 @@ export const canWeDoIt = {
 };
 
 export const lastTry = {
+    scene: 'game',
   deckInHand: [
     { suit: "d", card: 4 },
     { suit: "h", card: 5 },
@@ -1115,6 +1129,7 @@ export const lastTry = {
 };
 
 export const addingArmor = {
+    scene: 'game',
   deckInHand: [
     { suit: "s", card: 2 },
     { suit: "c", card: 8 },
@@ -1197,6 +1212,7 @@ export const addingArmor = {
 };
 
 export const unwinnableArmor = {
+    scene: 'game',
   deckInHand: [{ suit: "h", card: 2 }],
   currentCard: { suit: "s", card: 2 },
   skippedRoyalty: [],
@@ -1286,10 +1302,264 @@ export const unwinnableArmor = {
   bonus: [],
 };
 
+export const earlyDoubleTrigger = {
+  scene: "game",
+  deckInHand: [
+    { suit: "h", card: 2 },
+    { suit: "c", card: 13 },
+    { suit: "s", card: 6 },
+    { suit: "s", card: 4 },
+    { suit: "d", card: 13 },
+    { suit: "c", card: 6 },
+    { suit: "s", card: 5 },
+    { suit: "c", card: 3 },
+    { suit: "h", card: 3 },
+    { suit: "d", card: 6 },
+    { suit: "c", card: 1 },
+    { suit: "", card: 0 },
+    { suit: "d", card: 8 },
+    { suit: "d", card: 10 },
+    { suit: "s", card: 10 },
+    { suit: "d", card: 11 },
+    { suit: "s", card: 11 },
+    { suit: "s", card: 12 },
+    { suit: "s", card: 2 },
+    { suit: "d", card: 5 },
+    { suit: "d", card: 3 },
+    { suit: "s", card: 8 },
+    { suit: "c", card: 4 },
+    { suit: "h", card: 5 },
+    { suit: "h", card: 1 },
+    { suit: "s", card: 1 },
+    { suit: "c", card: 2 },
+    { suit: "s", card: 9 },
+    { suit: "s", card: 3 },
+    { suit: "h", card: 4 },
+    { suit: "h", card: 6 },
+    { suit: "c", card: 10 },
+    { suit: "h", card: 9 },
+    { suit: "h", card: 10 },
+    { suit: "d", card: 2 },
+    { suit: "d", card: 4 },
+    { suit: "h", card: 7 },
+  ],
+  currentCard: { suit: "c", card: 7 },
+  skippedRoyalty: [],
+  grid: [
+    [],
+    [{ suit: "d", card: 12 }, { destroyed: true }],
+    [{ suit: "c", card: 11 }],
+    [],
+    [],
+    [],
+    [
+      { suit: "d", card: 9 },
+      { suit: "d", card: 7 },
+    ],
+    [{ suit: "c", card: 9 }],
+    [{ suit: "", card: 0 }],
+    [],
+    [{ suit: "h", card: 11 }],
+    [{ suit: "h", card: 8 }],
+    [],
+    [{ suit: "c", card: 5 }],
+    [],
+    [{ suit: "h", card: 12 }],
+    [{ suit: "d", card: 1 }],
+    [{ suit: "s", card: 7 }],
+    [{ suit: "c", card: 8 }],
+    [{ suit: "c", card: 12 }, { destroyed: true }],
+    [],
+    [{ suit: "h", card: 13 }, { destroyed: true }],
+    [{ suit: "s", card: 13 }],
+    [],
+    [],
+  ],
+  bonus: [
+    [
+      [{ suit: "c", card: 12 }, { destroyed: true }],
+      [{ suit: "d", card: 12 }, { destroyed: true }],
+    ],
+  ],
+};
 
-export const earlyDoubleTrigger = {"scene":"game","deckInHand":[{"suit":"h","card":2},{"suit":"c","card":13},{"suit":"s","card":6},{"suit":"s","card":4},{"suit":"d","card":13},{"suit":"c","card":6},{"suit":"s","card":5},{"suit":"c","card":3},{"suit":"h","card":3},{"suit":"d","card":6},{"suit":"c","card":1},{"suit":"","card":0},{"suit":"d","card":8},{"suit":"d","card":10},{"suit":"s","card":10},{"suit":"d","card":11},{"suit":"s","card":11},{"suit":"s","card":12},{"suit":"s","card":2},{"suit":"d","card":5},{"suit":"d","card":3},{"suit":"s","card":8},{"suit":"c","card":4},{"suit":"h","card":5},{"suit":"h","card":1},{"suit":"s","card":1},{"suit":"c","card":2},{"suit":"s","card":9},{"suit":"s","card":3},{"suit":"h","card":4},{"suit":"h","card":6},{"suit":"c","card":10},{"suit":"h","card":9},{"suit":"h","card":10},{"suit":"d","card":2},{"suit":"d","card":4},{"suit":"h","card":7}],"currentCard":{"suit":"c","card":7},"skippedRoyalty":[],"grid":[[],[{"suit":"d","card":12},{"destroyed":true}],[{"suit":"c","card":11}],[],[],[],[{"suit":"d","card":9},{"suit":"d","card":7}],[{"suit":"c","card":9}],[{"suit":"","card":0}],[],[{"suit":"h","card":11}],[{"suit":"h","card":8}],[],[{"suit":"c","card":5}],[],[{"suit":"h","card":12}],[{"suit":"d","card":1}],[{"suit":"s","card":7}],[{"suit":"c","card":8}],[{"suit":"c","card":12},{"destroyed":true}],[],[{"suit":"h","card":13},{"destroyed":true}],[{"suit":"s","card":13}],[],[]],"bonus":[[[{"suit":"c","card":12},{"destroyed":true}],[{"suit":"d","card":12},{"destroyed":true}]]]};
+export const dangerClose = {
+  scene: "game",
+  deckInHand: [
+    { suit: "c", card: 4 },
+    { suit: "h", card: 5 },
+    { suit: "h", card: 1 },
+    { suit: "s", card: 1 },
+    { suit: "c", card: 2 },
+    { suit: "s", card: 9 },
+    { suit: "s", card: 3 },
+    { suit: "h", card: 4 },
+    { suit: "h", card: 6 },
+    { suit: "c", card: 10 },
+    { suit: "h", card: 9 },
+    { suit: "h", card: 10 },
+    { suit: "d", card: 2 },
+    { suit: "d", card: 4 },
+    { suit: "h", card: 7 },
+    { suit: "c", card: 9 },
+    { suit: "c", card: 7 },
+  ],
+  currentCard: { suit: "s", card: 8 },
+  skippedRoyalty: [],
+  grid: [
+    [],
+    [{ suit: "d", card: 12 }, { destroyed: true }],
+    [
+      { suit: "c", card: 3 },
+      { suit: "c", card: 11 },
+    ],
+    [
+      { suit: "d", card: 3 },
+      { suit: "d", card: 11 },
+    ],
+    [],
+    [{ suit: "h", card: 3 }, { suit: "d", card: 13 }, { destroyed: true }],
+    [
+      { suit: "d", card: 9 },
+      { suit: "d", card: 7 },
+    ],
+    [
+      { suit: "d", card: 8 },
+      { suit: "c", card: 1 },
+    ],
+    [
+      { suit: "d", card: 10 },
+      { suit: "s", card: 6 },
+      { suit: "", card: 0 },
+    ],
+    [
+      { suit: "d", card: 5 },
+      { suit: "s", card: 12 },
+    ],
+    [{ suit: "h", card: 11 }, { destroyed: true }],
+    [{ suit: "h", card: 8 }],
+    [
+      { suit: "s", card: 10 },
+      { suit: "", card: 0 },
+    ],
+    [
+      { suit: "c", card: 6 },
+      { suit: "c", card: 5 },
+    ],
+    [
+      { suit: "s", card: 2 },
+      { suit: "s", card: 11 },
+    ],
+    [{ suit: "h", card: 12 }],
+    [
+      { suit: "d", card: 6 },
+      { suit: "s", card: 5 },
+      { suit: "s", card: 4 },
+      { suit: "h", card: 2 },
+      { suit: "d", card: 1 },
+    ],
+    [{ suit: "s", card: 7 }],
+    [{ suit: "c", card: 8 }],
+    [{ suit: "c", card: 12 }, { destroyed: true }],
+    [],
+    [{ suit: "h", card: 13 }, { destroyed: true }],
+    [{ suit: "s", card: 13 }],
+    [{ suit: "c", card: 13 }, { destroyed: true }],
+    [],
+  ],
+  bonus: [
+    [
+      [{ suit: "c", card: 12 }, { destroyed: true }],
+      [{ suit: "d", card: 12 }, { destroyed: true }],
+    ],
+  ],
+};
 
-
-export const dangerClose = {"scene":"game","deckInHand":[{"suit":"c","card":4},{"suit":"h","card":5},{"suit":"h","card":1},{"suit":"s","card":1},{"suit":"c","card":2},{"suit":"s","card":9},{"suit":"s","card":3},{"suit":"h","card":4},{"suit":"h","card":6},{"suit":"c","card":10},{"suit":"h","card":9},{"suit":"h","card":10},{"suit":"d","card":2},{"suit":"d","card":4},{"suit":"h","card":7},{"suit":"c","card":9},{"suit":"c","card":7}],"currentCard":{"suit":"s","card":8},"skippedRoyalty":[],"grid":[[],[{"suit":"d","card":12},{"destroyed":true}],[{"suit":"c","card":3},{"suit":"c","card":11}],[{"suit":"d","card":3},{"suit":"d","card":11}],[],[{"suit":"h","card":3},{"suit":"d","card":13},{"destroyed":true}],[{"suit":"d","card":9},{"suit":"d","card":7}],[{"suit":"d","card":8},{"suit":"c","card":1}],[{"suit":"d","card":10},{"suit":"s","card":6},{"suit":"","card":0}],[{"suit":"d","card":5},{"suit":"s","card":12}],[{"suit":"h","card":11},{"destroyed":true}],[{"suit":"h","card":8}],[{"suit":"s","card":10},{"suit":"","card":0}],[{"suit":"c","card":6},{"suit":"c","card":5}],[{"suit":"s","card":2},{"suit":"s","card":11}],[{"suit":"h","card":12}],[{"suit":"d","card":6},{"suit":"s","card":5},{"suit":"s","card":4},{"suit":"h","card":2},{"suit":"d","card":1}],[{"suit":"s","card":7}],[{"suit":"c","card":8}],[{"suit":"c","card":12},{"destroyed":true}],[],[{"suit":"h","card":13},{"destroyed":true}],[{"suit":"s","card":13}],[{"suit":"c","card":13},{"destroyed":true}],[]],"bonus":[[[{"suit":"c","card":12},{"destroyed":true}],[{"suit":"d","card":12},{"destroyed":true}]]]};
-
-export const dontCallItAComeback = {"scene":"game","deckInHand":[{"suit":"c","card":7},{"suit":"s","card":7},{"suit":"c","card":8}],"currentCard":{"suit":"c","card":9},"skippedRoyalty":[],"grid":[[],[{"suit":"d","card":12},{"destroyed":true}],[{"suit":"c","card":3},{"suit":"c","card":11},{"destroyed":true}],[{"suit":"d","card":3},{"suit":"d","card":11},{"destroyed":true}],[],[{"suit":"h","card":3},{"suit":"d","card":13},{"destroyed":true}],[{"suit":"h","card":10},{"suit":"d","card":9},{"suit":"d","card":7}],[{"suit":"s","card":8},{"suit":"d","card":8},{"suit":"c","card":1}],[{"suit":"c","card":10},{"suit":"d","card":10},{"suit":"s","card":6},{"suit":"","card":0}],[{"suit":"d","card":5},{"suit":"s","card":12},{"destroyed":true}],[{"suit":"h","card":11},{"destroyed":true}],[{"suit":"h","card":8}],[{"suit":"s","card":10},{"suit":"","card":0}],[{"suit":"s","card":9},{"suit":"c","card":6},{"suit":"c","card":5}],[{"suit":"h","card":5},{"suit":"s","card":2},{"suit":"s","card":11}],[{"suit":"c","card":4},{"suit":"h","card":12}],[{"suit":"h","card":9},{"suit":"h","card":6},{"suit":"d","card":6},{"suit":"s","card":5},{"suit":"s","card":4},{"suit":"h","card":2},{"suit":"d","card":1}],[{"suit":"h","card":7},{"suit":"d","card":4},{"suit":"h","card":4},{"suit":"s","card":3},{"suit":"c","card":2},{"suit":"h","card":1}],[{"suit":"d","card":2},{"suit":"s","card":1}],[{"suit":"c","card":12},{"destroyed":true}],[],[{"suit":"h","card":13},{"destroyed":true}],[{"suit":"s","card":13},{"destroyed":true}],[{"suit":"c","card":13},{"destroyed":true}],[]],"bonus":[[[{"suit":"c","card":12},{"destroyed":true}],[{"suit":"d","card":12},{"destroyed":true}]]]};
+export const dontCallItAComeback = {
+  scene: "game",
+  deckInHand: [
+    { suit: "c", card: 7 },
+    { suit: "s", card: 7 },
+    { suit: "c", card: 8 },
+  ],
+  currentCard: { suit: "c", card: 9 },
+  skippedRoyalty: [],
+  grid: [
+    [],
+    [{ suit: "d", card: 12 }, { destroyed: true }],
+    [{ suit: "c", card: 3 }, { suit: "c", card: 11 }, { destroyed: true }],
+    [{ suit: "d", card: 3 }, { suit: "d", card: 11 }, { destroyed: true }],
+    [],
+    [{ suit: "h", card: 3 }, { suit: "d", card: 13 }, { destroyed: true }],
+    [
+      { suit: "h", card: 10 },
+      { suit: "d", card: 9 },
+      { suit: "d", card: 7 },
+    ],
+    [
+      { suit: "s", card: 8 },
+      { suit: "d", card: 8 },
+      { suit: "c", card: 1 },
+    ],
+    [
+      { suit: "c", card: 10 },
+      { suit: "d", card: 10 },
+      { suit: "s", card: 6 },
+      { suit: "", card: 0 },
+    ],
+    [{ suit: "d", card: 5 }, { suit: "s", card: 12 }, { destroyed: true }],
+    [{ suit: "h", card: 11 }, { destroyed: true }],
+    [{ suit: "h", card: 8 }],
+    [
+      { suit: "s", card: 10 },
+      { suit: "", card: 0 },
+    ],
+    [
+      { suit: "s", card: 9 },
+      { suit: "c", card: 6 },
+      { suit: "c", card: 5 },
+    ],
+    [
+      { suit: "h", card: 5 },
+      { suit: "s", card: 2 },
+      { suit: "s", card: 11 },
+    ],
+    [
+      { suit: "c", card: 4 },
+      { suit: "h", card: 12 },
+    ],
+    [
+      { suit: "h", card: 9 },
+      { suit: "h", card: 6 },
+      { suit: "d", card: 6 },
+      { suit: "s", card: 5 },
+      { suit: "s", card: 4 },
+      { suit: "h", card: 2 },
+      { suit: "d", card: 1 },
+    ],
+    [
+      { suit: "h", card: 7 },
+      { suit: "d", card: 4 },
+      { suit: "h", card: 4 },
+      { suit: "s", card: 3 },
+      { suit: "c", card: 2 },
+      { suit: "h", card: 1 },
+    ],
+    [
+      { suit: "d", card: 2 },
+      { suit: "s", card: 1 },
+    ],
+    [{ suit: "c", card: 12 }, { destroyed: true }],
+    [],
+    [{ suit: "h", card: 13 }, { destroyed: true }],
+    [{ suit: "s", card: 13 }, { destroyed: true }],
+    [{ suit: "c", card: 13 }, { destroyed: true }],
+    [],
+  ],
+  bonus: [
+    [
+      [{ suit: "c", card: 12 }, { destroyed: true }],
+      [{ suit: "d", card: 12 }, { destroyed: true }],
+    ],
+  ],
+};

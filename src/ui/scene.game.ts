@@ -21,7 +21,15 @@ import connect from "./component-connector";
 import sharedStyles from "./styles.css";
 import gameStyles from "./styles.game.scss";
 import { dealGrid, tryToPlayCard } from "../app/game.commands";
-import { aboutToWin, closeToAWin, closeToAWinNoArmorWithBonus, dangerClose, dontCallItAComeback, earlyDoubleTrigger, noCardsLeft } from "../app/game.test-states";
+import {
+    aboutToWin,
+    closeToAWin,
+    closeToAWinNoArmorWithBonus,
+    dangerClose,
+    dontCallItAComeback,
+    earlyDoubleTrigger,
+    noCardsLeft,
+} from "../app/game.test-states";
 import drawInstructions from "./instructions";
 
 const { dispatch, getState } = store;

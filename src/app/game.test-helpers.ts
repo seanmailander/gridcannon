@@ -1,4 +1,5 @@
-import { CARDS, ICard, JOKER } from "./deck";
+import { CARDS, JOKER } from "./deck";
+import { ICard } from "./game.interfaces";
 import { RootState } from "./store";
 
 const range = (n) => [...Array(n).keys()];
