@@ -4,7 +4,6 @@ import {
   playSpots,
   royalSpots,
   triggerSpots,
-  instructionIdentifiers,
 } from "./game.consts";
 import {
   colorMaps,
@@ -14,6 +13,7 @@ import {
   JOKER,
   isNotFaceCard,
 } from "./deck";
+import { GameState } from "./game.interfaces";
 
 const lastInStack = (arr) => arr.slice(-1)[0];
 
@@ -291,15 +291,17 @@ export const getHintForCardInHand = (state) => {
 export const countTotalArmor = (stack) =>
   stack.reduce((acc, curr) => acc + (isNotFaceCard(curr) ? curr.card : 0), 0);
 
-export const scoreGame = (state) => {
-  // Selector:
-  //  plusses:
+export const scoreGame = (state: GameState) => {
+  // Scoring
+  //  merits:
   //      1 point for each destroyed royals
-  //      1 point for each destroyed armor
-  //  minuses:
+  //      2 point for each destroyed armor
+  //  demerits:
   //      -1 point for each remaining royal
-  //      -1 point for each remaining armor
-  const { grid, bonuses } = state;
+  //      -2 point for each remaining armor
+  //  extra points:
+  //      x2 royal value for every double-trigger
+  const { grid, bonus } = state;
   const royalStacks = getRoyalStacks(grid);
   const stacksWithDestroyedRoyal = royalStacks.filter((stack) =>
     isDestroyed(lastInStack(stack))
@@ -320,15 +322,32 @@ export const scoreGame = (state) => {
     0
   );
 
-  const bonusRoyals = bonuses.length;
-  const bonusArmor = bonuses.reduce(
-    (prev, curr) => prev + countTotalArmor(curr),
+  const bonusRoyals = bonus.length * 2;
+  const bonusArmor = bonus.reduce(
+    (prev, curr) => prev + curr.reduce((p, c) => p + countTotalArmor(c), 0),
     0
   );
 
+  const merits = {
+    total: destroyedRoyals + destroyedArmor * 2,
+    destroyedRoyals,
+    destroyedArmor,
+  };
+  const demerits = {
+    total: remainingRoyals + remainingArmor * 2,
+    remainingRoyals,
+    remainingArmor,
+  };
+  const extraPoints = {
+    total: 2 * (bonusRoyals + bonusArmor * 2),
+    bonusRoyals,
+    bonusArmor,
+  };
+
   return {
-    plusses: destroyedRoyals + destroyedArmor,
-    minuses: remainingRoyals + remainingArmor,
-    bonuses: bonusRoyals + bonusArmor,
+    total: merits.total - demerits.total + extraPoints.total,
+    merits,
+    demerits,
+    extraPoints,
   };
 };

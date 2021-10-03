@@ -1,3 +1,5 @@
+import { ICard } from "./game.interfaces";
+
 export const JOKER = 0;
 
 export const CARDS = {
@@ -40,13 +42,6 @@ export const getSuitAsClassname = (suit) => {
   };
   return suitToClassMap[suit];
 };
-
-export interface ICard {
-  suit?: string;
-  card?: number;
-  destroyed?: boolean;
-  empty?: boolean;
-}
 
 export const shuffleDeck = () => {
   const deck = Object.keys(SUITS)

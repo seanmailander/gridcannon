@@ -5,11 +5,11 @@ import { getSuitAsClassname, isRoyalty } from "../app/deck";
 import { getURIToCardImage } from "./playing_cards";
 
 import {
-  whatLegalMoves,
-  whatOpenTargets,
-  getHintForCardInHand,
-  openSpotsForNonRoyal,
-  countTotalArmor,
+    whatLegalMoves,
+    whatOpenTargets,
+    getHintForCardInHand,
+    openSpotsForNonRoyal,
+    countTotalArmor,
 } from "../app/game.selectors";
 import { playSpots, scenes } from "../app/game.consts";
 
@@ -21,38 +21,46 @@ import connect from "./component-connector";
 import sharedStyles from "./styles.css";
 import gameStyles from "./styles.game.scss";
 import { dealGrid, tryToPlayCard } from "../app/game.commands";
-import { aboutToWin, addingArmor } from "../app/game.test-states";
+import {
+    aboutToWin,
+    closeToAWin,
+    closeToAWinNoArmorWithBonus,
+    dangerClose,
+    dontCallItAComeback,
+    earlyDoubleTrigger,
+    noCardsLeft,
+} from "../app/game.test-states";
 import drawInstructions from "./instructions";
 
 const { dispatch, getState } = store;
 
 const cardSpotClicked = (position) => () => {
-  dispatch(tryToPlayCard(position));
+    dispatch(tryToPlayCard(position));
 };
 
 const restartGame = () => {
-  dispatch(RESET_GAME());
-  dispatch(dealGrid());
+    dispatch(RESET_GAME());
+    dispatch(dealGrid());
 };
 
 const logStateToConsole = () => {
-  const currentState = getState();
-  // eslint-disable-next-line no-console
-  console.debug(JSON.stringify(currentState));
-  // console.debug(LZString.compressToBase64(JSON.stringify(currentState)));
+    const currentState = getState();
+    // eslint-disable-next-line no-console
+    console.debug(JSON.stringify(currentState));
+    // console.debug(LZString.compressToBase64(JSON.stringify(currentState)));
 };
 
 const loadState = () => {
-  dispatch(LOAD_TEST_STATE(aboutToWin));
+    dispatch(LOAD_TEST_STATE(dontCallItAComeback));
 };
 
 const drawHint = (state) => {
-  const hint = getHintForCardInHand(state);
-  return html` <p id="hint">${hint}</p> `;
+    const hint = getHintForCardInHand(state);
+    return html` <p id="hint">${hint}</p> `;
 };
 
 function loadMenu(host) {
-  dispatch(SHOW_MENU());
+    dispatch(SHOW_MENU());
 }
 
 const octoCorner = () => html`
@@ -86,8 +94,7 @@ const octoCorner = () => html`
         d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
         fill="currentColor"
         class="octo-body"
-      ></path></svg
-  ></a>
+      ></path></svg></a>
 `;
 
 const drawCard = (imageSource) => html` <img src=${imageSource} />`;
@@ -95,15 +102,15 @@ const drawCard = (imageSource) => html` <img src=${imageSource} />`;
 const drawBadge = (armor) => html` <span class="badge">${armor}</span> `;
 
 const drawGrid = (state) => {
-  const { grid, currentCard } = state;
-  const legalMoves = whatLegalMoves(state);
-  const openTargets = whatOpenTargets(state);
-  const showTargets =
-    !isRoyalty(currentCard) && openSpotsForNonRoyal(state).length > 0;
+    const { grid, currentCard } = state;
+    const legalMoves = whatLegalMoves(state);
+    const openTargets = whatOpenTargets(state);
+    const showTargets =
+        !isRoyalty(currentCard) && openSpotsForNonRoyal(state).length > 0;
 
-  return html`
+    return html`
     ${[...Array(5)].map(
-      (_1, i) => html`
+        (_1, i) => html`
         <section id="row${i}" class="row">
           ${[...Array(5)].map((_2, j) => {
             const spotIndex = i * 5 + j;
@@ -120,33 +127,33 @@ const drawGrid = (state) => {
             let badge = null;
 
             if (hasCard) {
-              if (isRoyal) {
-                const [lastCard] = stack.slice(-1);
-                const { suit, card, destroyed = false } = lastCard;
-                if (destroyed) {
-                  cardImage = drawCard(getURIToCardImage({ destroyed }));
-                } else {
-                  cardImage = drawCard(getURIToCardImage({ suit, card }));
-                  cardClasses.push(getSuitAsClassname(suit));
-                  cardClasses.push(isLegal ? "legal" : null);
-                  cardClasses.push(
-                    showTargets && isOpenTarget ? "targetted" : null
-                  );
+                if (isRoyal) {
+                    const [lastCard] = stack.slice(-1);
+                    const { suit, card, destroyed = false } = lastCard;
+                    if (destroyed) {
+                        cardImage = drawCard(getURIToCardImage({ destroyed }));
+                    } else {
+                        cardImage = drawCard(getURIToCardImage({ suit, card }));
+                        cardClasses.push(getSuitAsClassname(suit));
+                        cardClasses.push(isLegal ? "legal" : null);
+                        cardClasses.push(
+                            showTargets && isOpenTarget ? "targetted" : null
+                        );
 
-                  if (hasStack) {
-                    badge = drawBadge(countTotalArmor(stack));
-                  }
+                        if (hasStack) {
+                            badge = drawBadge(countTotalArmor(stack));
+                        }
+                    }
+                } else {
+                    const { suit, card } = stack[0];
+                    cardImage = drawCard(getURIToCardImage({ suit, card }));
+                    cardClasses.push(getSuitAsClassname(suit));
+                    cardClasses.push(isLegal ? "legal" : null);
+                    cardClasses.push(hasStack ? "stack" : null);
                 }
-              } else {
-                const { suit, card } = stack[0];
-                cardImage = drawCard(getURIToCardImage({ suit, card }));
-                cardClasses.push(getSuitAsClassname(suit));
-                cardClasses.push(isLegal ? "legal" : null);
-                cardClasses.push(hasStack ? "stack" : null);
-              }
             } else {
-              cardImage = drawCard(getURIToCardImage({ empty: true }));
-              cardClasses.push(isLegal ? "legal" : "unplayed");
+                cardImage = drawCard(getURIToCardImage({ empty: true }));
+                cardClasses.push(isLegal ? "legal" : "unplayed");
             }
 
             return html`
@@ -158,7 +165,7 @@ const drawGrid = (state) => {
                 ${cardImage} ${badge}
               </section>
             `;
-          })}
+        })}
         </section>
       `
     )}
@@ -166,51 +173,51 @@ const drawGrid = (state) => {
 };
 
 const drawDeck = (state) => {
-  const { deckInHand, skippedRoyalty } = state;
-  if (deckInHand && deckInHand.length > 0) {
-    const cardImage = drawCard(getURIToCardImage({ destroyed: true }));
+    const { deckInHand, skippedRoyalty } = state;
+    if (deckInHand && deckInHand.length > 0) {
+        const cardImage = drawCard(getURIToCardImage({ destroyed: true }));
 
-    return html` <div id="deck">${cardImage}</div> `;
-  }
+        return html` <div id="deck">${cardImage}</div> `;
+    }
 
-  return html``;
+    return html``;
 };
 
 const drawCardsRemaining = (state) => {
-  const { deckInHand, skippedRoyalty } = state;
-  if (deckInHand && deckInHand.length > 0) {
-    return html`
+    const { deckInHand, skippedRoyalty } = state;
+    if (deckInHand && deckInHand.length > 0) {
+        return html`
       <div id="cardsRemaining">
         ${deckInHand.length + skippedRoyalty.length} cards remaining
       </div>
     `;
-  }
+    }
 
-  return html``;
+    return html``;
 };
 
 const drawCurrentCard = (state) => {
-  const { currentCard } = state;
-  if (currentCard) {
-    const { suit, card } = currentCard;
-    const cardImage = drawCard(getURIToCardImage({ suit, card }));
-    const classNames = [].push(getSuitAsClassname(suit));
+    const { currentCard } = state;
+    if (currentCard) {
+        const { suit, card } = currentCard;
+        const cardImage = drawCard(getURIToCardImage({ suit, card }));
+        const classNames = [].push(getSuitAsClassname(suit));
 
-    return html`
+        return html`
       <div id="currentCard" class=${classNames}>${cardImage}</div>
       Current card
     `;
-  }
+    }
 
-  return html``;
+    return html``;
 };
 
 function renderScene({ state, scene }) {
-  if (scene !== scenes.GAME) {
-    return html``;
-  }
+    if (scene !== scenes.GAME) {
+        return html``;
+    }
 
-  return html`
+    return html`
     <section id="game">
       <section class="heading">
         <h1>GridCannon</h1>
@@ -247,8 +254,8 @@ function renderScene({ state, scene }) {
 }
 
 define({
-  tag: "game-scene",
-  scene: connect(store, (state) => state.scene),
-  state: connect(store, (state) => state),
-  render: renderScene,
+    tag: "game-scene",
+    scene: connect(store, (state) => state.scene),
+    state: connect(store, (state) => state),
+    render: renderScene,
 });
