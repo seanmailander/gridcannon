@@ -24,10 +24,11 @@ import sharedStyles from './styles.css';
 import gameStyles from './styles.game.scss';
 import { dealGrid, tryToPlayCard } from '../app/game.commands';
 import { unwinnableArmor } from '../app/game.test-states';
+import drawInstructions from './instructions';
 
 const { dispatch, getState } = store;
 
-const cardSpotClicked = (position) => {
+const cardSpotClicked = (position) => () => {
     dispatch(tryToPlayCard(position));
 };
 
@@ -49,39 +50,16 @@ const loadState = () => {
 
 
 
-export const changeHint = (state) => {
+export const drawHint = (state) => {
     const hint = getHintForCardInHand(state);
-    const hintNode = document.getElementById("hint");
-    [...hintNode.childNodes].forEach((node) => hintNode.removeChild(node));
-    const hintText = document.createTextNode(hint);
-    hintNode.appendChild(hintText);
+    return html`
+    <p id="hint">${hint}</p>
+    `;
 };
-
-export const attachToInterface = (handlers) => {
-    const restartBtn = document.getElementById("restartBtn");
-    restartBtn.addEventListener("click", handlers.restart);
-    const saveStateBtn = document.getElementById("saveStateBtn");
-    saveStateBtn.addEventListener("click", handlers.saveState);
-    const loadTestStateBtn = document.getElementById("loadStateBtn");
-    loadTestStateBtn.addEventListener("click", handlers.loadState);
-
-    [...Array(25)].forEach((element, index) => {
-        const spot = document.getElementById(`spot${index}`);
-        spot.addEventListener("click", () => handlers.placeCard(index));
-    });
-};
-
 
 export default function onLoad() {
-    attachToInterface({
-        restart: restartGame,
-        placeCard: cardSpotClicked,
-        saveState: logStateToConsole,
-        loadState,
-    });
     store.subscribe(() => {
         const state = store.getState();
-        changeHint(state);
         setInstructions(state);
     });
 }
@@ -187,7 +165,7 @@ const drawGrid = (state) => {
         }
 
         return html`
-                <section id="spot${spotIndex}" class="${cardClasses}">
+                <section id="spot${spotIndex}" class="${cardClasses.filter(x => !!x)}" onclick=${cardSpotClicked(spotIndex)}>
                     ${cardImage}
                 </section>
             `;
@@ -266,49 +244,21 @@ function renderScene({ state, scene }) {
 
 
           <section class="controls">
-            <button id="restartBtn">Restart game</button>
-            <button id="saveStateBtn">Save state</button>
-            <button id="loadStateBtn">Load test state</button>
+            <button id="restartBtn" onclick=${restartGame}>Restart game</button>
+            <button id="saveStateBtn" onclick=${logStateToConsole}>Save state</button>
+            <button id="loadStateBtn" onclick=${loadState}>Load test state</button>
           </section>
         </section>
         <section class="grid-holder">
           <section id="grid" class="grid">${drawGrid(state)}</section>
         </section>
         <section class="right-bar">
-          <h2 id="i-setup">The Setup</h2>
-          <ul>
-            <li id="i-shuffle">Shuffle a deck of 52 cards</li>
-            <li id="i-deal">Deal one card at a time in a 3x3 grid</li>
-            <li id="i-aside">Set any Royals to the side</li>
-          </ul>
-
-          <h2 id="i-constraint">The Constraint</h2>
-          <ul>
-            <li id="i-royal">Play a Royal on the highest aligned card</li>
-            <li id="i-armor">Add an unplayable Pip to any Royal</li>
-          </ul>
-
-          <h2 id="i-play">The Play</h2>
-          <ul>
-            <li id="i-pip">Play a Pip on any card of lower value</li>
-            <li id="i-ace">Play an Ace to reset any stack</li>
-            <li id="i-joker">Play a Joker to recall any stack</li>
-          </ul>
-
-          <h2 id="i-end">The End</h2>
-          <ul>
-            <li id="i-win">WIN: All Royals have been knocked out</li>
-            <li id="i-lose-nocard">LOSE: No cards remain to play</li>
-            <li id="i-lose-noroyal">
-              LOSE: No royals to add an unplayable Pip to
-            </li>
-            <li id="i-lose-overarmored">LOSE: Too much armor on a royal</li>
-          </ul>
+          ${drawInstructions(state)}
         </section>
       </section>
 
       <section class="hint-footer">
-        <p id="hint">Hint: Place a card</p>
+        ${drawHint(state)}
         <simple-counter count="10"></simple-counter>
       </section>
     </section>
