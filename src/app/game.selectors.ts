@@ -323,9 +323,9 @@ export const scoreGame = (state: RootState) => {
         0
     );
 
-    const bonusRoyals = bonus.length;
+    const bonusRoyals = bonus.length * 2;
     const bonusArmor = bonus.reduce(
-        (prev, curr) => prev + countTotalArmor(curr),
+        (prev, curr) => prev + curr.reduce((p, c) => p + countTotalArmor(c), 0),
         0
     );
 

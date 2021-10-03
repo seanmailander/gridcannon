@@ -35,7 +35,7 @@ export interface GameState {
   currentCard: ICard;
   skippedRoyalty: Array<ICard>;
   grid: Array<Array<ICard>>;
-  bonus: Array<number>;
+  bonus: Array<Array<ICard>>;
 }
 
 export const gameReducer = createReducer(initialState(), (builder) => {

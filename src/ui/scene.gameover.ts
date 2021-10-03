@@ -51,7 +51,7 @@ function renderScene({ gamePhase, gameScore, scene }) {
         <p>
             Merits: +${merits.total} <br />
             <small>x1 for each destroyed royal = 1 x ${merits.destroyedRoyals}</small> <br />
-            <small>x2 for each destroyed royal = 2 x ${merits.destroyedArmor}</small> <br />
+            <small>x2 for each destroyed armor = 2 x ${merits.destroyedArmor}</small> <br />
             <br />
             Demerits: -${demerits.total} <br />
             <small>x1 for each remaining royal = 1 x ${demerits.remainingRoyals}</small> <br />
