@@ -21,7 +21,7 @@ import connect from "./component-connector";
 import sharedStyles from "./styles.css";
 import gameStyles from "./styles.game.scss";
 import { dealGrid, tryToPlayCard } from "../app/game.commands";
-import { aboutToWin, addingArmor } from "../app/game.test-states";
+import { aboutToWin, closeToAWinNoArmorWithBonus } from "../app/game.test-states";
 import drawInstructions from "./instructions";
 
 const { dispatch, getState } = store;
@@ -43,7 +43,7 @@ const logStateToConsole = () => {
 };
 
 const loadState = () => {
-  dispatch(LOAD_TEST_STATE(aboutToWin));
+  dispatch(LOAD_TEST_STATE(closeToAWinNoArmorWithBonus));
 };
 
 const drawHint = (state) => {

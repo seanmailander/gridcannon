@@ -89,7 +89,7 @@ export const greenNewDeal = {
 };
 
 export const noRoyalsOnDeal = {
-  bonuses: [],
+  bonus: [],
   deckInHand: [
     { suit: "d", card: 12 },
     { suit: "d", card: 6 },
@@ -169,7 +169,7 @@ export const noRoyalsOnDeal = {
 };
 
 export const closeToAWin = {
-  bonuses: [],
+  bonus: [],
   deckInHand: [
     { suit: "c", card: 9 },
     { suit: "c", card: 1 },
@@ -250,7 +250,7 @@ export const closeToAWin = {
 };
 
 export const closeToAWinNoArmor = {
-  bonuses: [],
+  bonus: [],
   deckInHand: [
     { suit: "c", card: 9 },
     { suit: "c", card: 1 },
@@ -333,7 +333,7 @@ export const closeToAWinNoArmor = {
 };
 
 export const closeToAWinNoArmorWithBonus = {
-  bonuses: [
+  bonus: [
     [{ suit: "s", card: 11 }, { destroyed: true }],
     [{ suit: "c", card: 12 }, { destroyed: true }],
   ],
@@ -419,7 +419,7 @@ export const closeToAWinNoArmorWithBonus = {
 };
 
 export const alreadyWon = {
-  bonuses: [],
+  bonus: [],
   deckInHand: [],
   currentCard: { suit: "s", card: 8 },
   skippedRoyalty: [],
@@ -498,7 +498,7 @@ export const alreadyWon = {
 };
 
 export const alreadyWonNoArmor = {
-  bonuses: [],
+  bonus: [],
   deckInHand: [],
   currentCard: { suit: "s", card: 8 },
   skippedRoyalty: [],
@@ -579,7 +579,7 @@ export const alreadyWonNoArmor = {
 };
 
 export const midGameArmor = {
-  bonuses: [],
+  bonus: [],
   deckInHand: [
     { suit: "", card: 0 },
     { suit: "s", card: 1 },
@@ -662,7 +662,7 @@ export const midGameArmor = {
 };
 
 export const noCardsLeft = {
-  bonuses: [],
+  bonus: [],
   deckInHand: [],
   skippedRoyalty: [],
   grid: [
@@ -761,7 +761,7 @@ export const noCardsLeft = {
 };
 
 export const doubleTrigger = {
-  bonuses: [],
+  bonus: [],
   deckInHand: [
     { suit: "d", card: 5 },
     { suit: "c", card: 5 },
