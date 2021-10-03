@@ -1,36 +1,34 @@
-import { html, define } from 'hybrids';
-import { scenes } from '../app/game.consts';
-import { SHOW_MENU } from '../app/game.reducer';
+import { html, define } from "hybrids";
+import { scenes } from "../app/game.consts";
+import { SHOW_MENU } from "../app/game.reducer";
 
 import { store } from "../app/store";
-import connect from './component-connector';
-import sharedStyles from './styles.css';
+import connect from "./component-connector";
+import sharedStyles from "./styles.css";
 
 const { dispatch, getState } = store;
 
 function loadMenu(host) {
-    dispatch(SHOW_MENU());
+  dispatch(SHOW_MENU());
 }
 
 function renderScene({ scene }) {
-    if (scene !== scenes.SPLASH) {
-        return html``;
-    }
+  if (scene !== scenes.SPLASH) {
+    return html``;
+  }
 
-    return html`
+  return html`
     <section class="heading">
-    <h1>GridCannon</h1>
+      <h1>GridCannon</h1>
     </section>
     <section class="heading">
-        <button onclick="${loadMenu}">
-            Get started
-        </button>
+      <button onclick="${loadMenu}">Get started</button>
     </section>
-    `.style(sharedStyles);
+  `.style(sharedStyles);
 }
 
 define({
-    tag: "splash-scene",
-    scene: connect(store, state => state.scene),
-    render: renderScene
+  tag: "splash-scene",
+  scene: connect(store, (state) => state.scene),
+  render: renderScene,
 });
