@@ -68,6 +68,9 @@ function renderScene({ scene }) {
 
   return html`
     <section class="heading">
+      <h1>GridCannon</h1>
+    </section>
+    <section class="heading">
       <h1>Menu</h1>
     </section>
     <section class="menu">
