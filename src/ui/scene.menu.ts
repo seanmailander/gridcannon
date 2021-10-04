@@ -17,10 +17,10 @@ function startNewGame(host) {
 }
 
 function optionToggle(option) {
-  const { id, title, description } = option;
+  const { id, title, description, disabled } = option;
   return html`
     <div class="toggle">
-      <input id="${id}" type="checkbox" />
+      <input id="${id}" type="checkbox" disabled=${disabled} />
       <label class="toggle-item" for="${id}"></label>
       <span>${title}</span> <br />
       <small>${description}</small>
@@ -33,31 +33,38 @@ const helperOptions = [
     id: "recall",
     title: "Perfect Recall",
     description: "All stacks are visible for reset",
+    disabled: true,
   },
   {
     id: "premonition",
     title: "Premonition",
     description: "Next three cards are visible",
+    disabled: true,
   },
   {
     id: "timetravel",
     title: "Time Travel",
     description: "Undo up to three moves",
   },
-  { id: "kidding", title: "Just Kidding", description: "Three extra jokers" },
+  { id: "kidding", title: "Just Kidding", description: "Three extra jokers",
+  disabled: true, },
 ];
 const hinderenceOptions = [
-  { id: "harder", title: "Harder", description: "Shot clock adds armor" },
-  { id: "better", title: "Better", description: "Only one joker" },
+  { id: "harder", title: "Harder", description: "Shot clock adds armor",
+  disabled: true, },
+  { id: "better", title: "Better", description: "Only one joker",
+  disabled: true, },
   {
     id: "faster",
     title: "Faster",
     description: "Royals gain armor over time(or Shot clock adds armor)",
+    disabled: true,
   },
   {
     id: "stronger",
     title: "Stronger",
     description: "All royals start with two armor",
+    disabled: true,
   },
 ];
 
