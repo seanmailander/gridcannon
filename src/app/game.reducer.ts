@@ -1,9 +1,9 @@
 /* eslint-disable no-param-reassign */
 import { createAction, createReducer } from "@reduxjs/toolkit";
 
-import { shuffleDeck, isRoyalty, CARDS, JOKER } from "./deck";
+import { isRoyalty, CARDS, JOKER } from "./deck";
 import { scenes } from "./game.consts";
-import { GameState, ICard, IDealAction } from "./game.interfaces";
+import { GameState, ICard } from "./game.interfaces";
 
 import { howManyCardsPlaced, targetsFiredUpon } from "./game.selectors";
 
@@ -20,8 +20,12 @@ export const SHOW_GAME = createAction<number>("scenes/game");
 export const RESET_GAME = createAction<number>("game/reset");
 export const DEAL_GRID = createAction<Array<ICard>>("game/deal");
 export const PLACE_CARD_DURING_DEAL = createAction<number>("game/placecard");
+export const FLIP_NEXT_ROYAL = createAction("game/fliproyal");
+export const FLIP_NEXT_CARD = createAction("game/flipcard");
 export const SET_ROYALTY_ASIDE = createAction("game/setroyaltyaside");
-export const PLAY_CARD = createAction<number>("game/playcard");
+export const RESET_STACK = createAction<number>("game/resetstack");
+export const ADD_TO_STACK = createAction<number>("game/addtostack");
+export const DESTROY_ROYALS = createAction<number[]>("game/destroyroyals");
 export const LOAD_TEST_STATE = createAction<any>("game/loadteststate");
 
 export const initialState = (scene = scenes.SPLASH) => ({
@@ -67,69 +71,57 @@ export const gameReducer = createReducer(initialState(), (builder) => {
             state.currentCard = nextCard;
         })
         .addCase(PLACE_CARD_DURING_DEAL, (state, action) => {
-            const { grid, deckInHand, skippedRoyalty, currentCard } = state;
+            const { grid, currentCard } = state;
             const { payload: position } = action;
 
             // put card in grid
             // stacks on!
             grid[position].unshift(currentCard);
+        })
+        .addCase(FLIP_NEXT_ROYAL, (state, action) => {
+            const { skippedRoyalty } = state;
 
-            // was this the last grid fill?
-            // that means there are currently 7 cards placed, and this is 8
-            const gridWasFilled = howManyCardsPlaced(state) === 8;
-            const thereIsSkippedRoyalty = skippedRoyalty.length > 0;
-            if (gridWasFilled && thereIsSkippedRoyalty) {
-                // next card is top of royalty
-                // take next card out of royalty
-                const nextCard = skippedRoyalty.shift();
+            // next card is top of royalty
+            const nextCard = skippedRoyalty.shift();
 
-                state.currentCard = nextCard;
-                return;
-            }
-            // take next card out of deck
+            state.currentCard = nextCard;
+        })
+        .addCase(FLIP_NEXT_CARD, (state, action) => {
+            const { deckInHand } = state;
+
+            // next card is top of deck
             const nextCard = deckInHand.shift();
 
             // return new state
             state.currentCard = nextCard;
         })
-        .addCase(PLAY_CARD, (state, action) => {
-            const { grid, deckInHand, skippedRoyalty, currentCard, bonus } = state;
+        .addCase(RESET_STACK, (state, action) => {
+            const { grid, deckInHand, currentCard } = state;
+            const { payload: position } = action;
+
+            // reset the stack, returning it to the deck in hand
+            deckInHand.push(...grid[position]);
+            grid[position] = [currentCard];
+        })
+        .addCase(ADD_TO_STACK, (state, action) => {
+            const { grid, currentCard } = state;
             const { payload: position } = action;
 
             // put card in grid
             // stacks on!
+            grid[position].unshift(currentCard);
+        })
+        .addCase(DESTROY_ROYALS, (state, action) => {
+            const { grid, bonus } = state;
+            const { payload: destroyedPositions } = action;
 
-            // should this clear the stack?
-            if (currentCard.card === JOKER || currentCard.card === CARDS.ACE) {
-                // reset the stack, returning it to the deck in hand
-                deckInHand.push(...grid[position]);
-                grid[position] = [currentCard];
-            } else {
-                grid[position].unshift(currentCard);
+            // Triggered destruction of royals
+            destroyedPositions.forEach((destroyPos) =>
+                grid[destroyPos].push({ destroyed: true })
+            );
+            if (destroyedPositions.length > 1) {
+                // Double points for double trigger
+                bonus.push(destroyedPositions.map((pos) => grid[pos]));
             }
-
-            // check for trigger
-            if (!isRoyalty(currentCard)) {
-                const destroyedPositions = targetsFiredUpon(position, grid);
-                destroyedPositions.forEach((destroyPos) =>
-                    grid[destroyPos].push({ destroyed: true })
-                );
-                if (destroyedPositions.length > 1) {
-                    // Double points for double trigger
-                    bonus.push(destroyedPositions.map((pos) => grid[pos]));
-                }
-            }
-
-            // is there more royalty?
-            const isMoreRoyalty = skippedRoyalty.length > 0;
-            if (isMoreRoyalty) {
-                // next card is top of royalty
-                // take next card out of royalty
-                state.currentCard = skippedRoyalty.shift();
-                return;
-            }
-            // next card is top of deck
-            // take next card out of deck
-            state.currentCard = deckInHand.shift();
         });
 });

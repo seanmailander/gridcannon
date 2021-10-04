@@ -4,14 +4,18 @@ import { AnyAction } from "@reduxjs/toolkit";
 import {
     SET_ROYALTY_ASIDE,
     PLACE_CARD_DURING_DEAL,
-    PLAY_CARD,
     DEAL_GRID,
     PLAYER_DEAL,
     PLAYER_PLAY_CARD,
+    FLIP_NEXT_ROYAL,
+    FLIP_NEXT_CARD,
+    RESET_STACK,
+    ADD_TO_STACK,
+    DESTROY_ROYALS,
 } from "./game.reducer";
 
-import { hashIt, isRoyalty, shuffleDeck } from "./deck";
-import { howManyCardsPlaced, whatLegalMoves } from "./game.selectors";
+import { CARDS, hashIt, isRoyalty, JOKER, shuffleDeck } from "./deck";
+import { howManyCardsPlaced, targetsFiredUpon, whatLegalMoves } from "./game.selectors";
 import { dealSpots } from "./game.consts";
 import { AppDispatch } from "./store";
 
@@ -48,6 +52,17 @@ export const dealGrid =
                 dispatch(dealNextCard(placedCards));
                 const state = getState();
                 placedCards = howManyCardsPlaced(state);
+
+                const { skippedRoyalty } = state;
+                // was this the last grid fill?
+                // that means there are currently 7 cards placed, and this is 8
+                const gridWasFilled = placedCards === 8;
+                const thereIsSkippedRoyalty = skippedRoyalty.length > 0;
+                if (gridWasFilled && thereIsSkippedRoyalty) {
+                    dispatch(FLIP_NEXT_ROYAL());
+                } else {
+                    dispatch(FLIP_NEXT_CARD());
+                }
             }
         };
 
@@ -64,7 +79,40 @@ export const tryToPlayCard =
             }
             const legalPositions = whatLegalMoves(state);
 
-            if (legalPositions.indexOf(targetPosition) !== -1) {
-                return dispatch(PLAY_CARD(targetPosition));
+            // No legal moves, nothing to do
+            // TODO: show an error about the illegal move?
+            if (legalPositions.indexOf(targetPosition) === -1) {
+                console.error("Illegal move", targetPosition);
+                return;
+            }
+
+            const { grid, skippedRoyalty, currentCard } = state;
+
+            // put card in grid
+            // stacks on!
+
+            // should this clear the stack?
+            if (currentCard.card === JOKER || currentCard.card === CARDS.ACE) {
+                // reset the stack, returning it to the deck in hand
+                dispatch(RESET_STACK(targetPosition));
+            } else {
+                dispatch(ADD_TO_STACK(targetPosition));
+            }
+
+            // check for trigger
+            if (!isRoyalty(currentCard)) {
+                const destroyedPositions = targetsFiredUpon(targetPosition, grid);
+                if (destroyedPositions.length > 0) {
+                    dispatch(DESTROY_ROYALS(destroyedPositions));
+                }
+            }
+
+            // is there more royalty?
+            const isMoreRoyalty = skippedRoyalty.length > 0;
+            if (isMoreRoyalty) {
+                // next card is top of royalty
+                dispatch(FLIP_NEXT_ROYAL());
+            } else {
+                dispatch(FLIP_NEXT_CARD());
             }
         };
