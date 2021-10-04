@@ -1,7 +1,8 @@
 import { html, define } from "hybrids";
 import { dealGrid } from "../app/game.commands";
 import { scenes } from "../app/game.consts";
-import { RESET_GAME, SHOW_GAME, SHOW_MENU } from "../app/game.reducer";
+import { IOptions } from "../app/game.interfaces";
+import { RESET_GAME, SHOW_GAME, SHOW_MENU, TOGGLE_OPTION } from "../app/game.reducer";
 
 import { store } from "../app/store";
 import connect from "./component-connector";
@@ -11,16 +12,21 @@ import menuStyles from "./styles.menu.scss";
 const { dispatch, getState } = store;
 
 function startNewGame(host) {
-  dispatch(SHOW_GAME());
-  dispatch(RESET_GAME());
-  dispatch(dealGrid());
+    dispatch(SHOW_GAME());
+    dispatch(RESET_GAME());
+    dispatch(dealGrid());
 }
 
-function optionToggle(option) {
-  const { id, title, description, disabled } = option;
-  return html`
+const setOption = (option) => (host, event) => {
+    dispatch(TOGGLE_OPTION({ [option]: event.target.checked }));
+}
+
+const optionToggle = (options: IOptions) => (option) => {
+    const { id, title, description, disabled } = option;
+    const checked = options[id];
+    return html`
     <div class="toggle">
-      <input id="${id}" type="checkbox" disabled=${disabled} />
+      <input id="${id}" type="checkbox" disabled=${disabled} onchange=${setOption(id)} checked=${checked} />
       <label class="toggle-item" for="${id}"></label>
       <span>${title}</span> <br />
       <small>${description}</small>
@@ -29,51 +35,57 @@ function optionToggle(option) {
 }
 
 const helperOptions = [
-  {
-    id: "recall",
-    title: "Perfect Recall",
-    description: "All stacks are visible for reset",
-    disabled: true,
-  },
-  {
-    id: "premonition",
-    title: "Premonition",
-    description: "Next three cards are visible",
-    disabled: true,
-  },
-  {
-    id: "timetravel",
-    title: "Time Travel",
-    description: "Undo up to three moves",
-  },
-  { id: "kidding", title: "Just Kidding", description: "Three extra jokers",
-  disabled: true, },
+    {
+        id: "recall",
+        title: "Perfect Recall",
+        description: "All stacks are visible for reset",
+        disabled: true,
+    },
+    {
+        id: "premonition",
+        title: "Premonition",
+        description: "Next three cards are visible",
+        disabled: true,
+    },
+    {
+        id: "timetravel",
+        title: "Time Travel",
+        description: "Undo up to three moves",
+    },
+    {
+        id: "kidding", title: "Just Kidding", description: "Three extra jokers",
+        disabled: true,
+    },
 ];
 const hinderenceOptions = [
-  { id: "harder", title: "Harder", description: "Shot clock adds armor",
-  disabled: true, },
-  { id: "better", title: "Better", description: "Only one joker",
-  disabled: true, },
-  {
-    id: "faster",
-    title: "Faster",
-    description: "Royals gain armor over time(or Shot clock adds armor)",
-    disabled: true,
-  },
-  {
-    id: "stronger",
-    title: "Stronger",
-    description: "All royals start with two armor",
-    disabled: true,
-  },
+    {
+        id: "harder", title: "Harder", description: "Shot clock adds armor",
+        disabled: true,
+    },
+    {
+        id: "better", title: "Better", description: "Only one joker",
+        disabled: true,
+    },
+    {
+        id: "faster",
+        title: "Faster",
+        description: "Royals gain armor over time(or Shot clock adds armor)",
+        disabled: true,
+    },
+    {
+        id: "stronger",
+        title: "Stronger",
+        description: "All royals start with two armor",
+        disabled: true,
+    },
 ];
 
-function renderScene({ scene }) {
-  if (scene !== scenes.MENU) {
-    return html``;
-  }
+function renderScene({ scene, options }) {
+    if (scene !== scenes.MENU) {
+        return html``;
+    }
 
-  return html`
+    return html`
     <section class="heading">
       <h1>GridCannon</h1>
     </section>
@@ -87,13 +99,13 @@ function renderScene({ scene }) {
         <section class="helpers">
           <h3>I need some help...</h3>
 
-          ${helperOptions.map(optionToggle)}
+          ${helperOptions.map(optionToggle(options))}
         </section>
 
         <section class="hinderenace">
           <h3>I've done this before...</h3>
 
-          ${hinderenceOptions.map(optionToggle)}
+          ${hinderenceOptions.map(optionToggle(options))}
         </section>
       </section>
     </section>
@@ -101,7 +113,8 @@ function renderScene({ scene }) {
 }
 
 define({
-  tag: "menu-scene",
-  scene: connect(store, (state) => state.scene),
-  render: renderScene,
+    tag: "menu-scene",
+    scene: connect(store, (state) => state.scene),
+    options: connect(store, (state) => state.options),
+    render: renderScene,
 });

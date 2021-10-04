@@ -2,13 +2,15 @@
 import { createAction, createReducer } from "@reduxjs/toolkit";
 
 import { scenes } from "./game.consts";
-import { GameState, ICard } from "./game.interfaces";
+import { GameState, ICard, IOptions } from "./game.interfaces";
 
 // Human actions
 export const PLAYER_DEAL = createAction<string>("player/deal");
 export const PLAYER_PLAY_CARD = createAction<number>("player/playcard");
 // Special human actions
 export const PLAYER_UNDO = createAction<number>("player/undo");
+export const TOGGLE_OPTION = createAction<IOptions>("player/toggleoption");
+
 
 // Scene control
 export const SHOW_SPLASH = createAction<number>("scenes/splash");
@@ -29,6 +31,9 @@ export const LOAD_TEST_STATE = createAction<any>("game/loadteststate");
 
 export const initialState = (scene = scenes.SPLASH) => ({
     scene,
+    options: {
+        timetravel: true,
+    },
     turn: -1,
     deckInHand: [],
     currentCard: undefined,
@@ -44,6 +49,12 @@ export const gameReducer = createReducer(initialState(), (builder) => {
         })
         .addCase(PLAYER_PLAY_CARD, (state, action) => {
             state.turn += 1;
+        })
+        .addCase(TOGGLE_OPTION, (state, action) => {
+            state.options = {
+                ...state.options,
+                ...action.payload,
+            };
         })
         .addCase(SHOW_SPLASH, (state, action) => {
             state.scene = scenes.SPLASH;
