@@ -7,6 +7,8 @@ import { GameState, ICard } from "./game.interfaces";
 // Human actions
 export const PLAYER_DEAL = createAction<string>("player/deal");
 export const PLAYER_PLAY_CARD = createAction<number>("player/playcard");
+// Special human actions
+export const PLAYER_UNDO = createAction<number>("player/undo");
 
 // Scene control
 export const SHOW_SPLASH = createAction<number>("scenes/splash");
@@ -27,6 +29,7 @@ export const LOAD_TEST_STATE = createAction<any>("game/loadteststate");
 
 export const initialState = (scene = scenes.SPLASH) => ({
     scene,
+    turn: -1,
     deckInHand: [],
     currentCard: undefined,
     skippedRoyalty: [],
@@ -36,6 +39,12 @@ export const initialState = (scene = scenes.SPLASH) => ({
 
 export const gameReducer = createReducer(initialState(), (builder) => {
     builder
+        .addCase(PLAYER_DEAL, (state, action) => {
+            state.turn = 0;
+        })
+        .addCase(PLAYER_PLAY_CARD, (state, action) => {
+            state.turn += 1;
+        })
         .addCase(SHOW_SPLASH, (state, action) => {
             state.scene = scenes.SPLASH;
         })

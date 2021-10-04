@@ -10,6 +10,7 @@ import {
     getHintForCardInHand,
     openSpotsForNonRoyal,
     countTotalArmor,
+    canTimeTravel,
 } from "../app/game.selectors";
 import { playSpots, scenes } from "../app/game.consts";
 
@@ -20,7 +21,7 @@ import connect from "./component-connector";
 
 import sharedStyles from "./styles.css";
 import gameStyles from "./styles.game.scss";
-import { dealGrid, tryToPlayCard } from "../app/game.commands";
+import { dealGrid, tryToPlayCard, tryToUndoMove } from "../app/game.commands";
 import {
     aboutToWin,
     closeToAWin,
@@ -43,8 +44,12 @@ const restartGame = () => {
     dispatch(dealGrid());
 };
 
+const undoMove = () => {
+    dispatch(tryToUndoMove());
+}
+
 const logStateToConsole = () => {
-    const currentState = getState();
+    const currentState = getState().present;
     // eslint-disable-next-line no-console
     console.debug(JSON.stringify(currentState));
     // console.debug(LZString.compressToBase64(JSON.stringify(currentState)));
@@ -212,7 +217,22 @@ const drawCurrentCard = (state) => {
     return html``;
 };
 
-function renderScene({ state, scene }) {
+const drawTimeTravel = ({ state, allowTimeTravel }) => {
+    const { options } = state;
+    // const allowTimeTravel = isOptionEnabled("time travel", options);
+    const showTimeTravelControls = true;
+    if (!showTimeTravelControls) {
+        return html``;
+    }
+
+    return html`
+        Time travel
+        <button id="timeTravelBtn" onclick=${undoMove} disabled=${!allowTimeTravel}>Undo move</button>
+
+    `;
+}
+
+function renderScene({ state, scene, allowTimeTravel }) {
     if (scene !== scenes.GAME) {
         return html``;
     }
@@ -238,6 +258,7 @@ function renderScene({ state, scene }) {
               Load test state
             </button>
           </section>
+          ${drawTimeTravel({ state, allowTimeTravel })}
         </section>
         <section class="grid-holder">
           <section id="grid" class="grid">${drawGrid(state)}</section>
@@ -257,5 +278,6 @@ define({
     tag: "game-scene",
     scene: connect(store, (state) => state.scene),
     state: connect(store, (state) => state),
+    allowTimeTravel: connect(store, (state) => canTimeTravel(state), true),
     render: renderScene,
 });

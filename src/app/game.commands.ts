@@ -1,5 +1,7 @@
 import seedrandom from "seedrandom";
 import { AnyAction } from "@reduxjs/toolkit";
+import { ActionCreators } from 'redux-undo';
+
 
 import {
     SET_ROYALTY_ASIDE,
@@ -12,17 +14,18 @@ import {
     RESET_STACK,
     ADD_TO_STACK,
     DESTROY_ROYALS,
+    PLAYER_UNDO,
 } from "./game.reducer";
 
 import { CARDS, hashIt, isRoyalty, JOKER, shuffleDeck } from "./deck";
-import { howManyCardsPlaced, targetsFiredUpon, whatLegalMoves } from "./game.selectors";
+import { canTimeTravel, howManyCardsPlaced, targetsFiredUpon, whatLegalMoves } from "./game.selectors";
 import { dealSpots } from "./game.consts";
 import { AppDispatch } from "./store";
 
 export const dealNextCard =
     (dealIndex: number) =>
         (dispatch: AppDispatch, getState): void | AnyAction => {
-            const { currentCard } = getState();
+            const { currentCard } = getState().present;
             if (isRoyalty(currentCard)) {
                 // Place aside
                 return dispatch(SET_ROYALTY_ASIDE());
@@ -50,7 +53,7 @@ export const dealGrid =
             // Place grid one-by-one
             while (placedCards < 8) {
                 dispatch(dealNextCard(placedCards));
-                const state = getState();
+                const state = getState().present;
                 placedCards = howManyCardsPlaced(state);
 
                 const { skippedRoyalty } = state;
@@ -71,7 +74,7 @@ export const tryToPlayCard =
         (dispatch: AppDispatch, getState): void | AnyAction => {
             dispatch(PLAYER_PLAY_CARD(targetPosition));
 
-            const state = getState();
+            const state = getState().present;
             const dealIsFinished = howManyCardsPlaced(state) === 8;
 
             if (!dealIsFinished) {
@@ -116,3 +119,17 @@ export const tryToPlayCard =
                 dispatch(FLIP_NEXT_CARD());
             }
         };
+
+export const tryToUndoMove = () =>
+    (dispatch: AppDispatch, getState): void | AnyAction => {
+        const allowTimeTravel = canTimeTravel(getState());
+
+        // If we cant go back, dont go back
+        if (!allowTimeTravel) {
+            return;
+        }
+
+        // Otherwise....go back!
+        dispatch(PLAYER_UNDO());
+        dispatch(ActionCreators.undo())
+    };

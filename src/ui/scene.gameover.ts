@@ -15,27 +15,32 @@ import { dealGrid } from "../app/game.commands";
 const { dispatch, getState } = store;
 
 function backToMenu() {
-  dispatch(SHOW_MENU());
+    dispatch(SHOW_MENU());
 }
 function newGame() {
-  dispatch(RESET_GAME());
-  dispatch(dealGrid());
+    dispatch(RESET_GAME());
+    dispatch(dealGrid());
 }
 
-function renderScene({ gamePhase, gameScore, scene }) {
-  if (scene !== scenes.GAME) {
-    return html``;
-  }
+function renderScene({ gamePhase, gameScore, scene, turn }) {
+    if (scene !== scenes.GAME) {
+        return html``;
+    }
 
-  const { isWon, isLost } = gamePhase;
+    const { isWon, isLost } = gamePhase;
 
-  if (!isWon && !isLost) {
-    return html``;
-  }
+    // If we havent even dealt yet, dont flash the game over
+    if (turn === -1) {
+        return html``;
+    }
+    // If the game is not yet over (not won, not lost), hide the game over
+    if (!isWon && !isLost) {
+        return html``;
+    }
 
-  const { total, merits, demerits, extraPoints } = gameScore;
+    const { total, merits, demerits, extraPoints } = gameScore;
 
-  return html`
+    return html`
     <section id="gameover">
       <section class="overlay">
         <section class="heading">
@@ -67,9 +72,10 @@ function renderScene({ gamePhase, gameScore, scene }) {
 }
 
 define({
-  tag: "gameover-scene",
-  scene: connect(store, (state) => state.scene),
-  gamePhase: connect(store, (state) => getGamePhase(state)),
-  gameScore: connect(store, (state) => scoreGame(state)),
-  render: renderScene,
+    tag: "gameover-scene",
+    scene: connect(store, (state) => state.scene),
+    turn: connect(store, (state) => state.turn),
+    gamePhase: connect(store, (state) => getGamePhase(state)),
+    gameScore: connect(store, (state) => scoreGame(state)),
+    render: renderScene,
 });

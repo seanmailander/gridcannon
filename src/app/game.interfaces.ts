@@ -7,6 +7,7 @@ export interface ICard {
 
 export interface GameState {
   scene: String;
+  turn: number;
   deckInHand: Array<ICard>;
   currentCard: ICard;
   skippedRoyalty: Array<ICard>;
