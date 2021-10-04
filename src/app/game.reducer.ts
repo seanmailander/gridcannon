@@ -1,11 +1,8 @@
 /* eslint-disable no-param-reassign */
 import { createAction, createReducer } from "@reduxjs/toolkit";
 
-import { isRoyalty, CARDS, JOKER } from "./deck";
 import { scenes } from "./game.consts";
 import { GameState, ICard } from "./game.interfaces";
-
-import { howManyCardsPlaced, targetsFiredUpon } from "./game.selectors";
 
 // Human actions
 export const PLAYER_DEAL = createAction<string>("player/deal");
