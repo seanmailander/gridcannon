@@ -3,32 +3,35 @@ import { createAction, createReducer } from "@reduxjs/toolkit";
 
 import { shuffleDeck, isRoyalty, CARDS, JOKER } from "./deck";
 import { scenes } from "./game.consts";
-import { GameState } from "./game.interfaces";
+import { GameState, ICard, IDealAction } from "./game.interfaces";
 
 import { howManyCardsPlaced, targetsFiredUpon } from "./game.selectors";
 
+// Human actions
+export const PLAYER_DEAL = createAction<string>("player/deal");
+export const PLAYER_PLAY_CARD = createAction<number>("player/playcard");
+
+// Scene control
 export const SHOW_SPLASH = createAction<number>("scenes/splash");
 export const SHOW_MENU = createAction<number>("scenes/menu");
 export const SHOW_GAME = createAction<number>("scenes/game");
+
+// Semantic game transitions
 export const RESET_GAME = createAction<number>("game/reset");
-export const DEAL_GRID = createAction<number>("game/deal");
+export const DEAL_GRID = createAction<Array<ICard>>("game/deal");
 export const PLACE_CARD_DURING_DEAL = createAction<number>("game/placecard");
 export const SET_ROYALTY_ASIDE = createAction("game/setroyaltyaside");
 export const PLAY_CARD = createAction<number>("game/playcard");
 export const LOAD_TEST_STATE = createAction<any>("game/loadteststate");
 
-export const initialState = (scene = scenes.SPLASH) => {
-    const newDeck = shuffleDeck();
-    const topCard = newDeck.shift();
-    return {
-        scene,
-        deckInHand: newDeck,
-        currentCard: topCard,
-        skippedRoyalty: [],
-        grid: [...Array(25)].map(() => []),
-        bonus: [],
-    } as GameState;
-};
+export const initialState = (scene = scenes.SPLASH) => ({
+    scene,
+    deckInHand: [],
+    currentCard: undefined,
+    skippedRoyalty: [],
+    grid: [...Array(25)].map(() => []),
+    bonus: [],
+}) as GameState;
 
 export const gameReducer = createReducer(initialState(), (builder) => {
     builder
@@ -42,6 +45,12 @@ export const gameReducer = createReducer(initialState(), (builder) => {
             state.scene = scenes.GAME;
         })
         .addCase(RESET_GAME, (state, action) => initialState(scenes.GAME))
+        .addCase(DEAL_GRID, (state, action) => {
+            const deckInHand = action.payload;
+            const currentCard = deckInHand.shift();
+            state.deckInHand = deckInHand;
+            state.currentCard = currentCard;
+        })
         .addCase(LOAD_TEST_STATE, (state, action) => ({
             ...JSON.parse(JSON.stringify(action.payload)),
             scene: scenes.GAME,
