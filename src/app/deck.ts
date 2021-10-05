@@ -1,3 +1,4 @@
+import seedrandom from "seedrandom";
 import { ICard } from "./game.interfaces";
 
 export const JOKER = 0;
@@ -43,7 +44,31 @@ export const getSuitAsClassname = (suit) => {
   return suitToClassMap[suit];
 };
 
-export const shuffleDeck = () => {
+export const hashIt = async (input) => {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(input);
+  const hash = await crypto.subtle.digest("SHA-1", data);
+  const hashString = btoa(String.fromCharCode(...new Uint8Array(hash)));
+  return hashString;
+};
+
+// Make a predictable pseudorandom number generator.
+// https://stackoverflow.com/a/12646864
+/* eslint-disable */
+export const seededShuffle = (seed) => {
+  const seededRandom = seedrandom(seed);
+
+  return (array) => {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(seededRandom() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  };
+};
+/* eslint-enable */
+
+export const shuffleDeck = (seed: string) => {
   const deck = Object.keys(SUITS)
     .map((suit) =>
       Object.keys(CARDS).map((card) => ({
@@ -59,19 +84,10 @@ export const shuffleDeck = () => {
   } as ICard;
   const withJokers = [...deck, joker, joker];
 
-  const ugglyShuffle = () => (Math.random() > 0.5 ? -1 : 1);
-
-  withJokers.sort(ugglyShuffle);
-  withJokers.sort(ugglyShuffle);
-  withJokers.sort(ugglyShuffle);
-  withJokers.sort(ugglyShuffle);
-  withJokers.sort(ugglyShuffle);
-  withJokers.sort(ugglyShuffle);
-
-  return withJokers;
+  return seededShuffle(seed)(withJokers);
 };
 
-export const isRoyalty = (card: ICard) => card?.card >= 11;
+export const isRoyalty = (card?: ICard) => card?.card && card.card >= 11;
 
 export const isDestroyed = (card: ICard) => card?.destroyed;
 

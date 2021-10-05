@@ -36,62 +36,6 @@ ul {
   list-style-type: none;
 }
 
-#main {
-  display: flex;
-  justify-content: center;
-  margin: 10px 80px;
-}
-
-#main .grid-holder {
-  flex-grow: 1;
-  display: flex;
-  justify-content: center;
-}
-
-#game p {
-  cursor: default;
-}
-.left-bar,
-.right-bar {
-  width: 320px;
-}
-
-.left-bar {
-  color: hsl(208, 22%, 68%);
-  font-weight: 200;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.left-bar #deck,
-.controls {
-  margin-top: 15px;
-}
-
-.right-bar h2,
-li {
-  color: hsl(208, 22%, 68%);
-  font-weight: 100;
-  letter-spacing: 0.06em;
-}
-
-.right-bar h2.complete,
-li.complete {
-  text-decoration: line-through;
-}
-
-.right-bar h2.active,
-li.active {
-  color: hsl(206, 8%, 42%);
-  font-weight: 300;
-}
-
-.controls {
-  display: flex;
-  flex-direction: column;
-}
-
 /* Buttons! Buttons! Buttons! */
 
 button {
@@ -104,12 +48,18 @@ button {
   border-radius: 5px;
   box-shadow: 0 1px 3px hsla(0, 0%, 0%, 0.2);
   border: none;
-}
-button:focus {
-  outline: none;
-}
-button:hover {
-  background-color: hsl(209, 70%, 91%);
+
+  &:focus {
+    outline: none;
+  }
+  &:hover {
+    background-color: hsl(209, 70%, 91%);
+  }
+  &:disabled {
+    background-color: rgba(239, 239, 239, 0.3);
+    color: rgba(16, 16, 16, 0.3);
+    border-color: rgba(118, 118, 118, 0.3);
+  }
 }
 
 /* Extra fun things */

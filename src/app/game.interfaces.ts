@@ -5,11 +5,20 @@ export interface ICard {
   empty?: boolean;
 }
 
-export interface GameState {
-  scene: String;
+export interface IGameState {
   deckInHand: Array<ICard>;
-  currentCard: ICard;
+  currentCard?: ICard;
   skippedRoyalty: Array<ICard>;
   grid: Array<Array<ICard>>;
   bonus: Array<Array<Array<ICard>>>;
+  turn?: number;
+}
+
+export interface IOptions {
+  timetravel?: boolean;
+}
+
+export interface IMetaState {
+  scene: String;
+  options: IOptions;
 }

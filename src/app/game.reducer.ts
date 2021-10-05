@@ -1,126 +1,126 @@
 /* eslint-disable no-param-reassign */
 import { createAction, createReducer } from "@reduxjs/toolkit";
 
-import { shuffleDeck, isRoyalty, CARDS, JOKER } from "./deck";
-import { scenes } from "./game.consts";
-import { GameState } from "./game.interfaces";
+import { IGameState, ICard, IOptions } from "./game.interfaces";
 
-import { howManyCardsPlaced, targetsFiredUpon } from "./game.selectors";
+// Human actions
+export const PLAYER_DEAL = createAction<string>("player/deal");
+export const PLAYER_PLAY_CARD = createAction<number>("player/playcard");
+// Special human actions
+export const PLAYER_UNDO = createAction("player/undo");
+export const TOGGLE_OPTION = createAction<IOptions>("player/toggleoption");
 
-export const SHOW_SPLASH = createAction<number>("scenes/splash");
-export const SHOW_MENU = createAction<number>("scenes/menu");
-export const SHOW_GAME = createAction<number>("scenes/game");
-export const RESET_GAME = createAction<number>("game/reset");
-export const DEAL_GRID = createAction<number>("game/deal");
+// Semantic game transitions
+export const RESET_GAME = createAction("game/reset");
+export const DEAL_GRID = createAction<Array<ICard>>("game/deal");
 export const PLACE_CARD_DURING_DEAL = createAction<number>("game/placecard");
+export const FLIP_NEXT_ROYAL = createAction("game/fliproyal");
+export const FLIP_NEXT_CARD = createAction("game/flipcard");
 export const SET_ROYALTY_ASIDE = createAction("game/setroyaltyaside");
-export const PLAY_CARD = createAction<number>("game/playcard");
+export const RESET_STACK = createAction<number>("game/resetstack");
+export const ADD_TO_STACK = createAction<number>("game/addtostack");
+export const DESTROY_ROYALS = createAction<number[]>("game/destroyroyals");
 export const LOAD_TEST_STATE = createAction<any>("game/loadteststate");
 
-export const initialState = (scene = scenes.SPLASH) => {
-    const newDeck = shuffleDeck();
-    const topCard = newDeck.shift();
-    return {
-        scene,
-        deckInHand: newDeck,
-        currentCard: topCard,
-        skippedRoyalty: [],
-        grid: [...Array(25)].map(() => []),
-        bonus: [],
-    } as GameState;
-};
+export const initialState = () =>
+  ({
+    turn: -1,
+    deckInHand: [],
+    currentCard: undefined,
+    skippedRoyalty: [],
+    grid: [...Array(25)].map(() => []),
+    bonus: [],
+  } as IGameState);
 
 export const gameReducer = createReducer(initialState(), (builder) => {
-    builder
-        .addCase(SHOW_SPLASH, (state, action) => {
-            state.scene = scenes.SPLASH;
-        })
-        .addCase(SHOW_MENU, (state, action) => {
-            state.scene = scenes.MENU;
-        })
-        .addCase(SHOW_GAME, (state, action) => {
-            state.scene = scenes.GAME;
-        })
-        .addCase(RESET_GAME, (state, action) => initialState(scenes.GAME))
-        .addCase(LOAD_TEST_STATE, (state, action) => ({
-            ...JSON.parse(JSON.stringify(action.payload)),
-            scene: scenes.GAME,
-        }))
-        .addCase(SET_ROYALTY_ASIDE, (state, action) => {
-            const { skippedRoyalty, deckInHand, currentCard } = state;
+  builder
+    .addCase(PLAYER_DEAL, (state, action) => {
+      state.turn = 0;
+    })
+    .addCase(PLAYER_PLAY_CARD, (state, action) => {
+      state.turn = (state.turn || 0) + 1;
+    })
+    .addCase(RESET_GAME, (state, action) => initialState())
+    .addCase(DEAL_GRID, (state, action) => {
+      const deckInHand = action.payload;
+      const currentCard = deckInHand.shift();
+      state.deckInHand = deckInHand;
+      state.currentCard = currentCard;
+    })
+    .addCase(LOAD_TEST_STATE, (state, action) => ({
+      ...JSON.parse(JSON.stringify(action.payload)),
+    }))
+    .addCase(SET_ROYALTY_ASIDE, (state, action) => {
+      const { skippedRoyalty, deckInHand, currentCard } = state;
 
-            // take nextcard out of deck
-            const nextCard = deckInHand.shift();
+      // take nextcard out of deck
+      const nextCard = deckInHand.shift();
 
-            // put current card in royalty stack
-            skippedRoyalty.push(currentCard);
-            // show next card from top of deck
-            state.currentCard = nextCard;
-        })
-        .addCase(PLACE_CARD_DURING_DEAL, (state, action) => {
-            const { grid, deckInHand, skippedRoyalty, currentCard } = state;
-            const { payload: position } = action;
+      // put current card in royalty stack
+      if (currentCard) {
+        skippedRoyalty.push(currentCard);
+      }
+      // show next card from top of deck
+      state.currentCard = nextCard;
+    })
+    .addCase(PLACE_CARD_DURING_DEAL, (state, action) => {
+      const { grid, currentCard } = state;
+      const { payload: position } = action;
 
-            // put card in grid
-            // stacks on!
-            grid[position].unshift(currentCard);
+      // put card in grid
+      // stacks on!
+      if (currentCard) {
+        grid[position].unshift(currentCard);
+      }
+    })
+    .addCase(FLIP_NEXT_ROYAL, (state, action) => {
+      const { skippedRoyalty } = state;
 
-            // was this the last grid fill?
-            // that means there are currently 7 cards placed, and this is 8
-            const gridWasFilled = howManyCardsPlaced(state) === 8;
-            const thereIsSkippedRoyalty = skippedRoyalty.length > 0;
-            if (gridWasFilled && thereIsSkippedRoyalty) {
-                // next card is top of royalty
-                // take next card out of royalty
-                const nextCard = skippedRoyalty.shift();
+      // next card is top of royalty
+      const nextCard = skippedRoyalty.shift();
 
-                state.currentCard = nextCard;
-                return;
-            }
-            // take next card out of deck
-            const nextCard = deckInHand.shift();
+      state.currentCard = nextCard;
+    })
+    .addCase(FLIP_NEXT_CARD, (state, action) => {
+      const { deckInHand } = state;
 
-            // return new state
-            state.currentCard = nextCard;
-        })
-        .addCase(PLAY_CARD, (state, action) => {
-            const { grid, deckInHand, skippedRoyalty, currentCard, bonus } = state;
-            const { payload: position } = action;
+      // next card is top of deck
+      const nextCard = deckInHand.shift();
 
-            // put card in grid
-            // stacks on!
+      // return new state
+      state.currentCard = nextCard;
+    })
+    .addCase(RESET_STACK, (state, action) => {
+      const { grid, deckInHand, currentCard } = state;
+      const { payload: position } = action;
 
-            // should this clear the stack?
-            if (currentCard.card === JOKER || currentCard.card === CARDS.ACE) {
-                // reset the stack, returning it to the deck in hand
-                deckInHand.push(...grid[position]);
-                grid[position] = [currentCard];
-            } else {
-                grid[position].unshift(currentCard);
-            }
+      // reset the stack, returning it to the deck in hand
+      deckInHand.push(...grid[position]);
+      if (currentCard) {
+        grid[position] = [currentCard];
+      }
+    })
+    .addCase(ADD_TO_STACK, (state, action) => {
+      const { grid, currentCard } = state;
+      const { payload: position } = action;
 
-            // check for trigger
-            if (!isRoyalty(currentCard)) {
-                const destroyedPositions = targetsFiredUpon(position, grid);
-                destroyedPositions.forEach((destroyPos) =>
-                    grid[destroyPos].push({ destroyed: true })
-                );
-                if (destroyedPositions.length > 1) {
-                    // Double points for double trigger
-                    bonus.push(destroyedPositions.map((pos) => grid[pos]));
-                }
-            }
+      // put card in grid
+      // stacks on!
+      if (currentCard) {
+        grid[position].unshift(currentCard);
+      }
+    })
+    .addCase(DESTROY_ROYALS, (state, action) => {
+      const { grid, bonus } = state;
+      const { payload: destroyedPositions } = action;
 
-            // is there more royalty?
-            const isMoreRoyalty = skippedRoyalty.length > 0;
-            if (isMoreRoyalty) {
-                // next card is top of royalty
-                // take next card out of royalty
-                state.currentCard = skippedRoyalty.shift();
-                return;
-            }
-            // next card is top of deck
-            // take next card out of deck
-            state.currentCard = deckInHand.shift();
-        });
+      // Triggered destruction of royals
+      destroyedPositions.forEach((destroyPos) =>
+        grid[destroyPos].push({ destroyed: true })
+      );
+      if (destroyedPositions.length > 1) {
+        // Double points for double trigger
+        bonus.push(destroyedPositions.map((pos) => grid[pos]));
+      }
+    });
 });

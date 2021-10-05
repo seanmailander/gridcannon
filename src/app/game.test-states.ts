@@ -676,7 +676,7 @@ export const noCardsLeft = {
   bonus: [],
   deckInHand: [],
   skippedRoyalty: [],
-  currentCard: null,
+  currentCard: undefined,
   grid: [
     [],
     [

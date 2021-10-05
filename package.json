@@ -13,7 +13,9 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.6.1",
-    "hybrids": "^6.1.0"
+    "hybrids": "^6.1.0",
+    "redux-undo": "^1.0.1",
+    "seedrandom": "^3.0.5"
   },
   "devDependencies": {
     "@babel/core": "^7.15.5",

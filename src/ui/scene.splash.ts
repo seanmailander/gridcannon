@@ -1,23 +1,23 @@
 import { html, define } from "hybrids";
 import { scenes } from "../app/game.consts";
-import { SHOW_MENU } from "../app/game.reducer";
+import { SHOW_MENU } from "../app/meta.reducer";
 
 import { store } from "../app/store";
 import connect from "./component-connector";
-import sharedStyles from "./styles.css";
+import sharedStyles from "./sharedstyles.scss";
 
 const { dispatch, getState } = store;
 
 function loadMenu(host) {
-  dispatch(SHOW_MENU());
+    dispatch(SHOW_MENU());
 }
 
 function renderScene({ scene }) {
-  if (scene !== scenes.SPLASH) {
-    return html``;
-  }
+    if (scene !== scenes.SPLASH) {
+        return html``;
+    }
 
-  return html`
+    return html`
     <section class="heading">
       <h1>GridCannon</h1>
     </section>
@@ -27,8 +27,12 @@ function renderScene({ scene }) {
   `.style(sharedStyles);
 }
 
-define({
-  tag: "splash-scene",
-  scene: connect(store, (state) => state.scene),
-  render: renderScene,
+interface SplashScene {
+    scene: string;
+}
+
+define<SplashScene>({
+    tag: "splash-scene",
+    scene: connect(store, (state) => state.meta.scene, true),
+    render: renderScene,
 });

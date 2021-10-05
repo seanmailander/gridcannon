@@ -10,17 +10,18 @@ import {
     getHintForCardInHand,
     openSpotsForNonRoyal,
     countTotalArmor,
+    canTimeTravel,
 } from "../app/game.selectors";
 import { playSpots, scenes } from "../app/game.consts";
 
-import { LOAD_TEST_STATE, RESET_GAME, SHOW_MENU } from "../app/game.reducer";
+import { LOAD_TEST_STATE } from "../app/game.reducer";
 
 import { store } from "../app/store";
 import connect from "./component-connector";
 
-import sharedStyles from "./styles.css";
+import sharedStyles from "./sharedstyles.scss";
 import gameStyles from "./styles.game.scss";
-import { dealGrid, tryToPlayCard } from "../app/game.commands";
+import { tryToPlayCard, tryToUndoMove } from "../app/game.commands";
 import {
     aboutToWin,
     closeToAWin,
@@ -31,6 +32,8 @@ import {
     noCardsLeft,
 } from "../app/game.test-states";
 import drawInstructions from "./instructions";
+import { IGameState, IOptions } from "../app/game.interfaces";
+import { SHOW_MENU } from "../app/meta.reducer";
 
 const { dispatch, getState } = store;
 
@@ -38,13 +41,16 @@ const cardSpotClicked = (position) => () => {
     dispatch(tryToPlayCard(position));
 };
 
-const restartGame = () => {
-    dispatch(RESET_GAME());
-    dispatch(dealGrid());
+const backToMenu = () => {
+    dispatch(SHOW_MENU());
+};
+
+const undoMove = () => {
+    dispatch(tryToUndoMove());
 };
 
 const logStateToConsole = () => {
-    const currentState = getState();
+    const currentState = getState().game.present;
     // eslint-disable-next-line no-console
     console.debug(JSON.stringify(currentState));
     // console.debug(LZString.compressToBase64(JSON.stringify(currentState)));
@@ -122,9 +128,9 @@ const drawGrid = (state) => {
             const hasCard = stack.length > 0;
             const hasStack = stack.length > 1;
 
-            let cardImage = null;
+            let cardImage;
             const cardClasses = ["cardSpot"];
-            let badge = null;
+            let badge;
 
             if (hasCard) {
                 if (isRoyal) {
@@ -135,10 +141,12 @@ const drawGrid = (state) => {
                     } else {
                         cardImage = drawCard(getURIToCardImage({ suit, card }));
                         cardClasses.push(getSuitAsClassname(suit));
-                        cardClasses.push(isLegal ? "legal" : null);
-                        cardClasses.push(
-                            showTargets && isOpenTarget ? "targetted" : null
-                        );
+                        if (isLegal) {
+                            cardClasses.push("legal");
+                        }
+                        if (showTargets && isOpenTarget) {
+                            cardClasses.push("targetted");
+                        }
 
                         if (hasStack) {
                             badge = drawBadge(countTotalArmor(stack));
@@ -148,8 +156,12 @@ const drawGrid = (state) => {
                     const { suit, card } = stack[0];
                     cardImage = drawCard(getURIToCardImage({ suit, card }));
                     cardClasses.push(getSuitAsClassname(suit));
-                    cardClasses.push(isLegal ? "legal" : null);
-                    cardClasses.push(hasStack ? "stack" : null);
+                    if (isLegal) {
+                        cardClasses.push("legal");
+                    }
+                    if (hasStack) {
+                        cardClasses.push("stack");
+                    }
                 }
             } else {
                 cardImage = drawCard(getURIToCardImage({ empty: true }));
@@ -201,7 +213,7 @@ const drawCurrentCard = (state) => {
     if (currentCard) {
         const { suit, card } = currentCard;
         const cardImage = drawCard(getURIToCardImage({ suit, card }));
-        const classNames = [].push(getSuitAsClassname(suit));
+        const classNames = [getSuitAsClassname(suit)];
 
         return html`
       <div id="currentCard" class=${classNames}>${cardImage}</div>
@@ -212,10 +224,25 @@ const drawCurrentCard = (state) => {
     return html``;
 };
 
-function renderScene({ state, scene }) {
+const drawTimeTravel = ({ showTimeTravelControls, allowTimeTravel }) => {
+    if (!showTimeTravelControls) {
+        return html``;
+    }
+
+    return html`
+    Time travel
+    <button id="timeTravelBtn" onclick=${undoMove} disabled=${!allowTimeTravel}>
+      Undo move
+    </button>
+  `;
+};
+
+function renderScene({ state, scene, options, allowTimeTravel }) {
     if (scene !== scenes.GAME) {
         return html``;
     }
+
+    const showTimeTravelControls = options.timetravel;
 
     return html`
     <section id="game">
@@ -230,7 +257,7 @@ function renderScene({ state, scene }) {
           ${drawCardsRemaining(state)}
 
           <section class="controls">
-            <button id="restartBtn" onclick=${restartGame}>Restart game</button>
+            <button id="restartBtn" onclick=${backToMenu}>Exit back to menu</button>
             <button id="saveStateBtn" onclick=${logStateToConsole}>
               Save state
             </button>
@@ -238,6 +265,7 @@ function renderScene({ state, scene }) {
               Load test state
             </button>
           </section>
+          ${drawTimeTravel({ showTimeTravelControls, allowTimeTravel })}
         </section>
         <section class="grid-holder">
           <section id="grid" class="grid">${drawGrid(state)}</section>
@@ -253,9 +281,18 @@ function renderScene({ state, scene }) {
   `.style(sharedStyles, gameStyles);
 }
 
-define({
+interface GameScene {
+    scene: string;
+    state: IGameState;
+    options: IOptions;
+    allowTimeTravel: boolean;
+}
+
+define<GameScene>({
     tag: "game-scene",
-    scene: connect(store, (state) => state.scene),
+    scene: connect(store, (state) => state.meta.scene, true),
     state: connect(store, (state) => state),
+    options: connect(store, (state) => state.meta.options, true),
+    allowTimeTravel: connect(store, (state) => canTimeTravel(state.game), true),
     render: renderScene,
 });
