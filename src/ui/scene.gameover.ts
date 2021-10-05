@@ -53,19 +53,30 @@ function renderScene({ gamePhase, gameScore, scene, turn }) {
         </section>
 
         <section class="score-footer">
-        <p>Your score: ${total}</p>
-        <p>
+          <p>Your score: ${total}</p>
+          <p>
             Merits: +${merits.total} <br />
-            <small>x1 for each destroyed royal = 1 x ${merits.destroyedRoyals}</small> <br />
-            <small>x2 for each destroyed armor = 2 x ${merits.destroyedArmor}</small> <br />
+            <small>x1 for each destroyed royal = 1 x
+              ${merits.destroyedRoyals}</small>
+            <br />
+            <small>x2 for each destroyed armor = 2 x ${merits.destroyedArmor}</small>
+            <br />
             <br />
             Demerits: -${demerits.total} <br />
-            <small>x1 for each remaining royal = 1 x ${demerits.remainingRoyals}</small> <br />
-            <small>x2 for each remaining armor = 2 x ${demerits.remainingArmor}</small> <br />
+            <small
+              >x1 for each remaining royal = 1 x
+              ${demerits.remainingRoyals}</small>
+            <br />
+            <small>x2 for each remaining armor = 2 x
+              ${demerits.remainingArmor}</small>
+            <br />
             <br />
             Extra Points: ++${extraPoints.total}<br />
-            <small>x2 points (royal and armor) for every double-trigger = 2 x ${extraPoints.bonusRoyals + extraPoints.bonusArmor * 2}</small> <br />
+            <small>x2 points (royal and armor) for every double-trigger = 2 x
+              ${extraPoints.bonusRoyals + extraPoints.bonusArmor * 2}</small>
             <br />
+            <br />
+          </p>
         </section>
       </section>
     </section>
