@@ -5,6 +5,7 @@ import { SHOW_MENU } from "../app/meta.reducer";
 import { store } from "../app/store";
 import connect from "./component-connector";
 import sharedStyles from "./sharedstyles.scss";
+import splashStyles from "./styles.splash.scss";
 
 const { dispatch, getState } = store;
 
@@ -18,13 +19,13 @@ function renderScene({ scene }) {
     }
 
     return html`
-    <section class="heading">
-      <h1>GridCannon</h1>
+    <section class="splash" onclick="${loadMenu}">
+        <section class="center-hover">
+            <h1>GridCannon</h1>
+            <span class="call-to-action pulsate">Get started!</span>
+        </section>
     </section>
-    <section class="heading">
-      <button onclick="${loadMenu}">Get started</button>
-    </section>
-  `.style(sharedStyles);
+  `.style(sharedStyles, splashStyles);
 }
 
 interface SplashScene {

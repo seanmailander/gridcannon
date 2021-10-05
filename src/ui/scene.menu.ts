@@ -101,10 +101,9 @@ function renderScene({ scene, options }) {
     return html`
     <section class="heading">
       <h1>GridCannon</h1>
+      <octo-corner></octo-corner>
     </section>
-    <section class="heading">
-      <h1>Menu</h1>
-    </section>
+
     <section class="menu">
       <button onclick="${startNewGame}">New game</button>
       <h2>Options</h2>
