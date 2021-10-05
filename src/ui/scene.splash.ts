@@ -1,6 +1,6 @@
 import { html, define } from "hybrids";
 import { scenes } from "../app/game.consts";
-import { SHOW_MENU } from "../app/game.reducer";
+import { SHOW_MENU } from "../app/meta.reducer";
 
 import { store } from "../app/store";
 import connect from "./component-connector";

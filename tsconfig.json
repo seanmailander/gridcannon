@@ -15,8 +15,7 @@
     "noImplicitAny": false,
     "noImplicitReturns": true,
     "isolatedModules": true,
-    "useDefineForClassFields": true,
-    "strictNullChecks": false
+    "useDefineForClassFields": true
   },
   "include": ["./src"]
 }

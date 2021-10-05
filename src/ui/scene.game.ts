@@ -14,7 +14,7 @@ import {
 } from "../app/game.selectors";
 import { playSpots, scenes } from "../app/game.consts";
 
-import { LOAD_TEST_STATE, RESET_GAME, SHOW_MENU } from "../app/game.reducer";
+import { LOAD_TEST_STATE, RESET_GAME } from "../app/game.reducer";
 
 import { store } from "../app/store";
 import connect from "./component-connector";
@@ -32,7 +32,8 @@ import {
     noCardsLeft,
 } from "../app/game.test-states";
 import drawInstructions from "./instructions";
-import { GameState } from "../app/game.interfaces";
+import { IGameState } from "../app/game.interfaces";
+import { SHOW_MENU } from "../app/meta.reducer";
 
 const { dispatch, getState } = store;
 
@@ -50,7 +51,7 @@ const undoMove = () => {
 }
 
 const logStateToConsole = () => {
-    const currentState = getState().present;
+    const currentState = getState().game.present;
     // eslint-disable-next-line no-console
     console.debug(JSON.stringify(currentState));
     // console.debug(LZString.compressToBase64(JSON.stringify(currentState)));
@@ -128,9 +129,9 @@ const drawGrid = (state) => {
             const hasCard = stack.length > 0;
             const hasStack = stack.length > 1;
 
-            let cardImage = null;
+            let cardImage;
             const cardClasses = ["cardSpot"];
-            let badge = null;
+            let badge;
 
             if (hasCard) {
                 if (isRoyal) {
@@ -141,10 +142,13 @@ const drawGrid = (state) => {
                     } else {
                         cardImage = drawCard(getURIToCardImage({ suit, card }));
                         cardClasses.push(getSuitAsClassname(suit));
-                        cardClasses.push(isLegal ? "legal" : null);
-                        cardClasses.push(
-                            showTargets && isOpenTarget ? "targetted" : null
-                        );
+                        if (isLegal) {
+                            cardClasses.push("legal");
+                        }
+                        if (showTargets && isOpenTarget) {
+                            cardClasses.push("targetted");
+
+                        }
 
                         if (hasStack) {
                             badge = drawBadge(countTotalArmor(stack));
@@ -154,8 +158,12 @@ const drawGrid = (state) => {
                     const { suit, card } = stack[0];
                     cardImage = drawCard(getURIToCardImage({ suit, card }));
                     cardClasses.push(getSuitAsClassname(suit));
-                    cardClasses.push(isLegal ? "legal" : null);
-                    cardClasses.push(hasStack ? "stack" : null);
+                    if (isLegal) {
+                        cardClasses.push("legal");
+                    }
+                    if (hasStack) {
+                        cardClasses.push("stack");
+                    }
                 }
             } else {
                 cardImage = drawCard(getURIToCardImage({ empty: true }));
@@ -207,7 +215,7 @@ const drawCurrentCard = (state) => {
     if (currentCard) {
         const { suit, card } = currentCard;
         const cardImage = drawCard(getURIToCardImage({ suit, card }));
-        const classNames = [].push(getSuitAsClassname(suit));
+        const classNames = [getSuitAsClassname(suit)];
 
         return html`
       <div id="currentCard" class=${classNames}>${cardImage}</div>
@@ -277,7 +285,7 @@ function renderScene({ state, scene, allowTimeTravel }) {
 
 interface GameScene {
     scene: string;
-    state: GameState;
+    state: IGameState;
     allowTimeTravel: boolean;
 }
 

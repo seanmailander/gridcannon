@@ -3,7 +3,7 @@ import { html, define } from "hybrids";
 import { getGamePhase, scoreGame } from "../app/game.selectors";
 import { scenes } from "../app/game.consts";
 
-import { RESET_GAME, SHOW_MENU } from "../app/game.reducer";
+import { RESET_GAME } from "../app/game.reducer";
 
 import { store } from "../app/store";
 import connect from "./component-connector";
@@ -11,6 +11,7 @@ import connect from "./component-connector";
 import sharedStyles from "./styles.css";
 import gameOverStyles from "./styles.gameover.scss";
 import { dealGrid } from "../app/game.commands";
+import { SHOW_MENU } from "../app/meta.reducer";
 
 const { dispatch, getState } = store;
 

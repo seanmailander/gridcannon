@@ -1,24 +1,17 @@
 /* eslint-disable no-param-reassign */
 import { createAction, createReducer } from "@reduxjs/toolkit";
 
-import { scenes } from "./game.consts";
-import { GameState, ICard, IOptions } from "./game.interfaces";
+import { IGameState, ICard, IOptions } from "./game.interfaces";
 
 // Human actions
 export const PLAYER_DEAL = createAction<string>("player/deal");
 export const PLAYER_PLAY_CARD = createAction<number>("player/playcard");
 // Special human actions
-export const PLAYER_UNDO = createAction<number>("player/undo");
+export const PLAYER_UNDO = createAction("player/undo");
 export const TOGGLE_OPTION = createAction<IOptions>("player/toggleoption");
 
-
-// Scene control
-export const SHOW_SPLASH = createAction<number>("scenes/splash");
-export const SHOW_MENU = createAction<number>("scenes/menu");
-export const SHOW_GAME = createAction<number>("scenes/game");
-
 // Semantic game transitions
-export const RESET_GAME = createAction<number>("game/reset");
+export const RESET_GAME = createAction("game/reset");
 export const DEAL_GRID = createAction<Array<ICard>>("game/deal");
 export const PLACE_CARD_DURING_DEAL = createAction<number>("game/placecard");
 export const FLIP_NEXT_ROYAL = createAction("game/fliproyal");
@@ -29,18 +22,14 @@ export const ADD_TO_STACK = createAction<number>("game/addtostack");
 export const DESTROY_ROYALS = createAction<number[]>("game/destroyroyals");
 export const LOAD_TEST_STATE = createAction<any>("game/loadteststate");
 
-export const initialState = (scene = scenes.SPLASH) => ({
-    scene,
-    options: {
-        timetravel: true,
-    },
+export const initialState = () => ({
     turn: -1,
     deckInHand: [],
     currentCard: undefined,
     skippedRoyalty: [],
     grid: [...Array(25)].map(() => []),
     bonus: [],
-}) as GameState;
+}) as IGameState;
 
 export const gameReducer = createReducer(initialState(), (builder) => {
     builder
@@ -48,24 +37,9 @@ export const gameReducer = createReducer(initialState(), (builder) => {
             state.turn = 0;
         })
         .addCase(PLAYER_PLAY_CARD, (state, action) => {
-            state.turn += 1;
+            state.turn = (state.turn || 0) + 1;
         })
-        .addCase(TOGGLE_OPTION, (state, action) => {
-            state.options = {
-                ...state.options,
-                ...action.payload,
-            };
-        })
-        .addCase(SHOW_SPLASH, (state, action) => {
-            state.scene = scenes.SPLASH;
-        })
-        .addCase(SHOW_MENU, (state, action) => {
-            state.scene = scenes.MENU;
-        })
-        .addCase(SHOW_GAME, (state, action) => {
-            state.scene = scenes.GAME;
-        })
-        .addCase(RESET_GAME, (state, action) => initialState(scenes.GAME))
+        .addCase(RESET_GAME, (state, action) => initialState())
         .addCase(DEAL_GRID, (state, action) => {
             const deckInHand = action.payload;
             const currentCard = deckInHand.shift();
@@ -73,8 +47,7 @@ export const gameReducer = createReducer(initialState(), (builder) => {
             state.currentCard = currentCard;
         })
         .addCase(LOAD_TEST_STATE, (state, action) => ({
-            ...JSON.parse(JSON.stringify(action.payload)),
-            scene: scenes.GAME,
+            ...JSON.parse(JSON.stringify(action.payload))
         }))
         .addCase(SET_ROYALTY_ASIDE, (state, action) => {
             const { skippedRoyalty, deckInHand, currentCard } = state;
@@ -83,7 +56,9 @@ export const gameReducer = createReducer(initialState(), (builder) => {
             const nextCard = deckInHand.shift();
 
             // put current card in royalty stack
-            skippedRoyalty.push(currentCard);
+            if (currentCard) {
+                skippedRoyalty.push(currentCard);
+            }
             // show next card from top of deck
             state.currentCard = nextCard;
         })
@@ -93,7 +68,9 @@ export const gameReducer = createReducer(initialState(), (builder) => {
 
             // put card in grid
             // stacks on!
-            grid[position].unshift(currentCard);
+            if (currentCard) {
+                grid[position].unshift(currentCard);
+            }
         })
         .addCase(FLIP_NEXT_ROYAL, (state, action) => {
             const { skippedRoyalty } = state;
@@ -118,7 +95,9 @@ export const gameReducer = createReducer(initialState(), (builder) => {
 
             // reset the stack, returning it to the deck in hand
             deckInHand.push(...grid[position]);
-            grid[position] = [currentCard];
+            if(currentCard) {
+                grid[position] = [currentCard];
+            }
         })
         .addCase(ADD_TO_STACK, (state, action) => {
             const { grid, currentCard } = state;
@@ -126,7 +105,9 @@ export const gameReducer = createReducer(initialState(), (builder) => {
 
             // put card in grid
             // stacks on!
-            grid[position].unshift(currentCard);
+            if(currentCard) {
+                grid[position].unshift(currentCard);
+            }
         })
         .addCase(DESTROY_ROYALS, (state, action) => {
             const { grid, bonus } = state;

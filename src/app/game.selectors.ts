@@ -13,7 +13,7 @@ import {
     JOKER,
     isNotFaceCard,
 } from "./deck";
-import { GameState } from "./game.interfaces";
+import { IGameState } from "./game.interfaces";
 
 const lastInStack = (arr) => arr.slice(-1)[0];
 
@@ -291,7 +291,7 @@ export const getHintForCardInHand = (state) => {
 export const countTotalArmor = (stack) =>
     stack.reduce((acc, curr) => acc + (isNotFaceCard(curr) ? curr.card : 0), 0);
 
-export const scoreGame = (state: GameState) => {
+export const scoreGame = (state: IGameState) => {
     // Scoring
     //  merits:
     //      1 point for each destroyed royals

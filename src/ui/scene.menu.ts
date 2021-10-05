@@ -2,7 +2,8 @@ import { html, define, render } from "hybrids";
 import { dealGrid } from "../app/game.commands";
 import { scenes } from "../app/game.consts";
 import { IOptions } from "../app/game.interfaces";
-import { RESET_GAME, SHOW_GAME, SHOW_MENU, TOGGLE_OPTION } from "../app/game.reducer";
+import { RESET_GAME, TOGGLE_OPTION } from "../app/game.reducer";
+import { SHOW_GAME } from "../app/meta.reducer";
 
 import { store } from "../app/store";
 import connect from "./component-connector";

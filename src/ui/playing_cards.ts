@@ -19,6 +19,6 @@ export const getURIToCardImage = (inputCard: ICard): String => {
     const cardValue = card;
     const suitValue = Object.keys(SUITS)
         .find((key) => SUITS[key] === suit)
-        .toLowerCase();
+        ?.toLowerCase();
     return `${rootPath}${cardValue}_of_${suitValue}.svg`;
 };
