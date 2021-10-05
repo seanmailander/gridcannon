@@ -14,14 +14,14 @@ import {
 } from "../app/game.selectors";
 import { playSpots, scenes } from "../app/game.consts";
 
-import { LOAD_TEST_STATE, RESET_GAME } from "../app/game.reducer";
+import { LOAD_TEST_STATE } from "../app/game.reducer";
 
 import { store } from "../app/store";
 import connect from "./component-connector";
 
-import sharedStyles from "./styles.css";
+import sharedStyles from "./sharedstyles.scss";
 import gameStyles from "./styles.game.scss";
-import { dealGrid, tryToPlayCard, tryToUndoMove } from "../app/game.commands";
+import { tryToPlayCard, tryToUndoMove } from "../app/game.commands";
 import {
     aboutToWin,
     closeToAWin,
@@ -41,9 +41,8 @@ const cardSpotClicked = (position) => () => {
     dispatch(tryToPlayCard(position));
 };
 
-const restartGame = () => {
-    dispatch(RESET_GAME());
-    dispatch(dealGrid());
+const backToMenu = () => {
+    dispatch(SHOW_MENU());
 };
 
 const undoMove = () => {
@@ -258,7 +257,7 @@ function renderScene({ state, scene, options, allowTimeTravel }) {
           ${drawCardsRemaining(state)}
 
           <section class="controls">
-            <button id="restartBtn" onclick=${restartGame}>Restart game</button>
+            <button id="restartBtn" onclick=${backToMenu}>Exit back to menu</button>
             <button id="saveStateBtn" onclick=${logStateToConsole}>
               Save state
             </button>
