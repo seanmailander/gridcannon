@@ -33,6 +33,6 @@ interface SplashScene {
 
 define<SplashScene>({
     tag: "splash-scene",
-    scene: connect(store, (state) => state.scene),
+    scene: connect(store, (state) => state.meta.scene, true),
     render: renderScene,
 });

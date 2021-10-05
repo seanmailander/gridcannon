@@ -10,15 +10,19 @@ import {
     noCardsLeft,
     closeToAWinNoArmorWithBonus,
 } from "./game.test-states";
+import { IGameState } from "./game.interfaces";
 
 describe("finds legal moves", () => {
     test("should early-out before deal is complete", () => {
-        const state = {
+        const state: IGameState = {
             currentCard: {
                 card: 13,
                 suit: SUITS.DIAMONDS,
             },
             grid: [...Array(25)].map(() => []),
+            deckInHand: [],
+            skippedRoyalty: [],
+            bonus: []
         };
         expect(whatLegalMoves(state)).toEqual([]);
     });
@@ -32,7 +36,7 @@ describe("finds legal moves", () => {
                 card: CARDS.THREE,
                 suit: SUITS.HEARTS,
             };
-            const state = {
+            const state: IGameState = {
                 currentCard: {
                     card: 13,
                     suit: SUITS.DIAMONDS,
@@ -64,6 +68,9 @@ describe("finds legal moves", () => {
                     [],
                     [],
                 ],
+                deckInHand: [],
+                skippedRoyalty: [],
+                bonus: []
             };
             expect(whatLegalMoves(state)).toEqual([15, 21]);
         });
@@ -84,7 +91,7 @@ describe("finds legal moves", () => {
                 card: CARDS.THREE,
                 suit: SUITS.HEARTS,
             };
-            const state = {
+            const state: IGameState = {
                 currentCard: {
                     card: CARDS.KING,
                     suit: SUITS.DIAMONDS,
@@ -116,6 +123,9 @@ describe("finds legal moves", () => {
                     [],
                     [],
                 ],
+                deckInHand: [],
+                skippedRoyalty: [],
+                bonus: []
             };
             expect(whatLegalMoves(state)).toEqual([22]);
         });

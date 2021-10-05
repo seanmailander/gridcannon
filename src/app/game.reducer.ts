@@ -95,7 +95,7 @@ export const gameReducer = createReducer(initialState(), (builder) => {
 
             // reset the stack, returning it to the deck in hand
             deckInHand.push(...grid[position]);
-            if(currentCard) {
+            if (currentCard) {
                 grid[position] = [currentCard];
             }
         })
@@ -105,7 +105,7 @@ export const gameReducer = createReducer(initialState(), (builder) => {
 
             // put card in grid
             // stacks on!
-            if(currentCard) {
+            if (currentCard) {
                 grid[position].unshift(currentCard);
             }
         })

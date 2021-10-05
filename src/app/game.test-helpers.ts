@@ -1,5 +1,9 @@
+import { configureStore } from "@reduxjs/toolkit";
+import undoable from "redux-undo";
 import { CARDS, JOKER } from "./deck";
 import { IGameState, ICard } from "./game.interfaces";
+import { gameReducer, initialState } from "./game.reducer";
+import { metaReducer } from "./meta.reducer";
 
 const range = (n) => [...Array(n).keys()];
 
@@ -54,26 +58,24 @@ expect.addSnapshotSerializer({
     print: (val) => textRender(val as any),
 });
 
-const thunk =
-    ({ dispatch, getState }) =>
-        (next) =>
-            (action) => {
-                if (typeof action === "function") {
-                    return action(dispatch, getState);
-                }
-
-                return next(action);
-            };
-
 /* eslint-disable-next-line import/prefer-default-export */
-export const create = (state) => {
-    const store = {
-        getState: jest.fn(() => state),
-        dispatch: jest.fn((a) => a),
-    };
-    const next = jest.fn();
-
-    const invoke = (action) => thunk(store)(next)(action);
-
-    return { store, next, invoke };
-};
+export const createTestStoreFromState = (testGameState: IGameState = initialState()) => configureStore({
+    preloadedState: {
+        meta: {
+            scene: 'game',
+            options: {},
+        },
+        game: {
+            past: [],
+            present: testGameState,
+            future: [],
+        }
+    },
+    reducer: {
+        game: undoable(gameReducer, {
+            limit: 4, // set a limit for the size of the history
+            groupBy: (action, currentState, previousHistory) => currentState.turn
+        }),
+        meta: metaReducer
+    }
+});

@@ -1,3 +1,5 @@
+
+import { StateWithHistory } from "redux-undo";
 import {
     dealSpots,
     outsideForGivenGridPosition,
@@ -18,7 +20,7 @@ import { IGameState } from "./game.interfaces";
 const lastInStack = (arr) => arr.slice(-1)[0];
 
 // Selector: count the number of placed cards in the grid
-export const howManyCardsPlaced = (state) =>
+export const howManyCardsPlaced = (state: IGameState) =>
     dealSpots.reduce(
         (prev, curr) => prev + (state.grid[curr].length > 0 ? 1 : 0),
         0
@@ -38,19 +40,22 @@ const cardValue = (targetSuit) => (card) => {
     return suitValue + colorValue + faceValue;
 };
 
-export const openSpotsForNonRoyal = ({ grid, currentCard }) => {
+export const openSpotsForNonRoyal = (state: IGameState) => {
+    const { grid, currentCard } = state;
     if (!currentCard) {
         return [];
     }
     const { card } = currentCard;
 
-    const cardCanClear = card === CARDS.ACE || card === JOKER;
+    const cardCanClear = card === CARDS.ACE || card === JOKER || card === undefined;
     if (cardCanClear) {
         return playSpots;
     }
 
+    const getTopMostCard = (spotIndex) => (grid[spotIndex][0] || { card: 0 }).card || 0;
+
     return playSpots.filter(
-        (spot) => (grid[spot][0] || { card: 0 }).card <= card
+        (spotIndex) => getTopMostCard(spotIndex) <= card
     );
 };
 
@@ -58,13 +63,13 @@ const getRoyalStacks = (grid) =>
     royalSpots.filter((spot) => grid[spot].length > 0).map((spot) => grid[spot]);
 
 // Selector: count the number of destroyed royals
-export const gameIsWon = (state) =>
+export const gameIsWon = (state: IGameState) =>
     getRoyalStacks(state.grid).reduce(
         (prev, curr) => prev + (isDestroyed(lastInStack(curr)) ? 1 : 0),
         0
     ) === 12;
 
-export const getOpenRoyaltyStacks = ({ grid }) =>
+export const getOpenRoyaltyStacks = ({ grid }: IGameState) =>
     getRoyalStacks(grid)
         .filter((spot) => !isDestroyed(lastInStack(spot)))
         .map((spot) => spot.reduce((acc, curr) => acc + curr.card, 0));
@@ -115,7 +120,7 @@ export const targetsFiredUpon = (position, grid) => {
         .map(({ target }) => target);
 };
 
-export const whatOpenTargets = (state) => {
+export const whatOpenTargets = (state: IGameState) => {
     const { grid, currentCard } = state;
     if (howManyCardsPlaced(state) < 8) {
         return [];
@@ -134,9 +139,9 @@ export const whatOpenTargets = (state) => {
 };
 
 // Selector: count the number of remaining cards
-export const hasNoCardsRemaining = (state) => state.deckInHand.length === 0;
+export const hasNoCardsRemaining = (state: IGameState) => state.deckInHand.length === 0;
 
-export const getGamePhase = (state) => {
+export const getGamePhase = (state: IGameState) => {
     const { currentCard } = state;
 
     // Check if this is a clean win, regardless of which card is to be played
@@ -203,7 +208,7 @@ export const getGamePhase = (state) => {
     return gamePhase;
 };
 
-export const whatLegalMoves = (state) => {
+export const whatLegalMoves = (state: IGameState) => {
     // Selector: find any legal positions for the current card
 
     // Check that we've finished the deal
@@ -258,7 +263,7 @@ export const whatLegalMoves = (state) => {
     return openSpots;
 };
 
-export const getHintForCardInHand = (state) => {
+export const getHintForCardInHand = (state: IGameState) => {
     const { currentCard } = state;
     const gamePhase = getGamePhase(state);
     if (currentCard) {
@@ -353,10 +358,10 @@ export const scoreGame = (state: IGameState) => {
 };
 
 
-export const canTimeTravel = (stateWithTimeTravel) => {
+export const canTimeTravel = (stateWithTimeTravel: StateWithHistory<IGameState>) => {
     const { past, present } = stateWithTimeTravel;
     const { turn } = present;
 
     // If we cant go back, dont go back
-    return (past.length > 0 && turn >= 1);
+    return (past.length > 0 && turn && turn >= 1);
 }

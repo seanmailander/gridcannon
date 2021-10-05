@@ -1,5 +1,7 @@
-function connect(store, selector, ignoreTimeTravel = false) {
-    const get = () => selector(ignoreTimeTravel ? store.getState() : store.getState().present);
+import { IStore } from '../app/store';
+
+function connect(store: IStore, selector, ignoreTimeTravel = false) {
+    const get = () => selector(ignoreTimeTravel ? store.getState() : store.getState().game.present);
 
     return {
         get,

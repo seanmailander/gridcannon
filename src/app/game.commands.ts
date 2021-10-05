@@ -20,12 +20,12 @@ import {
 import { CARDS, hashIt, isRoyalty, JOKER, shuffleDeck } from "./deck";
 import { canTimeTravel, howManyCardsPlaced, targetsFiredUpon, whatLegalMoves } from "./game.selectors";
 import { dealSpots } from "./game.consts";
-import { AppDispatch } from "./store";
+import { AppDispatch, IGetStateFn } from "./store";
 
 export const dealNextCard =
     (dealIndex: number) =>
-        (dispatch: AppDispatch, getState): void | AnyAction => {
-            const { currentCard } = getState().present;
+        (dispatch: AppDispatch, getState: IGetStateFn): void | AnyAction => {
+            const { currentCard } = getState().game.present;
             if (isRoyalty(currentCard)) {
                 // Place aside
                 return dispatch(SET_ROYALTY_ASIDE());
@@ -36,12 +36,12 @@ export const dealNextCard =
         };
 
 export const dealGrid =
-    () =>
-        async (dispatch: AppDispatch, getState): Promise<void | AnyAction> => {
+    (testSeed?: string) =>
+        async (dispatch: AppDispatch, getState: IGetStateFn): Promise<void | AnyAction> => {
 
             // Choose a shuffle seed
             // const seed = `123456abcdef`;
-            const seed = await hashIt(seedrandom().int32());
+            const seed = testSeed || await hashIt(seedrandom().int32());
             dispatch(PLAYER_DEAL(seed));
 
             // Shuffle the deck
@@ -53,7 +53,7 @@ export const dealGrid =
             // Place grid one-by-one
             while (placedCards < 8) {
                 dispatch(dealNextCard(placedCards));
-                const state = getState().present;
+                const state = getState().game.present;
                 placedCards = howManyCardsPlaced(state);
 
                 const { skippedRoyalty } = state;
@@ -71,10 +71,10 @@ export const dealGrid =
 
 export const tryToPlayCard =
     (targetPosition: number) =>
-        (dispatch: AppDispatch, getState): void | AnyAction => {
+        (dispatch: AppDispatch, getState: IGetStateFn): void | AnyAction => {
             dispatch(PLAYER_PLAY_CARD(targetPosition));
 
-            const state = getState().present;
+            const state = getState().game.present;
             const dealIsFinished = howManyCardsPlaced(state) === 8;
 
             if (!dealIsFinished) {
@@ -85,7 +85,7 @@ export const tryToPlayCard =
             // No legal moves, nothing to do
             // TODO: show an error about the illegal move?
             if (legalPositions.indexOf(targetPosition) === -1) {
-                console.error("Illegal move", targetPosition);
+                // console.error("Illegal move", targetPosition);
                 return;
             }
 
@@ -95,7 +95,7 @@ export const tryToPlayCard =
             // stacks on!
 
             // should this clear the stack?
-            if (currentCard.card === JOKER || currentCard.card === CARDS.ACE) {
+            if (!currentCard || currentCard.card === JOKER || currentCard.card === CARDS.ACE) {
                 // reset the stack, returning it to the deck in hand
                 dispatch(RESET_STACK(targetPosition));
             } else {
@@ -122,7 +122,7 @@ export const tryToPlayCard =
 
 export const tryToUndoMove = () =>
     (dispatch: AppDispatch, getState): void | AnyAction => {
-        const allowTimeTravel = canTimeTravel(getState());
+        const allowTimeTravel = canTimeTravel(getState().game);
 
         // If we cant go back, dont go back
         if (!allowTimeTravel) {

@@ -87,7 +87,7 @@ export const shuffleDeck = (seed: string) => {
     return seededShuffle(seed)(withJokers);
 };
 
-export const isRoyalty = (card: ICard) => card.card && card.card >= 11;
+export const isRoyalty = (card?: ICard) => card?.card && card.card >= 11;
 
 export const isDestroyed = (card: ICard) => card?.destroyed;
 

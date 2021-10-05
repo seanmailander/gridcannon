@@ -291,8 +291,8 @@ interface GameScene {
 
 define<GameScene>({
     tag: "game-scene",
-    scene: connect(store, (state) => state.scene),
+    scene: connect(store, (state) => state.meta.scene, true),
     state: connect(store, (state) => state),
-    allowTimeTravel: connect(store, (state) => canTimeTravel(state), true),
+    allowTimeTravel: connect(store, (state) => canTimeTravel(state.game), true),
     render: renderScene,
 });

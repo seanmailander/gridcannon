@@ -120,7 +120,7 @@ interface MenuScene {
 
 define<MenuScene>({
     tag: "menu-scene",
-    scene: connect(store, (state) => state.scene),
-    options: connect(store, (state) => state.options),
+    scene: connect(store, (state) => state.meta.scene, true),
+    options: connect(store, (state) => state.meta.options, true),
     render: renderScene,
 });
