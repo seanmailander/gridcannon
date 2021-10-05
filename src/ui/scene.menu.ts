@@ -1,4 +1,4 @@
-import { html, define } from "hybrids";
+import { html, define, render } from "hybrids";
 import { dealGrid } from "../app/game.commands";
 import { scenes } from "../app/game.consts";
 import { IOptions } from "../app/game.interfaces";
@@ -112,7 +112,12 @@ function renderScene({ scene, options }) {
   `.style(sharedStyles, menuStyles);
 }
 
-define({
+interface MenuScene {
+    scene: string;
+    options: IOptions;
+}
+
+define<MenuScene>({
     tag: "menu-scene",
     scene: connect(store, (state) => state.scene),
     options: connect(store, (state) => state.options),

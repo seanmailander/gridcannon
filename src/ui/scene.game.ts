@@ -32,6 +32,7 @@ import {
     noCardsLeft,
 } from "../app/game.test-states";
 import drawInstructions from "./instructions";
+import { GameState } from "../app/game.interfaces";
 
 const { dispatch, getState } = store;
 
@@ -274,7 +275,13 @@ function renderScene({ state, scene, allowTimeTravel }) {
   `.style(sharedStyles, gameStyles);
 }
 
-define({
+interface GameScene {
+    scene: string;
+    state: GameState;
+    allowTimeTravel: boolean;
+}
+
+define<GameScene>({
     tag: "game-scene",
     scene: connect(store, (state) => state.scene),
     state: connect(store, (state) => state),

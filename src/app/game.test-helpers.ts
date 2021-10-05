@@ -32,7 +32,7 @@ const renderCardStack = (cardStack: ICard[]) =>
 /* eslint-disable prefer-template */
 const textRender = (state: RootState) => {
   const gridSize = 5;
-  const { skippedRoyalty, deckInHand, currentCard, grid } = state;
+  const { skippedRoyalty, deckInHand, currentCard, grid } = state.present;
 
   let render = "  -  ".repeat(gridSize) + "\n";
 

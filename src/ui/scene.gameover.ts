@@ -71,7 +71,14 @@ function renderScene({ gamePhase, gameScore, scene, turn }) {
   `.style(sharedStyles, gameOverStyles);
 }
 
-define({
+interface GameOverScene {
+    scene: string;
+    turn: number;
+    gamePhase: any;
+    gameScore: any;
+}
+
+define<GameOverScene>({
     tag: "gameover-scene",
     scene: connect(store, (state) => state.scene),
     turn: connect(store, (state) => state.turn),
