@@ -213,9 +213,10 @@ function renderScene({ state, scene, options, allowTimeTravel }) {
       </section>
       <section id="main">
         <section class="left-bar">
-          ${drawCurrentCard(state)} ${drawDeck(state)}
-          ${drawCardsRemaining(state)}
-
+            <section class="cards">
+            ${drawCurrentCard(state)} ${drawDeck(state)}
+            ${drawCardsRemaining(state)}
+            </section>
           <section class="controls">
             <button id="restartBtn" onclick=${backToMenu}>Exit back to menu</button>
             <button id="saveStateBtn" onclick=${logStateToConsole}>
@@ -224,8 +225,8 @@ function renderScene({ state, scene, options, allowTimeTravel }) {
             <button id="loadStateBtn" onclick=${loadState}>
               Load test state
             </button>
+            ${drawTimeTravel({ showTimeTravelControls, allowTimeTravel })}
           </section>
-          ${drawTimeTravel({ showTimeTravelControls, allowTimeTravel })}
         </section>
         <section class="grid-holder">
           <section id="grid" class="grid">${drawGrid(state)}</section>

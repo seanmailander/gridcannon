@@ -26,6 +26,12 @@
     flex-direction: column;
     align-items: center;
   }
+
+  .left-bar .cards {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+  }
   
   .left-bar #deck,
   .controls {
@@ -72,6 +78,38 @@
 }
 .cardSpot img {
   width: 5vw;
+}
+
+/* Smartphones (portrait and landscape) ----------- */
+@media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
+
+    #main {
+        margin: 0;
+        flex-wrap: wrap;
+    }
+
+    .left-bar {
+
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    }
+
+    #currentCard img {
+    width: 15vw;
+  }
+    .cardSpot img {
+        width: 15vw;
+      }
+
+      #deck {
+          display: none;
+      }
+  .right-bar h2:not(.active),
+  li:not(.active) {
+    display:none;
+  }
+  
 }
 
 .row {
