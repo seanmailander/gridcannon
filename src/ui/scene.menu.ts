@@ -70,13 +70,13 @@ const hinderenceOptions = [
     {
         id: "harder",
         title: "Harder",
-        description: "Shot clock adds armor",
+        description: "No jokers",
         disabled: true,
     },
     {
         id: "better",
         title: "Better",
-        description: "Only one joker",
+        description: "Jacks behave like Queens",
         disabled: true,
     },
     {
