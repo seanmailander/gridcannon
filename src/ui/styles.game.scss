@@ -83,11 +83,24 @@
 /* Smartphones (portrait and landscape) ----------- */
 @media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
 
+    h1 {
+        margin-bottom: 0;
+        font-size: 1em;
+    }
     #main {
         margin: 0;
         flex-wrap: wrap;
     }
 
+    .controls {
+        margin-top: 0;
+    }
+
+    #saveStateBtn
+    // #loadStateBtn 
+    {
+        display: none;
+    }
     .left-bar {
 
     flex-direction: row;
