@@ -22,6 +22,9 @@ function renderScene({ scene }) {
     <section class="splash" onclick="${loadMenu}">
       <section class="center-hover">
         <h1>GridCannon</h1>
+        <span><small>A game by Tom Francis</small></span>
+        <br />
+        <br />
         <span class="call-to-action pulsate">Get started!</span>
       </section>
     </section>
