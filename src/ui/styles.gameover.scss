@@ -1,6 +1,6 @@
 #gameover {
   z-index: 1;
-  position: absolute;
+  position: fixed;
   background-color: rgb(61, 72, 82, 0.5);
   top: 0;
   left: 0;
@@ -19,4 +19,16 @@
     margin: 80px;
     padding: 80px;
   }
+}
+
+
+/* Smartphones (portrait and landscape) ----------- */
+@media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
+    #gameover {
+        .overlay {
+            margin: 10px;
+            padding: 10px;
+        }
+    }
+
 }
