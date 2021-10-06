@@ -1,65 +1,64 @@
-
 #main {
-    display: flex;
-    justify-content: center;
-    margin: 10px 80px;
-  }
-  
-  #main .grid-holder {
-    flex-grow: 1;
-    display: flex;
-    justify-content: center;
-  }
-  
-  #game p {
-    cursor: default;
-  }
-  .left-bar,
-  .right-bar {
-    width: 320px;
-  }
-  
-  .left-bar {
-    color: hsl(208, 22%, 68%);
-    font-weight: 200;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
+  display: flex;
+  justify-content: center;
+  margin: 10px 80px;
+}
 
-  .left-bar .cards {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-  }
-  
-  .left-bar #deck,
-  .controls {
-    margin-top: 15px;
-  }
-  
-  .right-bar h2,
-  li {
-    color: hsl(208, 22%, 68%);
-    font-weight: 100;
-    letter-spacing: 0.06em;
-  }
-  
-  .right-bar h2.complete,
-  li.complete {
-    text-decoration: line-through;
-  }
-  
-  .right-bar h2.active,
-  li.active {
-    color: hsl(206, 8%, 42%);
-    font-weight: 300;
-  }
-  
-  .controls {
-    display: flex;
-    flex-direction: column;
-  }
+#main .grid-holder {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+}
+
+#game p {
+  cursor: default;
+}
+.left-bar,
+.right-bar {
+  width: 320px;
+}
+
+.left-bar {
+  color: hsl(208, 22%, 68%);
+  font-weight: 200;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.left-bar .cards {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.left-bar #deck,
+.controls {
+  margin-top: 15px;
+}
+
+.right-bar h2,
+li {
+  color: hsl(208, 22%, 68%);
+  font-weight: 100;
+  letter-spacing: 0.06em;
+}
+
+.right-bar h2.complete,
+li.complete {
+  text-decoration: line-through;
+}
+
+.right-bar h2.active,
+li.active {
+  color: hsl(206, 8%, 42%);
+  font-weight: 300;
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+}
 
 #deck {
   cursor: default;
@@ -81,48 +80,45 @@
 }
 
 /* Smartphones (portrait and landscape) ----------- */
-@media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
+@media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
+  h1 {
+    margin-bottom: 0;
+    font-size: 1em;
+  }
+  #main {
+    margin: 0;
+    flex-wrap: wrap;
+  }
 
-    h1 {
-        margin-bottom: 0;
-        font-size: 1em;
-    }
-    #main {
-        margin: 0;
-        flex-wrap: wrap;
-    }
+  .controls {
+    margin-top: 0;
+  }
 
-    .controls {
-        margin-top: 0;
-    }
-
-    #saveStateBtn
-    // #loadStateBtn 
-    {
-        display: none;
-    }
-    .left-bar {
-
+  #saveStateBtn
+    // #loadStateBtn
+  {
+    display: none;
+  }
+  .left-bar {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    }
+  }
 
-    #currentCard img {
+  #currentCard img {
     width: 15vw;
   }
-    .cardSpot img {
-        width: 15vw;
-      }
+  .cardSpot img {
+    width: 15vw;
+  }
 
-      #deck {
-          display: none;
-      }
+  #deck {
+    display: none;
+  }
   .right-bar h2:not(.active),
   li:not(.active) {
-    display:none;
+    display: none;
   }
-  
 }
 
 .row {
