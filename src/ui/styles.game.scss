@@ -130,12 +130,6 @@
 #spot24.cardSpot {
   opacity: 0;
 }
-.cardSpot:after {
-  content: "";
-  float: left;
-  display: block;
-  padding-top: 100%;
-}
 .cardSpot .inner {
   position: absolute;
   left: 0;
