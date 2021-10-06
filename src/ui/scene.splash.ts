@@ -10,30 +10,33 @@ import splashStyles from "./styles.splash.scss";
 const { dispatch, getState } = store;
 
 function loadMenu(host) {
-    dispatch(SHOW_MENU());
+  dispatch(SHOW_MENU());
 }
 
 function renderScene({ scene }) {
-    if (scene !== scenes.SPLASH) {
-        return html``;
-    }
+  if (scene !== scenes.SPLASH) {
+    return html``;
+  }
 
-    return html`
+  return html`
     <section class="splash" onclick="${loadMenu}">
-        <section class="center-hover">
-            <h1>GridCannon</h1>
-            <span class="call-to-action pulsate">Get started!</span>
-        </section>
+      <section class="center-hover">
+        <h1>GridCannon</h1>
+        <span><small>A game by Tom Francis</small></span>
+        <br />
+        <br />
+        <span class="call-to-action pulsate">Get started!</span>
+      </section>
     </section>
   `.style(sharedStyles, splashStyles);
 }
 
 interface SplashScene {
-    scene: string;
+  scene: string;
 }
 
 define<SplashScene>({
-    tag: "splash-scene",
-    scene: connect(store, (state) => state.meta.scene, true),
-    render: renderScene,
+  tag: "splash-scene",
+  scene: connect(store, (state) => state.meta.scene, true),
+  render: renderScene,
 });

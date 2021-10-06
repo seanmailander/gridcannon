@@ -80,7 +80,7 @@
   }
 
   input:disabled + label {
-      background:rgba(117, 117, 117, 0.31)
+    background: rgba(117, 117, 117, 0.31);
   }
 
   input:checked + label {
@@ -98,4 +98,30 @@
   input:checked ~ small {
     opacity: 100%;
   }
+}
+
+
+/* Smartphones (portrait and landscape) ----------- */
+@media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
+    .options {
+      max-width: 95%;
+      h3 {
+          margin: 0;
+          margin-bottom: 5px;
+          font-size:0.5em;
+      }
+    }
+
+    .menu {
+        height: unset;
+    }
+
+    .toggle {
+        & span {
+            display: block;
+        }
+        & br {
+            display: none;
+        }
+    }
 }
