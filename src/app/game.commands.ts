@@ -51,7 +51,8 @@ export const dealGrid =
     dispatch(PLAYER_DEAL(seed));
 
     // Shuffle the deck
-    const newDeck = shuffleDeck(seed);
+    const { harder, kidding } = getState().meta.options;
+    const newDeck = shuffleDeck({ seed, harder, kidding });
     dispatch(DEAL_GRID(newDeck));
 
     // Place 8 cards and set aside royalty

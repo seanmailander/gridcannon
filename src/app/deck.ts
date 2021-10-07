@@ -33,15 +33,15 @@ export const colorMaps = {
   [SUITS.SPADES]: "black",
 };
 
-export const getSuitAsClassname = (suit) => {
+export const getSuitAsClassname = (suit?: string) => {
   const suitToClassMap = {
-    "": "", // joker has no suit
+    "": "no-suit", // joker has no suit
     [SUITS.HEARTS]: "red",
     [SUITS.DIAMONDS]: "red",
     [SUITS.CLUBS]: "black",
     [SUITS.SPADES]: "black",
   };
-  return suitToClassMap[suit];
+  return suitToClassMap[suit || ""];
 };
 
 export const hashIt = async (input) => {
@@ -68,7 +68,18 @@ export const seededShuffle = (seed) => {
 };
 /* eslint-enable */
 
-export const shuffleDeck = (seed: string) => {
+const repeat = (howMany, target) =>
+  [...Array(howMany).keys()].map(() => target);
+
+export const shuffleDeck = ({
+  seed,
+  kidding,
+  harder,
+}: {
+  seed: string;
+  kidding?: boolean;
+  harder?: boolean;
+}) => {
   const deck = Object.keys(SUITS)
     .map((suit) =>
       Object.keys(CARDS).map((card) => ({
@@ -82,7 +93,18 @@ export const shuffleDeck = (seed: string) => {
     suit: "",
     card: JOKER,
   } as ICard;
-  const withJokers = [...deck, joker, joker];
+  const defaultJokers = 2;
+  const withExtraJokers = defaultJokers + 3;
+  const withoutJokers = 0;
+
+  // eslint-disable-next-line no-nested-ternary
+  const howManyJokersToAdd = harder
+    ? withoutJokers
+    : kidding
+      ? withExtraJokers
+      : defaultJokers;
+
+  const withJokers = [...deck, ...repeat(howManyJokersToAdd, joker)];
 
   return seededShuffle(seed)(withJokers);
 };

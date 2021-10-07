@@ -16,14 +16,19 @@ export const SHOW_GAME = createAction("scenes/game");
 export const initialState = (scene = scenes.SPLASH) =>
   ({
     scene,
-    options: {
-      timetravel: true,
-    },
+    options: {},
   } as IMetaState);
 
 export const metaReducer = createReducer(initialState(), (builder) => {
   builder
     .addCase(TOGGLE_OPTION, (state, action) => {
+      if (action.payload.harder) {
+        state.options.kidding = false;
+      }
+      if (action.payload.kidding) {
+        state.options.harder = false;
+      }
+
       state.options = {
         ...state.options,
         ...action.payload,
