@@ -24,14 +24,14 @@ export const DESTROY_ROYALS = createAction<number[]>("game/destroyroyals");
 export const LOAD_TEST_STATE = createAction<any>("game/loadteststate");
 
 export const initialState = () =>
-  ({
-    turn: -1,
-    deckInHand: [],
-    currentCard: undefined,
-    skippedRoyalty: [],
-    grid: [...Array(25)].map(() => []),
-    bonus: [],
-  } as IGameState);
+({
+  turn: -1,
+  deckInHand: [],
+  currentCard: undefined,
+  skippedRoyalty: [],
+  grid: [...Array(25)].map(() => []),
+  bonus: [],
+} as IGameState);
 
 export const gameReducer = createReducer(initialState(), (builder) => {
   builder
@@ -52,17 +52,12 @@ export const gameReducer = createReducer(initialState(), (builder) => {
       ...JSON.parse(JSON.stringify(action.payload)),
     }))
     .addCase(SET_ROYALTY_ASIDE, (state, action) => {
-      const { skippedRoyalty, deckInHand, currentCard } = state;
-
-      // take nextcard out of deck
-      const nextCard = deckInHand.shift();
+      const { skippedRoyalty, currentCard } = state;
 
       // put current card in royalty stack
       if (currentCard) {
         skippedRoyalty.push(currentCard);
       }
-      // show next card from top of deck
-      state.currentCard = nextCard;
     })
     .addCase(PLACE_CARD_DURING_DEAL, (state, action) => {
       const { grid, currentCard } = state;
