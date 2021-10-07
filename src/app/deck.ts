@@ -33,15 +33,15 @@ export const colorMaps = {
   [SUITS.SPADES]: "black",
 };
 
-export const getSuitAsClassname = (suit) => {
+export const getSuitAsClassname = (suit?: string) => {
   const suitToClassMap = {
-    "": "", // joker has no suit
+    "": "no-suit", // joker has no suit
     [SUITS.HEARTS]: "red",
     [SUITS.DIAMONDS]: "red",
     [SUITS.CLUBS]: "black",
     [SUITS.SPADES]: "black",
   };
-  return suitToClassMap[suit];
+  return suitToClassMap[suit || ""];
 };
 
 export const hashIt = async (input) => {
@@ -101,8 +101,8 @@ export const shuffleDeck = ({
   const howManyJokersToAdd = harder
     ? withoutJokers
     : kidding
-    ? withExtraJokers
-    : defaultJokers;
+      ? withExtraJokers
+      : defaultJokers;
 
   const withJokers = [...deck, ...repeat(howManyJokersToAdd, joker)];
 
