@@ -24,14 +24,14 @@ export const DESTROY_ROYALS = createAction<number[]>("game/destroyroyals");
 export const LOAD_TEST_STATE = createAction<any>("game/loadteststate");
 
 export const initialState = () =>
-({
-  turn: -1,
-  deckInHand: [],
-  currentCard: undefined,
-  skippedRoyalty: [],
-  grid: [...Array(25)].map(() => []),
-  bonus: [],
-} as IGameState);
+  ({
+    turn: -1,
+    deckInHand: [],
+    currentCard: undefined,
+    skippedRoyalty: [],
+    grid: [...Array(25)].map(() => []),
+    bonus: [],
+  } as IGameState);
 
 export const gameReducer = createReducer(initialState(), (builder) => {
   builder
@@ -117,7 +117,7 @@ export const gameReducer = createReducer(initialState(), (builder) => {
 
       const fakeArmor = {
         card: 2,
-        suit: ''
+        suit: "",
       };
       // Add armor to royal
       grid[position].unshift(fakeArmor);
