@@ -86,8 +86,7 @@ const hinderenceOptions = [
   {
     id: "stronger",
     title: "Stronger",
-    description: "All royals start with two armor",
-    disabled: true,
+    description: "Royals start with armor",
   },
 ];
 

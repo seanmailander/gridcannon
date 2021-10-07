@@ -101,8 +101,8 @@ export const shuffleDeck = ({
   const howManyJokersToAdd = harder
     ? withoutJokers
     : kidding
-      ? withExtraJokers
-      : defaultJokers;
+    ? withExtraJokers
+    : defaultJokers;
 
   const withJokers = [...deck, ...repeat(howManyJokersToAdd, joker)];
 

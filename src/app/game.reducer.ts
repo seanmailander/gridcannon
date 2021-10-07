@@ -19,18 +19,19 @@ export const FLIP_NEXT_CARD = createAction("game/flipcard");
 export const SET_ROYALTY_ASIDE = createAction("game/setroyaltyaside");
 export const RESET_STACK = createAction<number>("game/resetstack");
 export const ADD_TO_STACK = createAction<number>("game/addtostack");
+export const ADD_ARMOR_TO_ROYAL = createAction<number>("game/addarmortoroyal");
 export const DESTROY_ROYALS = createAction<number[]>("game/destroyroyals");
 export const LOAD_TEST_STATE = createAction<any>("game/loadteststate");
 
 export const initialState = () =>
-  ({
-    turn: -1,
-    deckInHand: [],
-    currentCard: undefined,
-    skippedRoyalty: [],
-    grid: [...Array(25)].map(() => []),
-    bonus: [],
-  } as IGameState);
+({
+  turn: -1,
+  deckInHand: [],
+  currentCard: undefined,
+  skippedRoyalty: [],
+  grid: [...Array(25)].map(() => []),
+  bonus: [],
+} as IGameState);
 
 export const gameReducer = createReducer(initialState(), (builder) => {
   builder
@@ -51,17 +52,12 @@ export const gameReducer = createReducer(initialState(), (builder) => {
       ...JSON.parse(JSON.stringify(action.payload)),
     }))
     .addCase(SET_ROYALTY_ASIDE, (state, action) => {
-      const { skippedRoyalty, deckInHand, currentCard } = state;
-
-      // take nextcard out of deck
-      const nextCard = deckInHand.shift();
+      const { skippedRoyalty, currentCard } = state;
 
       // put current card in royalty stack
       if (currentCard) {
         skippedRoyalty.push(currentCard);
       }
-      // show next card from top of deck
-      state.currentCard = nextCard;
     })
     .addCase(PLACE_CARD_DURING_DEAL, (state, action) => {
       const { grid, currentCard } = state;
@@ -109,6 +105,17 @@ export const gameReducer = createReducer(initialState(), (builder) => {
       if (currentCard) {
         grid[position].unshift(currentCard);
       }
+    })
+    .addCase(ADD_ARMOR_TO_ROYAL, (state, action) => {
+      const { grid } = state;
+      const { payload: position } = action;
+
+      const fakeArmor = {
+        card: 2,
+        suit: "",
+      };
+      // Add armor to royal
+      grid[position].unshift(fakeArmor);
     })
     .addCase(DESTROY_ROYALS, (state, action) => {
       const { grid, bonus } = state;
