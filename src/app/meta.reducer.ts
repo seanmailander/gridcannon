@@ -14,36 +14,36 @@ export const SHOW_MENU = createAction("scenes/menu");
 export const SHOW_GAME = createAction("scenes/game");
 
 export const initialState = (scene = scenes.SPLASH) =>
-({
+  ({
     scene,
     options: {},
-} as IMetaState);
+  } as IMetaState);
 
 export const metaReducer = createReducer(initialState(), (builder) => {
-    builder
-        .addCase(TOGGLE_OPTION, (state, action) => {
-            if (action.payload.harder) {
-                state.options.kidding = false;
-            }
-            if (action.payload.kidding) {
-                state.options.harder = false;
-            }
+  builder
+    .addCase(TOGGLE_OPTION, (state, action) => {
+      if (action.payload.harder) {
+        state.options.kidding = false;
+      }
+      if (action.payload.kidding) {
+        state.options.harder = false;
+      }
 
-            state.options = {
-                ...state.options,
-                ...action.payload,
-            };
-        })
-        .addCase(SHOW_SPLASH, (state, action) => {
-            state.scene = scenes.SPLASH;
-        })
-        .addCase(SHOW_MENU, (state, action) => {
-            state.scene = scenes.MENU;
-        })
-        .addCase(SHOW_GAME, (state, action) => {
-            state.scene = scenes.GAME;
-        })
-        .addCase(LOAD_TEST_STATE, (state, action) => {
-            state.scene = scenes.GAME;
-        });
+      state.options = {
+        ...state.options,
+        ...action.payload,
+      };
+    })
+    .addCase(SHOW_SPLASH, (state, action) => {
+      state.scene = scenes.SPLASH;
+    })
+    .addCase(SHOW_MENU, (state, action) => {
+      state.scene = scenes.MENU;
+    })
+    .addCase(SHOW_GAME, (state, action) => {
+      state.scene = scenes.GAME;
+    })
+    .addCase(LOAD_TEST_STATE, (state, action) => {
+      state.scene = scenes.GAME;
+    });
 });

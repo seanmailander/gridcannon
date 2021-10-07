@@ -13,19 +13,19 @@ import menuStyles from "./styles.menu.scss";
 const { dispatch, getState } = store;
 
 function startNewGame(host) {
-    dispatch(SHOW_GAME());
-    dispatch(RESET_GAME());
-    dispatch(dealGrid());
+  dispatch(SHOW_GAME());
+  dispatch(RESET_GAME());
+  dispatch(dealGrid());
 }
 
 const setOption = (option) => (host, event) => {
-    dispatch(TOGGLE_OPTION({ [option]: event.target.checked }));
+  dispatch(TOGGLE_OPTION({ [option]: event.target.checked }));
 };
 
 const optionToggle = (options: IOptions) => (option) => {
-    const { id, title, description, disabled } = option;
-    const checked = options[id];
-    return html`
+  const { id, title, description, disabled } = option;
+  const checked = options[id];
+  return html`
     <div class="toggle">
       <input
         id="${id}"
@@ -42,61 +42,61 @@ const optionToggle = (options: IOptions) => (option) => {
 };
 
 const helperOptions = [
-    {
-        id: "recall",
-        title: "Perfect Recall",
-        description: "Card stacks are visible",
-        disabled: true,
-    },
-    {
-        id: "premonition",
-        title: "Premonition",
-        description: "Next three cards are visible",
-        disabled: true,
-    },
-    {
-        id: "timetravel",
-        title: "Time Travel",
-        description: "Undo up to three moves",
-    },
-    {
-        id: "kidding",
-        title: "Just Kidding",
-        description: "Three extra jokers",
-    },
+  {
+    id: "recall",
+    title: "Perfect Recall",
+    description: "Card stacks are visible",
+    disabled: true,
+  },
+  {
+    id: "premonition",
+    title: "Premonition",
+    description: "Next three cards are visible",
+    disabled: true,
+  },
+  {
+    id: "timetravel",
+    title: "Time Travel",
+    description: "Undo up to three moves",
+  },
+  {
+    id: "kidding",
+    title: "Just Kidding",
+    description: "Three extra jokers",
+  },
 ];
 const hinderenceOptions = [
-    {
-        id: "harder",
-        title: "Harder",
-        description: "No jokers",
-    },
-    {
-        id: "better",
-        title: "Better",
-        description: "Jacks behave like Queens",
-        disabled: true,
-    },
-    {
-        id: "faster",
-        title: "Faster",
-        description: "Shot clock adds armor",
-        disabled: true,
-    },
-    {
-        id: "stronger",
-        title: "Stronger",
-        description: "All royals start with two armor",
-        disabled: true,
-    },
+  {
+    id: "harder",
+    title: "Harder",
+    description: "No jokers",
+  },
+  {
+    id: "better",
+    title: "Better",
+    description: "Jacks behave like Queens",
+    disabled: true,
+  },
+  {
+    id: "faster",
+    title: "Faster",
+    description: "Shot clock adds armor",
+    disabled: true,
+  },
+  {
+    id: "stronger",
+    title: "Stronger",
+    description: "All royals start with two armor",
+    disabled: true,
+  },
 ];
 
 function renderScene({ scene, options }) {
-    if (scene !== scenes.MENU) {
-        return html``;
-    }
+  if (scene !== scenes.MENU) {
+    return html``;
+  }
 
-    return html`
+  return html`
     <section class="heading">
       <h1>GridCannon</h1>
       <octo-corner></octo-corner>
@@ -123,13 +123,13 @@ function renderScene({ scene, options }) {
 }
 
 interface MenuScene {
-    scene: string;
-    options: IOptions;
+  scene: string;
+  options: IOptions;
 }
 
 define<MenuScene>({
-    tag: "menu-scene",
-    scene: connect(store, (state) => state.meta.scene, true),
-    options: connect(store, (state) => state.meta.options, true),
-    render: renderScene,
+  tag: "menu-scene",
+  scene: connect(store, (state) => state.meta.scene, true),
+  options: connect(store, (state) => state.meta.options, true),
+  render: renderScene,
 });
