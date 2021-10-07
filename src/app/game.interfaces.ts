@@ -18,6 +18,7 @@ export interface IOptions {
   timetravel?: boolean;
   kidding?: boolean;
   harder?: boolean;
+  stronger?: boolean;
 }
 
 export interface IMetaState {

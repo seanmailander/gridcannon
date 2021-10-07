@@ -14,10 +14,10 @@ export const SHOW_MENU = createAction("scenes/menu");
 export const SHOW_GAME = createAction("scenes/game");
 
 export const initialState = (scene = scenes.SPLASH) =>
-  ({
-    scene,
-    options: {},
-  } as IMetaState);
+({
+  scene,
+  options: {},
+} as IMetaState);
 
 export const metaReducer = createReducer(initialState(), (builder) => {
   builder
