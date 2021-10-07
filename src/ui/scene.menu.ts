@@ -45,7 +45,7 @@ const helperOptions = [
     {
         id: "recall",
         title: "Perfect Recall",
-        description: "All stacks are visible for reset",
+        description: "Card stacks are visible",
         disabled: true,
     },
     {
@@ -63,7 +63,6 @@ const helperOptions = [
         id: "kidding",
         title: "Just Kidding",
         description: "Three extra jokers",
-        disabled: true,
     },
 ];
 const hinderenceOptions = [
@@ -71,7 +70,6 @@ const hinderenceOptions = [
         id: "harder",
         title: "Harder",
         description: "No jokers",
-        disabled: true,
     },
     {
         id: "better",
