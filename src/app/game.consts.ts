@@ -99,6 +99,8 @@ export const instructionIdentifiers = {
   LOSEOVERARMORED: "i-lose-overarmored",
 };
 
+export type IHintIdentifier = keyof typeof instructionIdentifiers;
+
 export const scenes = {
   SPLASH: "splash",
   MENU: "menu",

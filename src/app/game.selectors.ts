@@ -1,6 +1,7 @@
 
 
 import { StateWithHistory } from "redux-undo";
+import { createSelector } from "reselect";
 import {
   dealSpots,
   outsideForGivenGridPosition,
@@ -17,8 +18,7 @@ import {
   isNotFaceCard,
 } from "./deck";
 import { ICard, IGamePhase, IGameState, IOptions } from "./game.interfaces";
-import { IGetStateFn, RootState } from "./store";
-import { createSelector } from "reselect";
+import { RootState } from "./store";
 
 const lastInStack = <T>(arr: T[]) => arr.slice(-1)[0];
 
@@ -235,19 +235,19 @@ export const getGamePhase = createSelector(
 export const getLegalMoves = createSelector(
   [getCurrentGame, getGamePhase], (state: IGameState, gamePhase: IGamePhase) => {
     // Selector: find any legal positions for the current card
-  
+
     // Check that we've finished the deal
     const { currentCard, grid } = state;
     if (!currentCard || howManyCardsPlaced(state) < 8) {
       return [];
     }
-  
+
     // Check that the game isnt over
     const { isWon, isLost } = gamePhase;
     if (isWon || isLost) {
       return [];
     }
-  
+
     if (isRoyalty(currentCard)) {
       // placing royalty around the outside
       const { suit } = currentCard;
@@ -270,7 +270,7 @@ export const getLegalMoves = createSelector(
         }
         return prev;
       }, 0);
-  
+
       const allowedSpots = outsideForGivenGridPosition[mostSimilarCardSpot] || [];
       const emptySpots = allowedSpots.filter((spot) => grid[spot].length === 0);
       if (!emptySpots || emptySpots.length < 1) {
@@ -280,7 +280,7 @@ export const getLegalMoves = createSelector(
     }
     // Look for open spots for a non-royal card
     const openSpots = openSpotsForNonRoyal(state);
-  
+
     if (openSpots.length < 1) {
       // gotta go for the armor
       return royalSpots.filter((spot) => grid[spot].length > 0);
@@ -391,3 +391,5 @@ export const canTimeTravel = (
   // If we cant go back, dont go back
   return past.length > 0 && turn && turn >= 1;
 };
+
+export const getIsThisScene = (componentScene: string) => (state: RootState) => state.meta.scene === componentScene;

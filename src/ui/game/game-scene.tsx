@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useAppSelector } from '../../app/hooks';
 
 import {
-  getHintForCardInHand,
+  getHintForCardInHand, getIsThisScene,
 } from "../../app/game.selectors";
 import { scenes } from "../../app/game.consts";
 
@@ -18,10 +18,9 @@ const Hint = () => {
 };
 
 export default function GameScene() {
-  const scene = useAppSelector((state) => state.meta.scene);
-  
+  const isGameScene = useAppSelector(getIsThisScene(scenes.GAME));
 
-  if (scene !== scenes.GAME) {
+  if (!isGameScene) {
     return null;
   }
 
@@ -49,6 +48,5 @@ export default function GameScene() {
       </section>
     </section>
   </>
-  {/* `.style(sharedStyles, gameStyles); */}
 }
 
