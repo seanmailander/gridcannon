@@ -24,14 +24,14 @@ export const DESTROY_ROYALS = createAction<number[]>("game/destroyroyals");
 export const LOAD_TEST_STATE = createAction<any>("game/loadteststate");
 
 export const initialState = () =>
-({
-  turn: -1,
-  deckInHand: [],
-  currentCard: undefined,
-  skippedRoyalty: [],
-  grid: [...Array(25)].map(() => []),
-  bonus: [],
-} as IGameState);
+  ({
+    turn: -1,
+    deckInHand: [],
+    currentCard: undefined,
+    skippedRoyalty: [],
+    grid: [...Array(25)].map(() => []),
+    bonus: [],
+  } as IGameState);
 
 export const gameReducer = createReducer(initialState(), (builder) => {
   builder
@@ -123,7 +123,7 @@ export const gameReducer = createReducer(initialState(), (builder) => {
 
       // Triggered destruction of royals
       destroyedPositions.forEach((destroyPos) =>
-        grid[destroyPos].push({ destroyed: true })
+        grid[destroyPos].push({ destroyed: true, card: -1, suit: "" })
       );
       if (destroyedPositions.length > 1) {
         // Double points for double trigger

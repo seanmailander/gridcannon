@@ -1,4 +1,9 @@
-import { whatLegalMoves, gameIsWon, scoreGame } from "./game.selectors";
+import {
+  getLegalMoves,
+  gameIsWon,
+  scoreGame,
+  getTargetsFiredUponLookup,
+} from "./game.selectors";
 import { SUITS, CARDS } from "./deck";
 import {
   alreadyWon,
@@ -11,6 +16,18 @@ import {
   closeToAWinNoArmorWithBonus,
 } from "./game.test-states";
 import { IGameState } from "./game.interfaces";
+import { RootState } from "./store";
+
+const wrapGameState = (gameState, extraOptions = {}) =>
+({
+  meta: {
+    scene: "",
+    options: {
+      ...extraOptions
+    },
+  },
+  game: { present: gameState, past: [], future: [] },
+} as RootState);
 
 describe("finds legal moves", () => {
   test("should early-out before deal is complete", () => {
@@ -24,7 +41,7 @@ describe("finds legal moves", () => {
       skippedRoyalty: [],
       bonus: [],
     };
-    expect(whatLegalMoves(state)).toEqual([]);
+    expect(getLegalMoves(wrapGameState(state))).toEqual([]);
   });
   describe("for royalty after deal", () => {
     test("should return largest same suit", () => {
@@ -72,7 +89,7 @@ describe("finds legal moves", () => {
         skippedRoyalty: [],
         bonus: [],
       };
-      expect(whatLegalMoves(state)).toEqual([15, 21]);
+      expect(getLegalMoves(wrapGameState(state))).toEqual([15, 21]);
     });
     test("should skip top left if full", () => {
       const cardQH = {
@@ -127,11 +144,169 @@ describe("finds legal moves", () => {
         skippedRoyalty: [],
         bonus: [],
       };
-      expect(whatLegalMoves(state)).toEqual([22]);
+      expect(getLegalMoves(wrapGameState(state))).toEqual([22]);
     });
   });
 });
 
+describe("finds valid targets", () => {
+  test("should target jack ignoring suit", () => {
+    const targetPosition = 18;
+    const gameState: IGameState = {
+      deckInHand: [],
+      skippedRoyalty: [],
+      bonus: [],
+      grid: [
+        [],
+        [],
+        [],
+        [{ suit: SUITS.CLUBS, card: CARDS.JACK }],
+        [],
+        [],
+        [],
+        [],
+        [{ suit: SUITS.CLUBS, card: 10 }],
+        [],
+        [],
+        [],
+        [],
+        [{ suit: SUITS.SPADES, card: 10 }],
+        [],
+        [{ suit: SUITS.CLUBS, card: CARDS.JACK }],
+        [{ suit: SUITS.HEARTS, card: 6 }],
+        [{ suit: SUITS.DIAMONDS, card: 7 }],
+        [{ suit: SUITS.HEARTS, card: 2 }],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+      ],
+      currentCard: { suit: SUITS.DIAMONDS, card: 3 },
+    };
+    expect(
+      getTargetsFiredUponLookup(wrapGameState(gameState))(targetPosition).sort()
+    ).toEqual([3, 15].sort());
+  });
+  test("should target queen requiring color", () => {
+    const targetPosition = 18;
+    const gameState: IGameState = {
+      deckInHand: [],
+      skippedRoyalty: [],
+      bonus: [],
+      grid: [
+        [],
+        [],
+        [],
+        [{ suit: SUITS.DIAMONDS, card: CARDS.QUEEN }],
+        [],
+        [],
+        [],
+        [],
+        [{ suit: SUITS.CLUBS, card: 10 }],
+        [],
+        [],
+        [],
+        [],
+        [{ suit: SUITS.SPADES, card: 10 }],
+        [],
+        [{ suit: SUITS.HEARTS, card: CARDS.QUEEN }],
+        [{ suit: SUITS.HEARTS, card: 6 }],
+        [{ suit: SUITS.DIAMONDS, card: 7 }],
+        [{ suit: SUITS.HEARTS, card: 2 }],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+      ],
+      currentCard: { suit: SUITS.DIAMONDS, card: 3 },
+    };
+    expect(
+      getTargetsFiredUponLookup(wrapGameState(gameState))(targetPosition).sort()
+    ).toEqual([15].sort());
+  });
+  test("should target king requiring suit", () => {
+    const targetPosition = 18;
+    const gameState: IGameState = {
+      deckInHand: [],
+      skippedRoyalty: [],
+      bonus: [],
+      grid: [
+        [],
+        [],
+        [],
+        [{ suit: SUITS.CLUBS, card: CARDS.KING }],
+        [],
+        [],
+        [],
+        [],
+        [{ suit: SUITS.CLUBS, card: 10 }],
+        [],
+        [],
+        [],
+        [],
+        [{ suit: SUITS.SPADES, card: 10 }],
+        [],
+        [{ suit: SUITS.HEARTS, card: CARDS.KING }],
+        [{ suit: SUITS.HEARTS, card: 6 }],
+        [{ suit: SUITS.HEARTS, card: 7 }],
+        [{ suit: SUITS.HEARTS, card: 2 }],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+      ],
+      currentCard: { suit: SUITS.DIAMONDS, card: 3 },
+    };
+    expect(
+      getTargetsFiredUponLookup(wrapGameState(gameState))(targetPosition).sort()
+    ).toEqual([15].sort());
+  });
+  test("should target queen requiring suit - with better challenge", () => {
+    const targetPosition = 18;
+    const gameState: IGameState = {
+      deckInHand: [],
+      skippedRoyalty: [],
+      bonus: [],
+      grid: [
+        [],
+        [],
+        [],
+        [{ suit: SUITS.CLUBS, card: CARDS.QUEEN }],
+        [],
+        [],
+        [],
+        [],
+        [{ suit: SUITS.CLUBS, card: 10 }],
+        [],
+        [],
+        [],
+        [],
+        [{ suit: SUITS.SPADES, card: 10 }],
+        [],
+        [{ suit: SUITS.HEARTS, card: CARDS.QUEEN }],
+        [{ suit: SUITS.HEARTS, card: 6 }],
+        [{ suit: SUITS.HEARTS, card: 7 }],
+        [{ suit: SUITS.HEARTS, card: 2 }],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+      ],
+      currentCard: { suit: SUITS.DIAMONDS, card: 3 },
+    };
+    expect(
+      getTargetsFiredUponLookup(wrapGameState(gameState, { better: true }))(targetPosition).sort()
+    ).toEqual([15].sort());
+  });
+});
 describe("ends the game", () => {
   test("should see a game just dealt", () => {
     expect(gameIsWon(noRoyalsOnDeal)).toEqual(false);

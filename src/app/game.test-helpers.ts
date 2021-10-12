@@ -23,7 +23,7 @@ const renderCard = (card?: ICard) =>
     : `${
         card.card === JOKER
           ? "  \u{1F0DF}  "
-          : card.card
+          : card.card > 0
           ? ` ${cardToVal(card.card)}:${card.suit} `
           : ""
       }${card?.destroyed ? "  x  " : ""}`;

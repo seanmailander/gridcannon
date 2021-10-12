@@ -94,10 +94,10 @@ describe("Can deal a hand", () => {
 });
 
 describe("Can play cards", () => {
-  test("Should play a royal onto a valid position", () => { });
-  test("Should play a pip onto an existing card", () => { });
-  test("Should add armor to a royal", () => { });
-  test("Should destroy a royal", () => { });
+  test("Should play a royal onto a valid position", () => {});
+  test("Should play a pip onto an existing card", () => {});
+  test("Should add armor to a royal", () => {});
+  test("Should destroy a royal", () => {});
   test("Should allow a winning move", () => {
     // Arrange
     const state = aboutToWin;

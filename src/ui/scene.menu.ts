@@ -41,7 +41,7 @@ const optionToggle = (options: IOptions) => (option) => {
   `;
 };
 
-const helperOptions = [
+const supportOptions = [
   {
     id: "recall",
     title: "Perfect Recall",
@@ -65,7 +65,7 @@ const helperOptions = [
     description: "Three extra jokers",
   },
 ];
-const hinderenceOptions = [
+const challengeOptions = [
   {
     id: "harder",
     title: "Harder",
@@ -74,8 +74,7 @@ const hinderenceOptions = [
   {
     id: "better",
     title: "Better",
-    description: "Jacks behave like Queens",
-    disabled: true,
+    description: "Queens behave like Kings",
   },
   {
     id: "faster",
@@ -105,16 +104,16 @@ function renderScene({ scene, options }) {
       <button onclick="${startNewGame}">New game</button>
       <h2>Options</h2>
       <section class="options">
-        <section class="helpers">
+        <section class="support">
           <h3>I need some help...</h3>
 
-          ${helperOptions.map(optionToggle(options))}
+          ${supportOptions.map(optionToggle(options))}
         </section>
 
-        <section class="hinderenace">
+        <section class="challenge">
           <h3>I've done this before...</h3>
 
-          ${hinderenceOptions.map(optionToggle(options))}
+          ${challengeOptions.map(optionToggle(options))}
         </section>
       </section>
     </section>
