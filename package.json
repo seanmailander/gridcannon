@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vite build --base='./'",
     "serve": "vite preview --base='gridcannon'",
-    "prettier": "prettier ./src/**/*.ts --write",
+    "prettier": "prettier ./src/**/*.ts{,x} --write",
     "lint": "eslint src/**/*.{js,ts}",
     "test": "jest"
   },

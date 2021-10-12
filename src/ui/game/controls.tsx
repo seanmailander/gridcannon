@@ -1,13 +1,12 @@
-import * as React from 'react';
-import { getSuitAsClassname } from '../../app/deck';
-import { tryToUndoMove } from '../../app/game.commands';
-import { LOAD_TEST_STATE } from '../../app/game.reducer';
-import { canTimeTravel, getCurrentGame } from '../../app/game.selectors';
-import { dontCallItAComeback } from '../../app/game.test-states';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { SHOW_MENU } from '../../app/meta.reducer';
-import { getURIToCardImage } from '../playing_cards';
-
+import * as React from "react";
+import { getSuitAsClassname } from "../../app/deck";
+import { tryToUndoMove } from "../../app/game.commands";
+import { LOAD_TEST_STATE } from "../../app/game.reducer";
+import { canTimeTravel, getCurrentGame } from "../../app/game.selectors";
+import { dontCallItAComeback } from "../../app/game.test-states";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { SHOW_MENU } from "../../app/meta.reducer";
+import { getURIToCardImage } from "../playing_cards";
 
 const drawCard = (imageSource) => <img src={imageSource} />;
 
@@ -25,9 +24,11 @@ const Deck = () => {
 const CardsRemaining = () => {
   const { deckInHand, skippedRoyalty } = useAppSelector(getCurrentGame);
   if (deckInHand && deckInHand.length > 0) {
-    return <div id="cardsRemaining">
+    return (
+      <div id="cardsRemaining">
         {deckInHand.length + skippedRoyalty.length} cards remaining
-      </div>;
+      </div>
+    );
   }
 
   return null;
@@ -42,10 +43,14 @@ const CurrentCard = () => {
   const { suit, card } = currentCard;
   const cardImage = drawCard(getURIToCardImage({ suit, card }));
 
-  return <>
-    <div id="currentCard" className={getSuitAsClassname(suit)}>{cardImage}</div>
-    Current card
-  </>;
+  return (
+    <>
+      <div id="currentCard" className={getSuitAsClassname(suit)}>
+        {cardImage}
+      </div>
+      Current card
+    </>
+  );
 };
 
 const TimeTravel = () => {
@@ -61,22 +66,23 @@ const TimeTravel = () => {
   const undoMove = () => {
     dispatch(tryToUndoMove());
   };
-  
+
   const allowTimeTravel = useAppSelector((state) => canTimeTravel(state.game));
 
-  return <>
-    Time travel
-    <button id="timeTravelBtn" onClick={undoMove} disabled={!allowTimeTravel}>
-      Undo move
-    </button>
-  </>;
+  return (
+    <>
+      Time travel
+      <button id="timeTravelBtn" onClick={undoMove} disabled={!allowTimeTravel}>
+        Undo move
+      </button>
+    </>
+  );
 };
-
 
 export default function Controls() {
   const dispatch = useAppDispatch();
   const currentState = useAppSelector(getCurrentGame);
-  
+
   const backToMenu = () => {
     dispatch(SHOW_MENU());
   };
@@ -91,23 +97,25 @@ export default function Controls() {
     dispatch(LOAD_TEST_STATE(dontCallItAComeback));
   };
 
-  return <>
-<section className="cards">
-    <CurrentCard />
-    <Deck />
-    <CardsRemaining />
-          </section>
-          <section className="controls">
-            <button id="restartBtn" onClick={backToMenu}>
-              Exit back to menu
-            </button>
-            <button id="saveStateBtn" onClick={logStateToConsole}>
-              Save state
-            </button>
-            <button id="loadStateBtn" onClick={loadState}>
-              Load test state
-            </button>
-            <TimeTravel />
-          </section>
-  </>;
+  return (
+    <>
+      <section className="cards">
+        <CurrentCard />
+        <Deck />
+        <CardsRemaining />
+      </section>
+      <section className="controls">
+        <button id="restartBtn" onClick={backToMenu}>
+          Exit back to menu
+        </button>
+        <button id="saveStateBtn" onClick={logStateToConsole}>
+          Save state
+        </button>
+        <button id="loadStateBtn" onClick={loadState}>
+          Load test state
+        </button>
+        <TimeTravel />
+      </section>
+    </>
+  );
 }
