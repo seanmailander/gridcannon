@@ -1,6 +1,6 @@
 export interface ICard {
-  suit?: string;
-  card?: number;
+  suit: string;
+  card: number;
   destroyed?: boolean;
   empty?: boolean;
 }

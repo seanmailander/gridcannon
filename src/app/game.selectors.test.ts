@@ -11,6 +11,15 @@ import {
   closeToAWinNoArmorWithBonus,
 } from "./game.test-states";
 import { IGameState } from "./game.interfaces";
+import { RootState } from "./store";
+
+const wrapGameState = gameState => ({
+  meta: {
+    scene: '',
+    options: {},
+  },
+  game: { present: gameState, past: [], future: [] }
+}) as RootState;
 
 describe("finds legal moves", () => {
   test("should early-out before deal is complete", () => {
@@ -24,7 +33,7 @@ describe("finds legal moves", () => {
       skippedRoyalty: [],
       bonus: [],
     };
-    expect(getLegalMoves(state)).toEqual([]);
+    expect(getLegalMoves(wrapGameState(state))).toEqual([]);
   });
   describe("for royalty after deal", () => {
     test("should return largest same suit", () => {
@@ -72,7 +81,7 @@ describe("finds legal moves", () => {
         skippedRoyalty: [],
         bonus: [],
       };
-      expect(getLegalMoves(state)).toEqual([15, 21]);
+      expect(getLegalMoves(wrapGameState(state))).toEqual([15, 21]);
     });
     test("should skip top left if full", () => {
       const cardQH = {
@@ -127,7 +136,7 @@ describe("finds legal moves", () => {
         skippedRoyalty: [],
         bonus: [],
       };
-      expect(getLegalMoves(state)).toEqual([22]);
+      expect(getLegalMoves(wrapGameState(state))).toEqual([22]);
     });
   });
 });
