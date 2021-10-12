@@ -80,16 +80,19 @@ const addPayloads = ({
   grid,
   payload,
   targetRoyal,
-  jacksBehaveLikeQueens,
+  queensBehaveLikeKings,
 }: {
   grid: ICard[][];
   payload: number[];
   targetRoyal: ICard;
-  jacksBehaveLikeQueens?: boolean;
+  queensBehaveLikeKings?: boolean;
 }) => {
   const firstPayload = grid[payload[0]][0] || {};
   const secondPayload = grid[payload[1]][0] || {};
-  if (targetRoyal.card === CARDS.KING) {
+  if (
+    targetRoyal.card === CARDS.KING ||
+    (queensBehaveLikeKings && targetRoyal.card === CARDS.QUEEN)
+  ) {
     // KING same suit
     const firstValue =
       firstPayload.suit === targetRoyal.suit ? firstPayload.card : 0;
@@ -97,10 +100,7 @@ const addPayloads = ({
       secondPayload.suit === targetRoyal.suit ? secondPayload.card : 0;
     return firstValue + secondValue;
   }
-  if (
-    targetRoyal.card === CARDS.QUEEN ||
-    (jacksBehaveLikeQueens && targetRoyal.card === CARDS.JACK)
-  ) {
+  if (targetRoyal.card === CARDS.QUEEN) {
     // QUEEN same color
     const firstValue =
       colorMaps[firstPayload.suit] === colorMaps[targetRoyal.suit]
@@ -126,7 +126,7 @@ export const getGrid = (state: RootState) => getCurrentGame(state).grid;
 export const getTargetsFiredUponLookup = createSelector(
   [getOptions, getGrid],
   (options: IOptions, grid: ICard[][]) => {
-    const { better: jacksBehaveLikeQueens } = options;
+    const { better: queensBehaveLikeKings } = options;
 
     return (position: number) => {
       const firingSolutions = triggerSpots[position];
@@ -142,7 +142,7 @@ export const getTargetsFiredUponLookup = createSelector(
               grid,
               payload,
               targetRoyal: lastInStack(grid[target]),
-              jacksBehaveLikeQueens,
+              queensBehaveLikeKings,
             }) >= targetWithArmor(grid, target)
         )
         .map(({ target }) => target);
