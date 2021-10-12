@@ -1,9 +1,10 @@
 {
   "compilerOptions": {
+    "jsx": "react",
     "target": "ESNext",
     "module": "ESNext",
     "lib": ["ESNext", "DOM"],
-    "types": ["vite/client", "jest"],
+    "types": ["vite/client", "jest", "react"],
     "moduleResolution": "Node",
     "strict": true,
     "sourceMap": true,

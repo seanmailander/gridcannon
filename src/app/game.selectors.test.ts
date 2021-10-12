@@ -1,4 +1,4 @@
-import { whatLegalMoves, gameIsWon, scoreGame } from "./game.selectors";
+import { getLegalMoves, gameIsWon, scoreGame } from "./game.selectors";
 import { SUITS, CARDS } from "./deck";
 import {
   alreadyWon,
@@ -24,7 +24,7 @@ describe("finds legal moves", () => {
       skippedRoyalty: [],
       bonus: [],
     };
-    expect(whatLegalMoves(state)).toEqual([]);
+    expect(getLegalMoves(state)).toEqual([]);
   });
   describe("for royalty after deal", () => {
     test("should return largest same suit", () => {
@@ -72,7 +72,7 @@ describe("finds legal moves", () => {
         skippedRoyalty: [],
         bonus: [],
       };
-      expect(whatLegalMoves(state)).toEqual([15, 21]);
+      expect(getLegalMoves(state)).toEqual([15, 21]);
     });
     test("should skip top left if full", () => {
       const cardQH = {
@@ -127,7 +127,7 @@ describe("finds legal moves", () => {
         skippedRoyalty: [],
         bonus: [],
       };
-      expect(whatLegalMoves(state)).toEqual([22]);
+      expect(getLegalMoves(state)).toEqual([22]);
     });
   });
 });

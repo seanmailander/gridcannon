@@ -21,9 +21,9 @@ import { CARDS, hashIt, isRoyalty, JOKER, shuffleDeck } from "./deck";
 import {
   canTimeTravel,
   getCurrentGame,
+  getLegalMoves,
   getTargetsFiredUponLookup,
   howManyCardsPlaced,
-  whatLegalMoves,
 } from "./game.selectors";
 import { dealSpots } from "./game.consts";
 import { AppDispatch, IGetStateFn } from "./store";
@@ -90,7 +90,7 @@ export const tryToPlayCard =
       if (!dealIsFinished) {
         return;
       }
-      const legalPositions = whatLegalMoves(gameState);
+      const legalPositions = getLegalMoves(state);
 
       // No legal moves, nothing to do
       // TODO: show an error about the illegal move?

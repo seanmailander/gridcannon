@@ -33,3 +33,17 @@ export interface ITriggerSpot {
     target: number;
   }>
 }
+
+export interface IGamePhase {
+  isWon: boolean;
+  isLost: boolean;
+  noCardsRemaining: boolean;
+  noLegalMoves: boolean;
+  unwinnableArmor: boolean;
+  playingRoyalty: boolean;
+  playingPips: boolean;
+  playingAce: boolean;
+  playingJoker: boolean;
+  addingArmor: boolean;
+  canTrigger: boolean;
+}

@@ -1,8 +1,10 @@
-import { html, define } from "hybrids";
-import { instructionIdentifiers } from "../app/game.consts";
+import * as React from 'react';
+import { useAppSelector } from '../../app/hooks';
 
-import { getGamePhase } from "../app/game.selectors";
-import { RootState } from "../app/store";
+import { instructionIdentifiers } from "../../app/game.consts";
+
+import { getGamePhase } from "../../app/game.selectors";
+import { RootState } from "../../app/store";
 
 const {
   SETUP,
@@ -26,7 +28,7 @@ const {
 export const getClassForHintLookup = (state: RootState) => {
   const gamePhase = getGamePhase(state);
 
-  return (hint) => {
+  const getClasses = (hint) => {
     // Fake the setup being complete
     // If we ever animate the deal, this will change
     const setupHints = [SETUP, SHUFFLE, DEAL, ASIDE];
@@ -136,49 +138,53 @@ export const getClassForHintLookup = (state: RootState) => {
 
     return [];
   };
+
+  // Return the array as a space-delimited string of class names
+  return (hint) => getClasses(hint).join(' ');
 };
 
-export default function drawInstructions(getHintClass: (string) => string[]) {
+export default function Instructions() {
+  const getHintClass = useAppSelector(getClassForHintLookup);
 
-  return html`
-    <h2 class="${getHintClass(SETUP)}">The Setup</h2>
+  return <>
+    <h2 className={getHintClass(SETUP)}>The Setup</h2>
     <ul>
-      <li class="${getHintClass(SHUFFLE)}">Shuffle a deck of 52 cards</li>
-      <li class="${getHintClass(DEAL)}">
+      <li className={getHintClass(SHUFFLE)}>Shuffle a deck of 52 cards</li>
+      <li className={getHintClass(DEAL)}>
         Deal one card at a time in a 3x3 grid
       </li>
-      <li class="${getHintClass(ASIDE)}">Set any Royals to the side</li>
+      <li className={getHintClass(ASIDE)}>Set any Royals to the side</li>
     </ul>
 
-    <h2 class="${getHintClass(CONSTRAINT)}">The Constraint</h2>
+    <h2 className={getHintClass(CONSTRAINT)}>The Constraint</h2>
     <ul>
-      <li class="${getHintClass(ROYAL)}">
+      <li className={getHintClass(ROYAL)}>
         Play a Royal on the highest aligned card
       </li>
-      <li class="${getHintClass(ARMOR)}">Add an unplayable Pip to any Royal</li>
+      <li className={getHintClass(ARMOR)}>Add an unplayable Pip to any Royal</li>
     </ul>
 
-    <h2 class="${getHintClass(PLAY)}">The Play</h2>
+    <h2 className={getHintClass(PLAY)}>The Play</h2>
     <ul>
-      <li class="${getHintClass(PIP)}">
+      <li className={getHintClass(PIP)}>
         Play a Pip on any card of lower value
       </li>
-      <li class="${getHintClass(ACE)}">Play an Ace to reset any stack</li>
-      <li class="${getHintClass(JOKER)}">Play a Joker to recall any stack</li>
+      <li className={getHintClass(ACE)}>Play an Ace to reset any stack</li>
+      <li className={getHintClass(JOKER)}>Play a Joker to recall any stack</li>
     </ul>
 
-    <h2 class="${getHintClass(END)}">The End</h2>
+    <h2 className={getHintClass(END)}>The End</h2>
     <ul>
-      <li class="${getHintClass(WIN)}">
+      <li className={getHintClass(WIN)}>
         WIN: All Royals have been knocked out
       </li>
-      <li class="${getHintClass(LOSENOCARD)}">LOSE: No cards remain to play</li>
-      <li class="${getHintClass(LOSENOROYAL)}">
+      <li className={getHintClass(LOSENOCARD)}>LOSE: No cards remain to play</li>
+      <li className={getHintClass(LOSENOROYAL)}>
         LOSE: No royals to add an unplayable Pip to
       </li>
-      <li class="${getHintClass(LOSEOVERARMORED)}">
+      <li className={getHintClass(LOSEOVERARMORED)}>
         LOSE: Too much armor on a royal
       </li>
     </ul>
-  `;
+  </>;
 }
