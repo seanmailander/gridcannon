@@ -90,6 +90,7 @@ export const instructionIdentifiers = {
   ARMOR: "i-armor",
   PLAY: "i-play",
   PIP: "i-pip",
+  TARGET: "i-target",
   ACE: "i-ace",
   JOKER: "i-joker",
   END: "i-end",

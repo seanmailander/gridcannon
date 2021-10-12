@@ -16,6 +16,7 @@ const {
   ARMOR,
   PLAY,
   PIP,
+  TARGET,
   ACE,
   JOKER,
   END,
@@ -72,6 +73,11 @@ const getPlayHintStyling = (targetHint, gamePhase) => {
       break;
     case PIP:
       if (!gamePhase.isWon && gamePhase.playingPips) {
+        return ["active"];
+      }
+      break;
+    case TARGET:
+      if (!gamePhase.isWon && gamePhase.playingPips && gamePhase.canTrigger) {
         return ["active"];
       }
       break;
@@ -152,6 +158,7 @@ export const getClassForHintLookup = createSelector(
         // Constraints (Royals or Armor)
         case PLAY:
         case PIP:
+        case TARGET:
         case ACE:
         case JOKER: {
           return getPlayHintStyling(targetHint, gamePhase);
@@ -208,6 +215,16 @@ export default function Instructions() {
       <ul>
         <li className={instructionStyles(PIP)}>
           Play a Pip on any card of lower value
+        </li>
+        <li className={instructionStyles(TARGET)}>
+          <small>Destroy inline royal if other cards in row/column are: 
+            <ul>
+            <li>King: Same <strong>suit</strong> and value <strong>&gt;= 13</strong></li>
+            <li>Queen: Same <strong>color</strong> and value <strong>&gt;= 12</strong></li>
+            <li>Jack: Any suit and value <strong>&gt;= 11</strong></li>
+            <li>Armor: Value of royal is increased by armor</li>
+            </ul>
+          </small>
         </li>
         <li className={instructionStyles(ACE)}>
           Play an Ace to reset any stack
