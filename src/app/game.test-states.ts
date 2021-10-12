@@ -1931,7 +1931,7 @@ export const dontCallItAComeback = {
       { suit: "d", card: 1 },
     ],
     [
-      { suit: "h", card: 7 },
+      { suit: "d", card: 7 },
       { suit: "d", card: 4 },
       { suit: "h", card: 4 },
       { suit: "s", card: 3 },

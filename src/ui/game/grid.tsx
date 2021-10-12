@@ -1,4 +1,5 @@
 import * as React from "react";
+import { createSelector } from "@reduxjs/toolkit";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 
 import { getSuitAsClassname, isRoyalty } from "../../app/deck";
@@ -11,6 +12,7 @@ import {
   countTotalArmor,
   getGrid,
   getLegalMoves,
+  getCurrentGame,
 } from "../../app/game.selectors";
 import { playSpots } from "../../app/game.consts";
 
@@ -18,12 +20,12 @@ import { tryToPlayCard } from "../../app/game.commands";
 
 const drawCard = (imageSource) => <img src={imageSource} />;
 
-const drawBadge = (armor) => <span className="badge">${armor}</span>;
+const drawBadge = (armor) => <span className="badge">{armor}</span>;
 
-const canShowOpenTargets = (state) => {
+const canShowOpenTargets = createSelector([getCurrentGame], (state) => {
   const { currentCard } = state;
   return !isRoyalty(currentCard) && openSpotsForNonRoyal(state).length > 0;
-};
+});
 
 export default function Grid() {
   const dispatch = useAppDispatch();
