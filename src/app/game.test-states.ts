@@ -182,8 +182,14 @@ export const closeToAWin = {
   grid: [
     [],
     [{ suit: "s", card: 12 }],
-    [{ suit: "h", card: 13 }, { destroyed: true, card: -1, suit: "" }],
-    [{ suit: "d", card: 13 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { suit: "h", card: 13 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
+    [
+      { suit: "d", card: 13 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [],
     [{ suit: "s", card: 13 }],
     [
@@ -206,8 +212,14 @@ export const closeToAWin = {
       { suit: "s", card: 4 },
     ],
     [{ suit: "", card: 0 }],
-    [{ suit: "d", card: 11 }, { destroyed: true, card: -1, suit: "" }],
-    [{ suit: "c", card: 11 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { suit: "d", card: 11 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
+    [
+      { suit: "c", card: 11 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [
       { suit: "d", card: 8 },
       { suit: "h", card: 8 },
@@ -224,8 +236,14 @@ export const closeToAWin = {
       { suit: "h", card: 10 },
       { suit: "d", card: 10 },
     ],
-    [{ suit: "d", card: 12 }, { destroyed: true, card: -1, suit: "" }],
-    [{ suit: "c", card: 12 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { suit: "d", card: 12 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
+    [
+      { suit: "c", card: 12 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [
       { suit: "h", card: 2 },
       { suit: "d", card: 2 },
@@ -243,11 +261,25 @@ export const closeToAWin = {
       { suit: "d", card: 5 },
       { suit: "", card: 0 },
     ],
-    [{ suit: "c", card: 2 }, { suit: "h", card: 11 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { suit: "c", card: 2 },
+      { suit: "h", card: 11 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [],
-    [{ suit: "c", card: 13 }, { destroyed: true, card: -1, suit: "" }],
-    [{ suit: "s", card: 11 }, { destroyed: true, card: -1, suit: "" }],
-    [{ suit: "d", card: 3 }, { suit: "h", card: 12 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { suit: "c", card: 13 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
+    [
+      { suit: "s", card: 11 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
+    [
+      { suit: "d", card: 3 },
+      { suit: "h", card: 12 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [],
   ],
 };
@@ -264,8 +296,14 @@ export const closeToAWinNoArmor = {
   grid: [
     [],
     [{ suit: "s", card: 12 }],
-    [{ suit: "h", card: 13 }, { destroyed: true, card: -1, suit: "" }],
-    [{ suit: "d", card: 13 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { suit: "h", card: 13 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
+    [
+      { suit: "d", card: 13 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [],
     [{ suit: "s", card: 13 }],
     [
@@ -288,8 +326,14 @@ export const closeToAWinNoArmor = {
       { suit: "s", card: 4 },
     ],
     [{ suit: "", card: 0 }],
-    [{ suit: "d", card: 11 }, { destroyed: true, card: -1, suit: "" }],
-    [{ suit: "c", card: 11 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { suit: "d", card: 11 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
+    [
+      { suit: "c", card: 11 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [
       { suit: "d", card: 8 },
       { suit: "h", card: 8 },
@@ -306,8 +350,14 @@ export const closeToAWinNoArmor = {
       { suit: "h", card: 10 },
       { suit: "d", card: 10 },
     ],
-    [{ suit: "d", card: 12 }, { destroyed: true, card: -1, suit: "" }],
-    [{ suit: "c", card: 12 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { suit: "d", card: 12 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
+    [
+      { suit: "c", card: 12 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [
       { suit: "h", card: 2 },
       { suit: "d", card: 2 },
@@ -327,11 +377,23 @@ export const closeToAWinNoArmor = {
       { suit: "d", card: 5 },
       { suit: "", card: 0 },
     ],
-    [{ suit: "h", card: 11 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { suit: "h", card: 11 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [],
-    [{ suit: "c", card: 13 }, { destroyed: true, card: -1, suit: "" }],
-    [{ suit: "s", card: 11 }, { destroyed: true, card: -1, suit: "" }],
-    [{ suit: "h", card: 12 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { suit: "c", card: 13 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
+    [
+      { suit: "s", card: 11 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
+    [
+      { suit: "h", card: 12 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [],
   ],
 };
@@ -340,8 +402,14 @@ export const closeToAWinNoArmorWithBonus = {
   scene: "game",
   bonus: [
     [
-      [{ suit: "s", card: 11 }, { destroyed: true, card: -1, suit: "" }],
-      [{ suit: "c", card: 12 }, { destroyed: true, card: -1, suit: "" }],
+      [
+        { suit: "s", card: 11 },
+        { destroyed: true, card: -1, suit: "" },
+      ],
+      [
+        { suit: "c", card: 12 },
+        { destroyed: true, card: -1, suit: "" },
+      ],
     ],
   ],
   deckInHand: [
@@ -353,8 +421,14 @@ export const closeToAWinNoArmorWithBonus = {
   grid: [
     [],
     [{ suit: "s", card: 12 }],
-    [{ suit: "h", card: 13 }, { destroyed: true, card: -1, suit: "" }],
-    [{ suit: "d", card: 13 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { suit: "h", card: 13 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
+    [
+      { suit: "d", card: 13 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [],
     [{ suit: "s", card: 13 }],
     [
@@ -377,8 +451,14 @@ export const closeToAWinNoArmorWithBonus = {
       { suit: "s", card: 4 },
     ],
     [{ suit: "", card: 0 }],
-    [{ suit: "d", card: 11 }, { destroyed: true, card: -1, suit: "" }],
-    [{ suit: "c", card: 11 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { suit: "d", card: 11 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
+    [
+      { suit: "c", card: 11 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [
       { suit: "d", card: 8 },
       { suit: "h", card: 8 },
@@ -395,8 +475,14 @@ export const closeToAWinNoArmorWithBonus = {
       { suit: "h", card: 10 },
       { suit: "d", card: 10 },
     ],
-    [{ suit: "d", card: 12 }, { destroyed: true, card: -1, suit: "" }],
-    [{ suit: "c", card: 12 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { suit: "d", card: 12 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
+    [
+      { suit: "c", card: 12 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [
       { suit: "h", card: 2 },
       { suit: "d", card: 2 },
@@ -416,11 +502,23 @@ export const closeToAWinNoArmorWithBonus = {
       { suit: "d", card: 5 },
       { suit: "", card: 0 },
     ],
-    [{ suit: "h", card: 11 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { suit: "h", card: 11 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [],
-    [{ suit: "c", card: 13 }, { destroyed: true, card: -1, suit: "" }],
-    [{ suit: "s", card: 11 }, { destroyed: true, card: -1, suit: "" }],
-    [{ suit: "h", card: 12 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { suit: "c", card: 13 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
+    [
+      { suit: "s", card: 11 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
+    [
+      { suit: "h", card: 12 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [],
   ],
 };
@@ -433,11 +531,23 @@ export const alreadyWon = {
   skippedRoyalty: [],
   grid: [
     [],
-    [{ suit: "s", card: 12 }, { destroyed: true, card: -1, suit: "" }],
-    [{ suit: "h", card: 13 }, { destroyed: true, card: -1, suit: "" }],
-    [{ suit: "d", card: 13 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { suit: "s", card: 12 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
+    [
+      { suit: "h", card: 13 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
+    [
+      { suit: "d", card: 13 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [],
-    [{ suit: "s", card: 13 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { suit: "s", card: 13 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [
       { suit: "s", card: 10 },
       { suit: "h", card: 5 },
@@ -462,8 +572,14 @@ export const alreadyWon = {
       { suit: "h", card: 2 },
       { suit: "", card: 0 },
     ],
-    [{ suit: "d", card: 11 }, { destroyed: true, card: -1, suit: "" }],
-    [{ suit: "c", card: 11 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { suit: "d", card: 11 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
+    [
+      { suit: "c", card: 11 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [
       { suit: "h", card: 9 },
       { suit: "d", card: 9 },
@@ -480,8 +596,14 @@ export const alreadyWon = {
       { suit: "h", card: 10 },
       { suit: "d", card: 10 },
     ],
-    [{ suit: "d", card: 12 }, { destroyed: true, card: -1, suit: "" }],
-    [{ suit: "c", card: 12 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { suit: "d", card: 12 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
+    [
+      { suit: "c", card: 12 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [{ suit: "c", card: 1 }],
     [
       { suit: "s", card: 8 },
@@ -496,11 +618,25 @@ export const alreadyWon = {
       { suit: "d", card: 5 },
       { suit: "", card: 0 },
     ],
-    [{ suit: "c", card: 2 }, { suit: "h", card: 11 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { suit: "c", card: 2 },
+      { suit: "h", card: 11 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [],
-    [{ suit: "c", card: 13 }, { destroyed: true, card: -1, suit: "" }],
-    [{ suit: "s", card: 11 }, { destroyed: true, card: -1, suit: "" }],
-    [{ suit: "d", card: 3 }, { suit: "h", card: 12 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { suit: "c", card: 13 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
+    [
+      { suit: "s", card: 11 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
+    [
+      { suit: "d", card: 3 },
+      { suit: "h", card: 12 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [],
   ],
 };
@@ -513,11 +649,23 @@ export const alreadyWonNoArmor = {
   skippedRoyalty: [],
   grid: [
     [],
-    [{ suit: "s", card: 12 }, { destroyed: true, card: -1, suit: "" }],
-    [{ suit: "h", card: 13 }, { destroyed: true, card: -1, suit: "" }],
-    [{ suit: "d", card: 13 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { suit: "s", card: 12 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
+    [
+      { suit: "h", card: 13 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
+    [
+      { suit: "d", card: 13 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [],
-    [{ suit: "s", card: 13 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { suit: "s", card: 13 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [
       { suit: "s", card: 10 },
       { suit: "h", card: 5 },
@@ -542,8 +690,14 @@ export const alreadyWonNoArmor = {
       { suit: "h", card: 2 },
       { suit: "", card: 0 },
     ],
-    [{ suit: "d", card: 11 }, { destroyed: true, card: -1, suit: "" }],
-    [{ suit: "c", card: 11 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { suit: "d", card: 11 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
+    [
+      { suit: "c", card: 11 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [
       { suit: "h", card: 9 },
       { suit: "d", card: 9 },
@@ -561,8 +715,14 @@ export const alreadyWonNoArmor = {
       { suit: "h", card: 10 },
       { suit: "d", card: 10 },
     ],
-    [{ suit: "d", card: 12 }, { destroyed: true, card: -1, suit: "" }],
-    [{ suit: "c", card: 12 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { suit: "d", card: 12 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
+    [
+      { suit: "c", card: 12 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [{ suit: "c", card: 1 }],
     [
       { suit: "s", card: 8 },
@@ -578,11 +738,23 @@ export const alreadyWonNoArmor = {
       { suit: "d", card: 5 },
       { suit: "", card: 0 },
     ],
-    [{ suit: "h", card: 11 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { suit: "h", card: 11 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [],
-    [{ suit: "c", card: 13 }, { destroyed: true, card: -1, suit: "" }],
-    [{ suit: "s", card: 11 }, { destroyed: true, card: -1, suit: "" }],
-    [{ suit: "h", card: 12 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { suit: "c", card: 13 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
+    [
+      { suit: "s", card: 11 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
+    [
+      { suit: "h", card: 12 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [],
   ],
 };
@@ -688,7 +860,10 @@ export const noCardsLeft = {
       { suit: "c", card: 3 },
       { suit: "h", card: 12 },
     ],
-    [{ suit: "c", card: 12 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { suit: "c", card: 12 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [],
     [
       { suit: "h", card: 3 },
@@ -711,7 +886,10 @@ export const noCardsLeft = {
       { suit: "d", card: 4 },
       { suit: "h", card: 13 },
     ],
-    [{ suit: "d", card: 13 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { suit: "d", card: 13 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [
       { suit: "s", card: 10 },
       { suit: "d", card: 9 },
@@ -732,7 +910,10 @@ export const noCardsLeft = {
       { suit: "h", card: 6 },
       { suit: "c", card: 13 },
     ],
-    [{ suit: "c", card: 11 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { suit: "c", card: 11 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [
       { suit: "d", card: 10 },
       { suit: "c", card: 10 },
@@ -762,7 +943,10 @@ export const noCardsLeft = {
       { suit: "s", card: 6 },
       { suit: "s", card: 13 },
     ],
-    [{ suit: "s", card: 11 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { suit: "s", card: 11 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [
       { suit: "h", card: 5 },
       { suit: "c", card: 2 },
@@ -794,11 +978,20 @@ export const doubleTrigger = {
   skippedRoyalty: [],
   grid: [
     [],
-    [{ suit: "h", card: 13 }, { destroyed: true, card: -1, suit: "" }],
-    [{ suit: "c", card: 11 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { suit: "h", card: 13 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
+    [
+      { suit: "c", card: 11 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [{ suit: "s", card: 12 }],
     [],
-    [{ suit: "s", card: 11 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { suit: "s", card: 11 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [
       { suit: "h", card: 7 },
       { suit: "s", card: 3 },
@@ -818,7 +1011,10 @@ export const doubleTrigger = {
       { suit: "s", card: 1 },
     ],
     [{ suit: "h", card: 11 }],
-    [{ suit: "h", card: 12 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { suit: "h", card: 12 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [{ suit: "h", card: 8 }],
     [
       { suit: "h", card: 9 },
@@ -833,7 +1029,10 @@ export const doubleTrigger = {
       { suit: "", card: 0 },
     ],
     [{ suit: "d", card: 12 }],
-    [{ suit: "d", card: 13 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { suit: "d", card: 13 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [
       { suit: "d", card: 7 },
       { suit: "h", card: 6 },
@@ -850,8 +1049,14 @@ export const doubleTrigger = {
     [{ suit: "c", card: 12 }],
     [],
     [{ suit: "d", card: 11 }],
-    [{ suit: "s", card: 13 }, { destroyed: true, card: -1, suit: "" }],
-    [{ suit: "c", card: 13 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { suit: "s", card: 13 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
+    [
+      { suit: "c", card: 13 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [],
   ],
 };
@@ -874,15 +1079,24 @@ export const aboutToWin = {
   skippedRoyalty: [],
   grid: [
     [],
-    [{ suit: "s", card: 13 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { suit: "s", card: 13 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [
       { suit: "s", card: 2 },
       { suit: "d", card: 2 },
       { suit: "d", card: 11 },
     ],
-    [{ suit: "c", card: 12 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { suit: "c", card: 12 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [],
-    [{ suit: "s", card: 11 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { suit: "s", card: 11 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [
       { suit: "s", card: 5 },
       { suit: "", card: 0 },
@@ -897,8 +1111,14 @@ export const aboutToWin = {
       { suit: "h", card: 4 },
       { suit: "s", card: 1 },
     ],
-    [{ suit: "c", card: 13 }, { destroyed: true, card: -1, suit: "" }],
-    [{ suit: "s", card: 12 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { suit: "c", card: 13 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
+    [
+      { suit: "s", card: 12 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [
       { suit: "s", card: 9 },
       { suit: "h", card: 9 },
@@ -921,8 +1141,14 @@ export const aboutToWin = {
       { suit: "s", card: 6 },
       { suit: "h", card: 6 },
     ],
-    [{ suit: "h", card: 12 }, { destroyed: true, card: -1, suit: "" }],
-    [{ suit: "h", card: 11 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { suit: "h", card: 12 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
+    [
+      { suit: "h", card: 11 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [
       { suit: "c", card: 6 },
       { suit: "d", card: 1 },
@@ -937,11 +1163,23 @@ export const aboutToWin = {
       { suit: "h", card: 3 },
       { suit: "", card: 0 },
     ],
-    [{ suit: "d", card: 13 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { suit: "d", card: 13 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [],
-    [{ suit: "c", card: 11 }, { destroyed: true, card: -1, suit: "" }],
-    [{ suit: "d", card: 12 }, { destroyed: true, card: -1, suit: "" }],
-    [{ suit: "h", card: 13 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { suit: "c", card: 11 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
+    [
+      { suit: "d", card: 12 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
+    [
+      { suit: "h", card: 13 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [],
   ],
   bonus: [],
@@ -965,7 +1203,10 @@ export const canWeDoIt = {
       { suit: "d", card: 11 },
     ],
     [],
-    [{ suit: "s", card: 11 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { suit: "s", card: 11 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [
       { suit: "h", card: 10 },
       { suit: "c", card: 8 },
@@ -986,8 +1227,14 @@ export const canWeDoIt = {
       { suit: "c", card: 3 },
       { suit: "d", card: 2 },
     ],
-    [{ suit: "s", card: 12 }, { destroyed: true, card: -1, suit: "" }],
-    [{ suit: "c", card: 11 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { suit: "s", card: 12 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
+    [
+      { suit: "c", card: 11 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [
       { suit: "d", card: 10 },
       { suit: "c", card: 10 },
@@ -1007,8 +1254,14 @@ export const canWeDoIt = {
       { suit: "h", card: 6 },
       { suit: "d", card: 5 },
     ],
-    [{ suit: "h", card: 11 }, { destroyed: true, card: -1, suit: "" }],
-    [{ suit: "d", card: 13 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { suit: "h", card: 11 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
+    [
+      { suit: "d", card: 13 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [
       { suit: "c", card: 7 },
       { suit: "c", card: 6 },
@@ -1029,15 +1282,30 @@ export const canWeDoIt = {
       { suit: "s", card: 13 },
     ],
     [],
-    [{ suit: "d", card: 12 }, { destroyed: true, card: -1, suit: "" }],
-    [{ suit: "h", card: 12 }, { destroyed: true, card: -1, suit: "" }],
-    [{ suit: "c", card: 12 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { suit: "d", card: 12 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
+    [
+      { suit: "h", card: 12 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
+    [
+      { suit: "c", card: 12 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [],
   ],
   bonus: [
     [
-      [{ suit: "s", card: 11 }, { destroyed: true, card: -1, suit: "" }],
-      [{ suit: "c", card: 12 }, { destroyed: true, card: -1, suit: "" }],
+      [
+        { suit: "s", card: 11 },
+        { destroyed: true, card: -1, suit: "" },
+      ],
+      [
+        { suit: "c", card: 12 },
+        { destroyed: true, card: -1, suit: "" },
+      ],
     ],
   ],
 };
@@ -1066,11 +1334,23 @@ export const lastTry = {
   skippedRoyalty: [],
   grid: [
     [],
-    [{ suit: "c", card: 13 }, { destroyed: true, card: -1, suit: "" }],
-    [{ suit: "d", card: 11 }, { destroyed: true, card: -1, suit: "" }],
-    [{ suit: "s", card: 12 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { suit: "c", card: 13 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
+    [
+      { suit: "d", card: 11 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
+    [
+      { suit: "s", card: 12 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [],
-    [{ suit: "c", card: 11 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { suit: "c", card: 11 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [
       { suit: "c", card: 5 },
       { suit: "h", card: 2 },
@@ -1084,8 +1364,14 @@ export const lastTry = {
       { suit: "s", card: 7 },
       { suit: "d", card: 1 },
     ],
-    [{ suit: "s", card: 13 }, { destroyed: true, card: -1, suit: "" }],
-    [{ suit: "h", card: 12 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { suit: "s", card: 13 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
+    [
+      { suit: "h", card: 12 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [
       { suit: "c", card: 9 },
       { suit: "s", card: 8 },
@@ -1102,8 +1388,14 @@ export const lastTry = {
       { suit: "h", card: 6 },
       { suit: "c", card: 4 },
     ],
-    [{ suit: "h", card: 13 }, { destroyed: true, card: -1, suit: "" }],
-    [{ suit: "d", card: 12 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { suit: "h", card: 13 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
+    [
+      { suit: "d", card: 12 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [
       { suit: "d", card: 8 },
       { suit: "d", card: 5 },
@@ -1123,7 +1415,10 @@ export const lastTry = {
     [],
     [],
     [{ suit: "d", card: 13 }],
-    [{ suit: "c", card: 12 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { suit: "c", card: 12 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [],
     [],
   ],
@@ -1163,7 +1458,10 @@ export const addingArmor = {
     [],
     [],
     [{ suit: "h", card: 12 }],
-    [{ suit: "s", card: 12 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { suit: "s", card: 12 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [],
     [],
     [
@@ -1180,7 +1478,10 @@ export const addingArmor = {
       { suit: "h", card: 1 },
     ],
     [{ suit: "s", card: 10 }],
-    [{ suit: "s", card: 11 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { suit: "s", card: 11 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [{ suit: "h", card: 13 }],
     [
       { suit: "h", card: 10 },
@@ -1206,7 +1507,10 @@ export const addingArmor = {
     [{ suit: "d", card: 13 }],
     [],
     [],
-    [{ suit: "c", card: 11 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { suit: "c", card: 11 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [{ suit: "d", card: 12 }],
     [],
   ],
@@ -1220,8 +1524,15 @@ export const unwinnableArmor = {
   skippedRoyalty: [],
   grid: [
     [],
-    [{ suit: "s", card: 3 }, { suit: "s", card: 12 }, { destroyed: true, card: -1, suit: "" }],
-    [{ suit: "h", card: 11 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { suit: "s", card: 3 },
+      { suit: "s", card: 12 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
+    [
+      { suit: "h", card: 11 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [
       { suit: "c", card: 5 },
       { suit: "d", card: 5 },
@@ -1229,7 +1540,10 @@ export const unwinnableArmor = {
       { suit: "h", card: 13 },
     ],
     [],
-    [{ suit: "d", card: 11 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { suit: "d", card: 11 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [
       { suit: "c", card: 10 },
       { suit: "h", card: 8 },
@@ -1247,8 +1561,14 @@ export const unwinnableArmor = {
       { suit: "d", card: 2 },
       { suit: "", card: 0 },
     ],
-    [{ suit: "d", card: 12 }, { destroyed: true, card: -1, suit: "" }],
-    [{ suit: "d", card: 13 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { suit: "d", card: 12 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
+    [
+      { suit: "d", card: 13 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [
       { suit: "c", card: 9 },
       { suit: "h", card: 9 },
@@ -1296,9 +1616,18 @@ export const unwinnableArmor = {
       { suit: "c", card: 13 },
     ],
     [],
-    [{ suit: "s", card: 11 }, { destroyed: true, card: -1, suit: "" }],
-    [{ suit: "h", card: 12 }, { destroyed: true, card: -1, suit: "" }],
-    [{ suit: "c", card: 11 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { suit: "s", card: 11 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
+    [
+      { suit: "h", card: 12 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
+    [
+      { suit: "c", card: 11 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [],
   ],
   bonus: [],
@@ -1349,7 +1678,10 @@ export const earlyDoubleTrigger = {
   skippedRoyalty: [],
   grid: [
     [],
-    [{ suit: "d", card: 12 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { suit: "d", card: 12 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [{ suit: "c", card: 11 }],
     [],
     [],
@@ -1370,17 +1702,29 @@ export const earlyDoubleTrigger = {
     [{ suit: "d", card: 1 }],
     [{ suit: "s", card: 7 }],
     [{ suit: "c", card: 8 }],
-    [{ suit: "c", card: 12 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { suit: "c", card: 12 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [],
-    [{ suit: "h", card: 13 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { suit: "h", card: 13 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [{ suit: "s", card: 13 }],
     [],
     [],
   ],
   bonus: [
     [
-      [{ suit: "c", card: 12 }, { destroyed: true, card: -1, suit: "" }],
-      [{ suit: "d", card: 12 }, { destroyed: true, card: -1, suit: "" }],
+      [
+        { suit: "c", card: 12 },
+        { destroyed: true, card: -1, suit: "" },
+      ],
+      [
+        { suit: "d", card: 12 },
+        { destroyed: true, card: -1, suit: "" },
+      ],
     ],
   ],
 };
@@ -1410,7 +1754,10 @@ export const dangerClose = {
   skippedRoyalty: [],
   grid: [
     [],
-    [{ suit: "d", card: 12 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { suit: "d", card: 12 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [
       { suit: "c", card: 3 },
       { suit: "c", card: 11 },
@@ -1420,7 +1767,11 @@ export const dangerClose = {
       { suit: "d", card: 11 },
     ],
     [],
-    [{ suit: "h", card: 3 }, { suit: "d", card: 13 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { suit: "h", card: 3 },
+      { suit: "d", card: 13 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [
       { suit: "d", card: 9 },
       { suit: "d", card: 7 },
@@ -1438,7 +1789,10 @@ export const dangerClose = {
       { suit: "d", card: 5 },
       { suit: "s", card: 12 },
     ],
-    [{ suit: "h", card: 11 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { suit: "h", card: 11 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [{ suit: "h", card: 8 }],
     [
       { suit: "s", card: 10 },
@@ -1462,17 +1816,32 @@ export const dangerClose = {
     ],
     [{ suit: "s", card: 7 }],
     [{ suit: "c", card: 8 }],
-    [{ suit: "c", card: 12 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { suit: "c", card: 12 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [],
-    [{ suit: "h", card: 13 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { suit: "h", card: 13 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [{ suit: "s", card: 13 }],
-    [{ suit: "c", card: 13 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { suit: "c", card: 13 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [],
   ],
   bonus: [
     [
-      [{ suit: "c", card: 12 }, { destroyed: true, card: -1, suit: "" }],
-      [{ suit: "d", card: 12 }, { destroyed: true, card: -1, suit: "" }],
+      [
+        { suit: "c", card: 12 },
+        { destroyed: true, card: -1, suit: "" },
+      ],
+      [
+        { suit: "d", card: 12 },
+        { destroyed: true, card: -1, suit: "" },
+      ],
     ],
   ],
 };
@@ -1488,11 +1857,26 @@ export const dontCallItAComeback = {
   skippedRoyalty: [],
   grid: [
     [],
-    [{ suit: "d", card: 12 }, { destroyed: true, card: -1, suit: "" }],
-    [{ suit: "c", card: 3 }, { suit: "c", card: 11 }, { destroyed: true, card: -1, suit: "" }],
-    [{ suit: "d", card: 3 }, { suit: "d", card: 11 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { suit: "d", card: 12 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
+    [
+      { suit: "c", card: 3 },
+      { suit: "c", card: 11 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
+    [
+      { suit: "d", card: 3 },
+      { suit: "d", card: 11 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [],
-    [{ suit: "h", card: 3 }, { suit: "d", card: 13 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { suit: "h", card: 3 },
+      { suit: "d", card: 13 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [
       { suit: "h", card: 10 },
       { suit: "d", card: 9 },
@@ -1509,8 +1893,15 @@ export const dontCallItAComeback = {
       { suit: "s", card: 6 },
       { suit: "", card: 0 },
     ],
-    [{ suit: "d", card: 5 }, { suit: "s", card: 12 }, { destroyed: true, card: -1, suit: "" }],
-    [{ suit: "h", card: 11 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { suit: "d", card: 5 },
+      { suit: "s", card: 12 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
+    [
+      { suit: "h", card: 11 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [{ suit: "h", card: 8 }],
     [
       { suit: "s", card: 10 },
@@ -1551,17 +1942,35 @@ export const dontCallItAComeback = {
       { suit: "d", card: 2 },
       { suit: "s", card: 1 },
     ],
-    [{ suit: "c", card: 12 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { suit: "c", card: 12 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [],
-    [{ suit: "h", card: 13 }, { destroyed: true, card: -1, suit: "" }],
-    [{ suit: "s", card: 13 }, { destroyed: true, card: -1, suit: "" }],
-    [{ suit: "c", card: 13 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { suit: "h", card: 13 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
+    [
+      { suit: "s", card: 13 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
+    [
+      { suit: "c", card: 13 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [],
   ],
   bonus: [
     [
-      [{ suit: "c", card: 12 }, { destroyed: true, card: -1, suit: "" }],
-      [{ suit: "d", card: 12 }, { destroyed: true, card: -1, suit: "" }],
+      [
+        { suit: "c", card: 12 },
+        { destroyed: true, card: -1, suit: "" },
+      ],
+      [
+        { suit: "d", card: 12 },
+        { destroyed: true, card: -1, suit: "" },
+      ],
     ],
   ],
 };
@@ -1593,7 +2002,11 @@ export const greatRun = {
   skippedRoyalty: [],
   grid: [
     [],
-    [{ card: 2, suit: "" }, { suit: "s", card: 11 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { card: 2, suit: "" },
+      { suit: "s", card: 11 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [
       { card: 2, suit: "" },
       { suit: "s", card: 13 },
@@ -1605,7 +2018,11 @@ export const greatRun = {
       { destroyed: true, card: -1, suit: "" },
     ],
     [],
-    [{ card: 2, suit: "" }, { suit: "c", card: 11 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { card: 2, suit: "" },
+      { suit: "c", card: 11 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [
       { suit: "s", card: 10 },
       { suit: "c", card: 9 },
@@ -1639,7 +2056,11 @@ export const greatRun = {
       { suit: "c", card: 6 },
     ],
     [{ suit: "c", card: 10 }],
-    [{ card: 2, suit: "" }, { suit: "c", card: 13 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { card: 2, suit: "" },
+      { suit: "c", card: 13 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [
       { suit: "s", card: 3 },
       { card: 2, suit: "" },
@@ -1659,9 +2080,21 @@ export const greatRun = {
     [{ suit: "", card: 0 }],
     [],
     [],
-    [{ card: 2, suit: "" }, { suit: "d", card: 13 }, { destroyed: true, card: -1, suit: "" }],
-    [{ card: 2, suit: "" }, { suit: "h", card: 11 }, { destroyed: true, card: -1, suit: "" }],
-    [{ card: 2, suit: "" }, { suit: "s", card: 12 }, { destroyed: true, card: -1, suit: "" }],
+    [
+      { card: 2, suit: "" },
+      { suit: "d", card: 13 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
+    [
+      { card: 2, suit: "" },
+      { suit: "h", card: 11 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
+    [
+      { card: 2, suit: "" },
+      { suit: "s", card: 12 },
+      { destroyed: true, card: -1, suit: "" },
+    ],
     [],
   ],
   bonus: [

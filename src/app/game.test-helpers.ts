@@ -12,20 +12,21 @@ const cardToVal = (card) =>
   card === CARDS.JACK
     ? "J"
     : card === CARDS.QUEEN
-      ? "Q"
-      : card === CARDS.KING
-        ? "K"
-        : `${card}`;
+    ? "Q"
+    : card === CARDS.KING
+    ? "K"
+    : `${card}`;
 
 const renderCard = (card?: ICard) =>
   !card
     ? "  \u{1F0A0}  "
-    : `${card.card === JOKER
-      ? "  \u{1F0DF}  "
-      : card.card > 0
-        ? ` ${cardToVal(card.card)}:${card.suit} `
-        : ""
-    }${card?.destroyed ? "  x  " : ""}`;
+    : `${
+        card.card === JOKER
+          ? "  \u{1F0DF}  "
+          : card.card > 0
+          ? ` ${cardToVal(card.card)}:${card.suit} `
+          : ""
+      }${card?.destroyed ? "  x  " : ""}`;
 /* eslint-enable no-nested-ternary */
 
 const renderCardStack = (cardStack: ICard[]) =>

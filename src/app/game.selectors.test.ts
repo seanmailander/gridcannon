@@ -13,13 +13,14 @@ import {
 import { IGameState } from "./game.interfaces";
 import { RootState } from "./store";
 
-const wrapGameState = gameState => ({
-  meta: {
-    scene: '',
-    options: {},
-  },
-  game: { present: gameState, past: [], future: [] }
-}) as RootState;
+const wrapGameState = (gameState) =>
+  ({
+    meta: {
+      scene: "",
+      options: {},
+    },
+    game: { present: gameState, past: [], future: [] },
+  } as RootState);
 
 describe("finds legal moves", () => {
   test("should early-out before deal is complete", () => {
