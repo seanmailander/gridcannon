@@ -18,10 +18,18 @@ export interface IOptions {
   timetravel?: boolean;
   kidding?: boolean;
   harder?: boolean;
+  better?: boolean;
   stronger?: boolean;
 }
 
 export interface IMetaState {
   scene: String;
   options: IOptions;
+}
+
+export interface ITriggerSpot {
+  [spot: number]: Array<{
+    payload: number[];
+    target: number;
+  }>
 }

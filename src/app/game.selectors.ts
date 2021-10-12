@@ -1,3 +1,5 @@
+
+
 import { StateWithHistory } from "redux-undo";
 import {
   dealSpots,
@@ -14,9 +16,11 @@ import {
   JOKER,
   isNotFaceCard,
 } from "./deck";
-import { IGameState } from "./game.interfaces";
+import { ICard, IGameState, IOptions } from "./game.interfaces";
+import { IGetStateFn, RootState } from "./store";
+import { createSelector } from "reselect";
 
-const lastInStack = (arr) => arr.slice(-1)[0];
+const lastInStack = <T>(arr: T[]) => arr.slice(-1)[0];
 
 // Selector: count the number of placed cards in the grid
 export const howManyCardsPlaced = (state: IGameState) =>
@@ -73,7 +77,11 @@ export const getOpenRoyaltyStacks = ({ grid }: IGameState) =>
     .filter((spot) => !isDestroyed(lastInStack(spot)))
     .map((spot) => spot.reduce((acc, curr) => acc + curr.card, 0));
 
-const addPayloads = (grid, payload, targetRoyal) => {
+const addPayloads = ({
+  grid, payload, targetRoyal, jacksBehaveLikeQueens
+}: {
+  grid: ICard[][], payload: number[], targetRoyal: ICard, jacksBehaveLikeQueens?: boolean
+}) => {
   const firstPayload = grid[payload[0]][0] || {};
   const secondPayload = grid[payload[1]][0] || {};
   if (targetRoyal.card === CARDS.KING) {
@@ -84,7 +92,7 @@ const addPayloads = (grid, payload, targetRoyal) => {
       secondPayload.suit === targetRoyal.suit ? secondPayload.card : 0;
     return firstValue + secondValue;
   }
-  if (targetRoyal.card === CARDS.QUEEN) {
+  if (targetRoyal.card === CARDS.QUEEN || (jacksBehaveLikeQueens && targetRoyal.card === CARDS.JACK)) {
     // QUEEN same color
     const firstValue =
       colorMaps[firstPayload.suit] === colorMaps[targetRoyal.suit]
@@ -100,113 +108,129 @@ const addPayloads = (grid, payload, targetRoyal) => {
   // JACK straight value
   return firstPayload.card + secondPayload.card;
 };
-const targetWithArmor = (grid, target) =>
-  grid[target].reduce((acc, curr) => acc + curr.card, 0);
+const targetWithArmor = (grid: ICard[][], target: number) =>
+  grid[target].reduce((acc, curr) => acc + (curr.card || 0), 0);
 
-export const targetsFiredUpon = (position, grid) => {
-  const firingSolutions = triggerSpots[position];
-  if (!firingSolutions) {
-    return [];
-  }
-  return firingSolutions
-    .filter(({ target }) => grid[target].length > 0) // royal in place
-    .filter(({ target }) => !lastInStack(grid[target]).destroyed) // not already destroyed
-    .filter(
-      ({ payload, target }) =>
-        addPayloads(grid, payload, lastInStack(grid[target])) >=
-        targetWithArmor(grid, target)
-    )
-    .map(({ target }) => target);
-};
+export const getOptions = (state: RootState) => state.meta.options;
+export const getCurrentGame = (state: RootState) => state.game.present;
+export const getGrid = (state: RootState) => getCurrentGame(state).grid;
 
-export const whatOpenTargets = (state: IGameState) => {
-  const { grid, currentCard } = state;
-  if (howManyCardsPlaced(state) < 8) {
-    return [];
-  }
-  if (!currentCard) {
-    return [];
-  }
-  const openSpots = openSpotsForNonRoyal(state);
-  return openSpots.reduce(
-    (prevTargets, newPosition) => [
-      ...prevTargets,
-      ...targetsFiredUpon(newPosition, grid),
-    ],
-    [] as Array<number>
-  );
-};
+export const getTargetsFiredUponLookup = createSelector(
+  [getOptions, getGrid],
+  (options: IOptions, grid: ICard[][]) => {
+    const { better: jacksBehaveLikeQueens } = options;
+
+    return (position: number) => {
+      const firingSolutions = triggerSpots[position];
+      if (!firingSolutions) {
+        return [];
+      }
+      return firingSolutions
+        .filter(({ target }) => grid[target].length > 0) // royal in place
+        .filter(({ target }) => !lastInStack(grid[target]).destroyed) // not already destroyed
+        .filter(
+          ({ payload, target }) =>
+            addPayloads({ grid, payload, targetRoyal: lastInStack(grid[target]), jacksBehaveLikeQueens }) >=
+            targetWithArmor(grid, target)
+        )
+        .map(({ target }) => target);
+    }
+  });
+
+export const getOpenTargets = createSelector(
+  [getCurrentGame, getTargetsFiredUponLookup],
+  (gameState, targetsFiredUponFn) => {
+    const { currentCard } = gameState;
+
+    if (howManyCardsPlaced(gameState) < 8) {
+      return [];
+    }
+    if (!currentCard) {
+      return [];
+    }
+    const openSpots = openSpotsForNonRoyal(gameState);
+    return openSpots.reduce(
+      (prevTargets, newPosition) => [
+        ...prevTargets,
+        ...targetsFiredUponFn(newPosition),
+      ],
+      [] as Array<number>
+    );
+  });
 
 // Selector: count the number of remaining cards
 export const hasNoCardsRemaining = (state: IGameState) =>
   state.deckInHand.length === 0;
 
-export const getGamePhase = (state: IGameState) => {
-  const { currentCard } = state;
+export const getGamePhase = createSelector(
+  [getCurrentGame, getOpenTargets],
+  (gameState, openTargets) => {
 
-  // Check if this is a clean win, regardless of which card is to be played
-  const isWon = gameIsWon(state);
+    const { currentCard } = gameState;
 
-  // Check if we have no cards left to play
-  const noCardsRemaining = !currentCard && hasNoCardsRemaining(state);
+    // Check if this is a clean win, regardless of which card is to be played
+    const isWon = gameIsWon(gameState);
 
-  // Okay, we have some cards
-  // Now what?
+    // Check if we have no cards left to play
+    const noCardsRemaining = !currentCard && hasNoCardsRemaining(gameState);
 
-  // Is this royalty as part of the initial setup?
-  const playingRoyalty = !noCardsRemaining && isRoyalty(currentCard);
+    // Okay, we have some cards
+    // Now what?
 
-  // Must be a regular card with non-zero value
-  // How many open spots on the field?
-  const numberOfOpenSpotsOnField = openSpotsForNonRoyal(state).length;
+    // Is this royalty as part of the initial setup?
+    const playingRoyalty = !noCardsRemaining && isRoyalty(currentCard);
 
-  // Can we play on the field?
-  const canPlayOnField = !noCardsRemaining && numberOfOpenSpotsOnField > 0;
-  // Can we play on armor?
-  const openRoyaltyStacks = getOpenRoyaltyStacks(state);
-  const unwinnableArmor =
-    openRoyaltyStacks.filter((stack) => stack > 20).length > 0;
-  const addingArmor =
-    !noCardsRemaining &&
-    numberOfOpenSpotsOnField === 0 &&
-    !unwinnableArmor &&
-    openRoyaltyStacks.length > 0;
+    // Must be a regular card with non-zero value
+    // How many open spots on the field?
+    const numberOfOpenSpotsOnField = openSpotsForNonRoyal(gameState).length;
 
-  // So break out the three kinds of cards to play
+    // Can we play on the field?
+    const canPlayOnField = !noCardsRemaining && numberOfOpenSpotsOnField > 0;
+    // Can we play on armor?
+    const openRoyaltyStacks = getOpenRoyaltyStacks(gameState);
+    const unwinnableArmor =
+      openRoyaltyStacks.filter((stack) => stack > 20).length > 0;
+    const addingArmor =
+      !noCardsRemaining &&
+      numberOfOpenSpotsOnField === 0 &&
+      !unwinnableArmor &&
+      openRoyaltyStacks.length > 0;
 
-  const playingAce = currentCard?.card === CARDS.ACE;
-  const playingJoker = currentCard?.card === JOKER;
-  const playingPips =
-    !noCardsRemaining &&
-    !unwinnableArmor &&
-    !addingArmor &&
-    !playingRoyalty &&
-    !playingAce &&
-    !playingJoker;
+    // So break out the three kinds of cards to play
 
-  const noLegalMoves =
-    !noCardsRemaining && !playingRoyalty && !canPlayOnField && !addingArmor;
-  const isLost =
-    !isWon && (noCardsRemaining || noLegalMoves || unwinnableArmor);
+    const playingAce = currentCard?.card === CARDS.ACE;
+    const playingJoker = currentCard?.card === JOKER;
+    const playingPips =
+      !noCardsRemaining &&
+      !unwinnableArmor &&
+      !addingArmor &&
+      !playingRoyalty &&
+      !playingAce &&
+      !playingJoker;
 
-  const canTrigger = !noCardsRemaining && whatOpenTargets(state).length > 0;
+    const noLegalMoves =
+      !noCardsRemaining && !playingRoyalty && !canPlayOnField && !addingArmor;
+    const isLost =
+      !isWon && (noCardsRemaining || noLegalMoves || unwinnableArmor);
 
-  const gamePhase = {
-    isWon,
-    isLost,
-    noCardsRemaining,
-    noLegalMoves,
-    unwinnableArmor,
-    playingRoyalty,
-    playingPips,
-    playingAce,
-    playingJoker,
-    addingArmor,
-    canTrigger,
-  };
+    const canTrigger = !noCardsRemaining && openTargets.length > 0;
 
-  return gamePhase;
-};
+    const gamePhase = {
+      isWon,
+      isLost,
+      noCardsRemaining,
+      noLegalMoves,
+      unwinnableArmor,
+      playingRoyalty,
+      playingPips,
+      playingAce,
+      playingJoker,
+      addingArmor,
+      canTrigger,
+    };
+
+    return gamePhase;
+  });
 
 export const whatLegalMoves = (state: IGameState) => {
   // Selector: find any legal positions for the current card
@@ -263,9 +287,9 @@ export const whatLegalMoves = (state: IGameState) => {
   return openSpots;
 };
 
-export const getHintForCardInHand = (state: IGameState) => {
+export const getHintForCardInHand = createSelector([getGamePhase, getCurrentGame],
+  (gamePhase, state: IGameState) => {
   const { currentCard } = state;
-  const gamePhase = getGamePhase(state);
   if (currentCard) {
     if (gamePhase.isWon) {
       return "Game won!";
@@ -291,7 +315,7 @@ export const getHintForCardInHand = (state: IGameState) => {
     return "Hint: Play on any card of the same or lower value";
   }
   return "Hint: Restart the game";
-};
+});
 
 export const countTotalArmor = (stack) =>
   stack.reduce((acc, curr) => acc + (isNotFaceCard(curr) ? curr.card : 0), 0);

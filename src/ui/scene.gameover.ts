@@ -94,7 +94,7 @@ define<GameOverScene>({
     tag: "gameover-scene",
     scene: connect(store, (state) => state.meta.scene, true),
     turn: connect(store, (state) => state.turn),
-    gamePhase: connect(store, (state) => getGamePhase(state)),
+    gamePhase: connect(store, (state) => getGamePhase(state), true),
     gameScore: connect(store, (state) => scoreGame(state)),
     render: renderScene,
 });

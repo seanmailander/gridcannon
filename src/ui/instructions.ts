@@ -2,6 +2,7 @@ import { html, define } from "hybrids";
 import { instructionIdentifiers } from "../app/game.consts";
 
 import { getGamePhase } from "../app/game.selectors";
+import { RootState } from "../app/store";
 
 const {
   SETUP,
@@ -22,7 +23,7 @@ const {
   LOSEOVERARMORED,
 } = instructionIdentifiers;
 
-const getClassForHint = (state) => {
+export const getClassForHintLookup = (state: RootState) => {
   const gamePhase = getGamePhase(state);
 
   return (hint) => {
@@ -137,8 +138,7 @@ const getClassForHint = (state) => {
   };
 };
 
-export default function drawInstructions(state) {
-  const getHintClass = getClassForHint(state);
+export default function drawInstructions(getHintClass: (string) => string[]) {
 
   return html`
     <h2 class="${getHintClass(SETUP)}">The Setup</h2>

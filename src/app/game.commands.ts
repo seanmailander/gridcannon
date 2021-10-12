@@ -20,8 +20,9 @@ import {
 import { CARDS, hashIt, isRoyalty, JOKER, shuffleDeck } from "./deck";
 import {
   canTimeTravel,
+  getCurrentGame,
+  getTargetsFiredUponLookup,
   howManyCardsPlaced,
-  targetsFiredUpon,
   whatLegalMoves,
 } from "./game.selectors";
 import { dealSpots } from "./game.consts";
@@ -80,14 +81,16 @@ export const dealGrid =
 export const tryToPlayCard =
   (targetPosition: number) =>
     (dispatch: AppDispatch, getState: IGetStateFn): void | AnyAction => {
+      const state = getState();
+      const gameState = getCurrentGame(state);
       const { stronger } = getState().meta.options;
-      const state = getState().game.present;
-      const dealIsFinished = howManyCardsPlaced(state) === 8;
+
+      const dealIsFinished = howManyCardsPlaced(gameState) === 8;
 
       if (!dealIsFinished) {
         return;
       }
-      const legalPositions = whatLegalMoves(state);
+      const legalPositions = whatLegalMoves(gameState);
 
       // No legal moves, nothing to do
       // TODO: show an error about the illegal move?
@@ -98,7 +101,7 @@ export const tryToPlayCard =
 
       // Only if this is a valid move, do we dispatch the player action
       dispatch(PLAYER_PLAY_CARD(targetPosition));
-      const { grid, skippedRoyalty, currentCard } = state;
+      const { skippedRoyalty, currentCard } = gameState;
 
       // put card in grid
       // stacks on!
@@ -122,7 +125,7 @@ export const tryToPlayCard =
 
       // check for trigger
       if (!isRoyalty(currentCard)) {
-        const destroyedPositions = targetsFiredUpon(targetPosition, grid);
+        const destroyedPositions = getTargetsFiredUponLookup(state)(targetPosition);
         if (destroyedPositions.length > 0) {
           dispatch(DESTROY_ROYALS(destroyedPositions));
         }

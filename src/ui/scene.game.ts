@@ -6,7 +6,7 @@ import { getURIToCardImage } from "./playing_cards";
 
 import {
   whatLegalMoves,
-  whatOpenTargets,
+  getOpenTargets,
   getHintForCardInHand,
   openSpotsForNonRoyal,
   countTotalArmor,
@@ -31,7 +31,7 @@ import {
   earlyDoubleTrigger,
   noCardsLeft,
 } from "../app/game.test-states";
-import drawInstructions from "./instructions";
+import drawInstructions, { getClassForHintLookup } from "./instructions";
 import { IGameState, IOptions } from "../app/game.interfaces";
 import { SHOW_MENU } from "../app/meta.reducer";
 
@@ -68,83 +68,6 @@ const drawHint = (state) => {
 const drawCard = (imageSource) => html` <img src=${imageSource} />`;
 
 const drawBadge = (armor) => html` <span class="badge">${armor}</span> `;
-
-const drawGrid = (state: IGameState) => {
-  const { grid, currentCard } = state;
-  const legalMoves = whatLegalMoves(state);
-  const openTargets = whatOpenTargets(state);
-  const showTargets =
-    !isRoyalty(currentCard) && openSpotsForNonRoyal(state).length > 0;
-
-  return html`
-    ${[...Array(5)].map(
-      (_1, i) => html`
-        <section id="row${i}" class="row">
-          ${[...Array(5)].map((_2, j) => {
-            const spotIndex = i * 5 + j;
-            const stack = grid[spotIndex];
-
-            const isLegal = legalMoves.indexOf(spotIndex) !== -1;
-            const isRoyal = playSpots.indexOf(spotIndex) === -1;
-            const isOpenTarget = openTargets.indexOf(spotIndex) !== -1;
-            const hasCard = stack.length > 0;
-            const hasStack = stack.length > 1;
-
-            let cardImage;
-            const cardClasses = ["cardSpot"];
-            let badge;
-
-            if (hasCard) {
-              if (isRoyal) {
-                const [lastCard] = stack.slice(-1);
-                const { suit, card, destroyed = false } = lastCard;
-                if (destroyed) {
-                  cardImage = drawCard(getURIToCardImage({ destroyed }));
-                } else {
-                  cardImage = drawCard(getURIToCardImage({ suit, card }));
-                  cardClasses.push(getSuitAsClassname(suit));
-                  if (isLegal) {
-                    cardClasses.push("legal");
-                  }
-                  if (showTargets && isOpenTarget) {
-                    cardClasses.push("targetted");
-                  }
-
-                  if (hasStack) {
-                    badge = drawBadge(countTotalArmor(stack));
-                  }
-                }
-              } else {
-                const { suit, card } = stack[0];
-                cardImage = drawCard(getURIToCardImage({ suit, card }));
-                cardClasses.push(getSuitAsClassname(suit));
-                if (isLegal) {
-                  cardClasses.push("legal");
-                }
-                if (hasStack) {
-                  cardClasses.push("stack");
-                }
-              }
-            } else {
-              cardImage = drawCard(getURIToCardImage({ empty: true }));
-              cardClasses.push(isLegal ? "legal" : "unplayed");
-            }
-
-            return html`
-              <section
-                id="spot${spotIndex}"
-                class="${cardClasses.filter((x) => !!x)}"
-                onclick=${cardSpotClicked(spotIndex)}
-              >
-                ${cardImage} ${badge}
-              </section>
-            `;
-          })}
-        </section>
-      `
-    )}
-  `;
-};
 
 const drawDeck = (state) => {
   const { deckInHand, skippedRoyalty } = state;
@@ -199,7 +122,7 @@ const drawTimeTravel = ({ showTimeTravelControls, allowTimeTravel }) => {
   `;
 };
 
-function renderScene({ state, scene, options, allowTimeTravel }) {
+function renderScene({ state, scene, options, allowTimeTravel, getHintClass }) {
   if (scene !== scenes.GAME) {
     return html``;
   }
@@ -231,9 +154,11 @@ function renderScene({ state, scene, options, allowTimeTravel }) {
           </section>
         </section>
         <section class="grid-holder">
-          <section id="grid" class="grid">${drawGrid(state)}</section>
+          <section id="grid" class="grid">
+            <game-grid></game-grid>
+          </section>
         </section>
-        <section class="right-bar">${drawInstructions(state)}</section>
+        <section class="right-bar">${drawInstructions(getHintClass)}</section>
       </section>
 
       <section class="hint-footer">
@@ -249,6 +174,7 @@ interface GameScene {
   state: IGameState;
   options: IOptions;
   allowTimeTravel: boolean;
+  getHintClass: (string) => string[];
 }
 
 define<GameScene>({
@@ -257,5 +183,6 @@ define<GameScene>({
   state: connect(store, (state) => state),
   options: connect(store, (state) => state.meta.options, true),
   allowTimeTravel: connect(store, (state) => canTimeTravel(state.game), true),
+  getHintClass: connect(store, getClassForHintLookup, true),
   render: renderScene,
 });

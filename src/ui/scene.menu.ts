@@ -75,7 +75,6 @@ const hinderenceOptions = [
     id: "better",
     title: "Better",
     description: "Jacks behave like Queens",
-    disabled: true,
   },
   {
     id: "faster",
