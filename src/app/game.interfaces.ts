@@ -31,7 +31,7 @@ export interface ITriggerSpot {
   [spot: number]: Array<{
     payload: number[];
     target: number;
-  }>
+  }>;
 }
 
 export interface IGamePhase {

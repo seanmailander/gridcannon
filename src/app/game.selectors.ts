@@ -1,7 +1,6 @@
-
-
+import { createSelector } from "@reduxjs/toolkit";
 import { StateWithHistory } from "redux-undo";
-import { createSelector } from "reselect";
+
 import {
   dealSpots,
   outsideForGivenGridPosition,
@@ -78,9 +77,15 @@ export const getOpenRoyaltyStacks = ({ grid }: IGameState) =>
     .map((spot) => spot.reduce((acc, curr) => acc + curr.card, 0));
 
 const addPayloads = ({
-  grid, payload, targetRoyal, jacksBehaveLikeQueens
+  grid,
+  payload,
+  targetRoyal,
+  jacksBehaveLikeQueens,
 }: {
-  grid: ICard[][], payload: number[], targetRoyal: ICard, jacksBehaveLikeQueens?: boolean
+  grid: ICard[][];
+  payload: number[];
+  targetRoyal: ICard;
+  jacksBehaveLikeQueens?: boolean;
 }) => {
   const firstPayload = grid[payload[0]][0] || {};
   const secondPayload = grid[payload[1]][0] || {};
@@ -92,7 +97,10 @@ const addPayloads = ({
       secondPayload.suit === targetRoyal.suit ? secondPayload.card : 0;
     return firstValue + secondValue;
   }
-  if (targetRoyal.card === CARDS.QUEEN || (jacksBehaveLikeQueens && targetRoyal.card === CARDS.JACK)) {
+  if (
+    targetRoyal.card === CARDS.QUEEN ||
+    (jacksBehaveLikeQueens && targetRoyal.card === CARDS.JACK)
+  ) {
     // QUEEN same color
     const firstValue =
       colorMaps[firstPayload.suit] === colorMaps[targetRoyal.suit]
@@ -130,12 +138,17 @@ export const getTargetsFiredUponLookup = createSelector(
         .filter(({ target }) => !lastInStack(grid[target]).destroyed) // not already destroyed
         .filter(
           ({ payload, target }) =>
-            addPayloads({ grid, payload, targetRoyal: lastInStack(grid[target]), jacksBehaveLikeQueens }) >=
-            targetWithArmor(grid, target)
+            addPayloads({
+              grid,
+              payload,
+              targetRoyal: lastInStack(grid[target]),
+              jacksBehaveLikeQueens,
+            }) >= targetWithArmor(grid, target)
         )
         .map(({ target }) => target);
-    }
-  });
+    };
+  }
+);
 
 export const getOpenTargets = createSelector(
   [getCurrentGame, getTargetsFiredUponLookup],
@@ -156,7 +169,8 @@ export const getOpenTargets = createSelector(
       ],
       [] as Array<number>
     );
-  });
+  }
+);
 
 // Selector: count the number of remaining cards
 export const hasNoCardsRemaining = (state: IGameState) =>
@@ -165,7 +179,6 @@ export const hasNoCardsRemaining = (state: IGameState) =>
 export const getGamePhase = createSelector(
   [getCurrentGame, getOpenTargets],
   (gameState, openTargets) => {
-
     const { currentCard } = gameState;
 
     // Check if this is a clean win, regardless of which card is to be played
@@ -230,10 +243,12 @@ export const getGamePhase = createSelector(
     } as IGamePhase;
 
     return gamePhase;
-  });
+  }
+);
 
 export const getLegalMoves = createSelector(
-  [getCurrentGame, getGamePhase], (state: IGameState, gamePhase: IGamePhase) => {
+  [getCurrentGame, getGamePhase],
+  (state: IGameState, gamePhase: IGamePhase) => {
     // Selector: find any legal positions for the current card
 
     // Check that we've finished the deal
@@ -271,7 +286,8 @@ export const getLegalMoves = createSelector(
         return prev;
       }, 0);
 
-      const allowedSpots = outsideForGivenGridPosition[mostSimilarCardSpot] || [];
+      const allowedSpots =
+        outsideForGivenGridPosition[mostSimilarCardSpot] || [];
       const emptySpots = allowedSpots.filter((spot) => grid[spot].length === 0);
       if (!emptySpots || emptySpots.length < 1) {
         throw new Error("oops, didnt get a good legal move for royalty");
@@ -286,9 +302,11 @@ export const getLegalMoves = createSelector(
       return royalSpots.filter((spot) => grid[spot].length > 0);
     }
     return openSpots;
-  });
+  }
+);
 
-export const getHintForCardInHand = createSelector([getGamePhase, getCurrentGame],
+export const getHintForCardInHand = createSelector(
+  [getGamePhase, getCurrentGame],
   (gamePhase, state: IGameState) => {
     const { currentCard } = state;
     if (currentCard) {
@@ -316,7 +334,8 @@ export const getHintForCardInHand = createSelector([getGamePhase, getCurrentGame
       return "Hint: Play on any card of the same or lower value";
     }
     return "Hint: Restart the game";
-  });
+  }
+);
 
 export const countTotalArmor = (stack) =>
   stack.reduce((acc, curr) => acc + (isNotFaceCard(curr) ? curr.card : 0), 0);
@@ -392,4 +411,5 @@ export const canTimeTravel = (
   return past.length > 0 && turn && turn >= 1;
 };
 
-export const getIsThisScene = (componentScene: string) => (state: RootState) => state.meta.scene === componentScene;
+export const getIsThisScene = (componentScene: string) => (state: RootState) =>
+  state.meta.scene === componentScene;
