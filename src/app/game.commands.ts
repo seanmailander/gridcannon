@@ -118,7 +118,7 @@ export const tryToPlayCard =
         dispatch(ADD_TO_STACK(targetPosition));
       }
 
-      // Hinderance: Royals start with armor
+      // Challenge: Royals start with armor
       if (stronger && isRoyalty(currentCard)) {
         dispatch(ADD_ARMOR_TO_ROYAL(targetPosition));
       }
